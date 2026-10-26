@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Kolla database bootstrap keeps the image's default kolla_start
+    command so configuration is copied before the database upgrade runs.
+    Migration failures stop the play. The optional coast_bootstrap_command
+    override still runs after configuration is copied, with shell tracing
+    disabled. Migration logs remain in the shared Kolla log volume at
+    /var/log/kolla/coast/coast-db-manage.log.

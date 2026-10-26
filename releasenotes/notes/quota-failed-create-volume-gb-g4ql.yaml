@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Stack deletion releases the committed controller ``volume_gb`` charge
+    once when it matches the failed creation's volumes, including when a
+    volume reservation is held. A different recorded charge is preserved.

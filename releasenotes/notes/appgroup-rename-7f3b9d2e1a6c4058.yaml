@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Creating an appgroup creates a ``production`` environment in it.
+    It is PENDING until the conductor creates the app engine project and
+    then becomes ACTIVE with the appgroup; if the appgroup fails it is set
+    to ERROR.
+  - |
+    Service responses include ``kind=app`` or ``kind=service``.
+    ``GET /v1/services`` accepts ``kind=app`` or ``kind=service`` to filter
+    the list.

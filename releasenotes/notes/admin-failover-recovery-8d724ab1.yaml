@@ -1,0 +1,5 @@
+fixes:
+  - |
+    Allow admin server failover from ERROR and retry stuck FAILOVER tasks
+    after the configurable health_manager.admin_failover_stuck_timeout
+    (default 600 seconds). Fresh failover tasks remain protected.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Controller image builds install checksum manifests, image locks and
+    cached support files with explicit readable permissions, including
+    when build-host source files are private.

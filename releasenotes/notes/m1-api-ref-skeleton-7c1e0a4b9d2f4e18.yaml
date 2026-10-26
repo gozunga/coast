@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The Coast v1 API reference is available under
+    api-ref/source. Build it with ``tox -e api-ref``. The pages cover
+    version discovery and the v1 resources and follow the controllers.

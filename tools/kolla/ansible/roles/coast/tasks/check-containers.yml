@@ -1,0 +1,4 @@
+---
+- name: Compare Coast containers and notify restart handlers
+  ansible.builtin.import_role:
+    name: service-check-containers

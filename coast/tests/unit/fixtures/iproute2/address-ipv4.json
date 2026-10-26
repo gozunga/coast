@@ -1,0 +1,54 @@
+[
+  {
+    "ifindex": 2,
+    "ifname": "ens3",
+    "flags": [
+      "BROADCAST",
+      "MULTICAST",
+      "UP",
+      "LOWER_UP"
+    ],
+    "mtu": 1500,
+    "qdisc": "fq_codel",
+    "operstate": "UP",
+    "group": "default",
+    "txqlen": 1000,
+    "addr_info": [
+      {
+        "family": "inet",
+        "local": "192.0.2.2",
+        "prefixlen": 24,
+        "scope": "global",
+        "label": "ens3",
+        "valid_life_time": 86400,
+        "preferred_life_time": 86400
+      }
+    ]
+  },
+  {
+    "ifindex": 3,
+    "ifname": "ens4",
+    "flags": [
+      "BROADCAST",
+      "MULTICAST",
+      "UP",
+      "LOWER_UP"
+    ],
+    "mtu": 1500,
+    "qdisc": "fq_codel",
+    "operstate": "UP",
+    "group": "default",
+    "txqlen": 1000,
+    "addr_info": [
+      {
+        "family": "inet",
+        "local": "198.51.100.10",
+        "prefixlen": 24,
+        "scope": "global",
+        "label": "ens4",
+        "valid_life_time": 86400,
+        "preferred_life_time": 86400
+      }
+    ]
+  }
+]

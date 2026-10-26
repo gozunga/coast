@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Stack delete releases volume_gb as well as the other stack
+    resources. An interrupted stack create releases the accepted quota
+    once. A later delete does not release that same capacity again.
+    The recount never increases a counter, and it waits while another
+    stack create in the project is still in flight.

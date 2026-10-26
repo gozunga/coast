@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Stack create errors for plans, flavors and images say which
+    selection is not available, for example "Flavor c2.medium is not
+    available for build servers."

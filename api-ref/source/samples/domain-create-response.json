@@ -1,0 +1,35 @@
+{
+    "domain": {
+        "id": "e1e1e1e1-e1e1-e1e1-e1e1-e1e1e1e1e1e1",
+        "project_id": "11111111-1111-1111-1111-111111111111",
+        "service_id": "a9c3a9c3-a9c3-a9c3-a9c3-a9c3a9c3a9c3",
+        "fqdn": "web.example.com",
+        "verified_at": null,
+        "tls": "letsencrypt",
+        "auto_dns": false,
+        "dns_mode": "manual",
+        "status": "PENDING_VERIFICATION",
+        "created_at": "2026-10-09T14:10:00Z",
+        "updated_at": null,
+        "dns_records": [
+            {
+                "type": "TXT",
+                "name": "_coast-challenge.web.example.com",
+                "value": "example-verification-token",
+                "purpose": "verification"
+            },
+            {
+                "type": "CNAME",
+                "name": "web.example.com",
+                "value": "web-a9c3.203-0-113-10.sslip.io",
+                "purpose": "routing-alternative"
+            }
+        ],
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/services/a9c3a9c3-a9c3-a9c3-a9c3-a9c3a9c3a9c3/domains/e1e1e1e1-e1e1-e1e1-e1e1-e1e1e1e1e1e1"
+            }
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Coast can build cached OpenStack clients for Nova, Neutron, Cinder,
+    Glance and Barbican. The clients use the ``[service_auth]`` service
+    project. Each service group has ``region_name``, ``valid_interfaces``,
+    ``endpoint_type``, ``ca_certificates_file`` and ``insecure``. Coast
+    does not log those credentials. A missing region, catalog interface
+    or service credential fails closed.

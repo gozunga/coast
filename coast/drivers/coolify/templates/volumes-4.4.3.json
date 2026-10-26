@@ -1,0 +1,3884 @@
+{
+  "9router": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "9router"
+      }
+    ]
+  },
+  "activepieces": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "pg-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis_data"
+      }
+    ]
+  },
+  "actualbudget": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "actual_data"
+      }
+    ]
+  },
+  "affine": {
+    "volumes": [
+      {
+        "container_path": "/root/.affine/config",
+        "name": "affine-config"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "affine-postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "affine-redis-data"
+      },
+      {
+        "container_path": "/root/.affine/storage",
+        "name": "affine-storage"
+      }
+    ]
+  },
+  "alexandrie": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "rustfs-data"
+      },
+      {
+        "container_path": "/logs",
+        "name": "rustfs-logs"
+      }
+    ]
+  },
+  "anythingllm": {
+    "volumes": [
+      {
+        "container_path": "/app/collector/hotdir",
+        "name": "anythingllm-hot"
+      },
+      {
+        "container_path": "/app/collector/outputs",
+        "name": "anythingllm-outputs"
+      },
+      {
+        "container_path": "/app/server/storage",
+        "name": "anythingllm-storage"
+      }
+    ]
+  },
+  "appflowy": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "minio_data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis_data"
+      }
+    ]
+  },
+  "appsmith": {
+    "volumes": [
+      {
+        "container_path": "/appsmith-stacks",
+        "name": "stacks-data"
+      }
+    ]
+  },
+  "appwrite": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/storage/builds",
+        "name": "appwrite-builds"
+      },
+      {
+        "container_path": "/storage/cache",
+        "name": "appwrite-cache"
+      },
+      {
+        "container_path": "/storage/certificates",
+        "name": "appwrite-certificates"
+      },
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "appwrite-clickhouse"
+      },
+      {
+        "container_path": "/storage/config",
+        "name": "appwrite-config"
+      },
+      {
+        "container_path": "/storage/functions",
+        "name": "appwrite-functions"
+      },
+      {
+        "container_path": "/storage/imports",
+        "name": "appwrite-imports"
+      },
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "appwrite-postgresql"
+      },
+      {
+        "container_path": "/data",
+        "name": "appwrite-redis"
+      },
+      {
+        "container_path": "/storage/sites",
+        "name": "appwrite-sites"
+      },
+      {
+        "container_path": "/storage/uploads",
+        "name": "appwrite-uploads"
+      }
+    ]
+  },
+  "argilla": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/argilla",
+        "name": "argilla-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "audiobookshelf": {
+    "volumes": [
+      {
+        "container_path": "/audiobooks",
+        "name": "audiobookshelf-audiobooks"
+      },
+      {
+        "container_path": "/config",
+        "name": "audiobookshelf-config"
+      },
+      {
+        "container_path": "/metadata",
+        "name": "audiobookshelf-metadata"
+      },
+      {
+        "container_path": "/podcasts",
+        "name": "audiobookshelf-podcasts"
+      }
+    ]
+  },
+  "authentik": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "authentik-db"
+      }
+    ]
+  },
+  "autobase": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "autobase-db-data"
+      },
+      {
+        "container_path": "/opt/dbdesk-studio",
+        "name": "dbdesk_studio_data"
+      }
+    ]
+  },
+  "babybuddy": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "babybuddy-config"
+      }
+    ]
+  },
+  "beszel": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/beszel-agent",
+        "name": "beszel_agent_data"
+      },
+      {
+        "container_path": "/beszel_data",
+        "name": "beszel_data"
+      },
+      {
+        "container_path": "/beszel_socket",
+        "name": "beszel_socket"
+      }
+    ]
+  },
+  "beszel-agent": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/beszel-agent",
+        "name": "beszel_agent_data"
+      },
+      {
+        "container_path": "/beszel_socket",
+        "name": "beszel_socket"
+      }
+    ]
+  },
+  "bitcoin-core": {
+    "volumes": [
+      {
+        "container_path": "/home/bitcoin/.bitcoin",
+        "name": "blockchain-data"
+      }
+    ]
+  },
+  "bluesky-pds": {
+    "volumes": [
+      {
+        "container_path": "/pds",
+        "name": "pds-data"
+      }
+    ]
+  },
+  "bookstack": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "bookstack-data"
+      },
+      {
+        "container_path": "/config",
+        "name": "bookstack-mariadb-data"
+      }
+    ]
+  },
+  "budge": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "budge-config"
+      }
+    ]
+  },
+  "budibase": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "couchdb3_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "minio_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis_data"
+      }
+    ]
+  },
+  "bugsink": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "my-datavolume"
+      }
+    ]
+  },
+  "bulwark": {
+    "volumes": [
+      {
+        "container_path": "/app/data/admin",
+        "name": "bulwark-config"
+      },
+      {
+        "container_path": "/app/data/admin-state",
+        "name": "bulwark-state"
+      }
+    ]
+  },
+  "buzz": {
+    "volumes": [
+      {
+        "container_path": "/data/git",
+        "name": "buzz-git-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "buzz-minio-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "buzz-postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "buzz-redis-data"
+      }
+    ]
+  },
+  "calibre-web": {
+    "volumes": [
+      {
+        "container_path": "/books",
+        "name": "calibre_library"
+      },
+      {
+        "container_path": "/config",
+        "name": "calibre_web_data"
+      }
+    ]
+  },
+  "calibre-web-automated-book-downloader": {
+    "volumes": [
+      {
+        "container_path": "/calibre-library",
+        "name": "calibre-library"
+      },
+      {
+        "container_path": "/config/.config/calibre/plugins",
+        "name": "calibre-plugins"
+      },
+      {
+        "container_path": "/cwa-book-ingest",
+        "name": "cwa-book-ingest"
+      },
+      {
+        "container_path": "/config",
+        "name": "cwa-config"
+      }
+    ]
+  },
+  "cap": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "cap_db"
+      }
+    ]
+  },
+  "cap-captcha": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "valkey-data"
+      }
+    ]
+  },
+  "castopod": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "castopod-cache"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "castopod-db"
+      },
+      {
+        "container_path": "/var/www/castopod/public/media",
+        "name": "castopod-media"
+      }
+    ]
+  },
+  "celld": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/celld",
+        "name": "celld-data"
+      }
+    ]
+  },
+  "changedetection": {
+    "volumes": [
+      {
+        "container_path": "/datastore",
+        "name": "changedetection-data"
+      }
+    ]
+  },
+  "chaskiq": {
+    "volumes": [
+      {
+        "container_path": "/data/storage",
+        "name": "chaskiq-storage"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "chatwoot": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/app/storage",
+        "name": "rails-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "checkmate": {
+    "volumes": [
+      {
+        "container_path": "/data/db",
+        "name": "checkmate-mongo"
+      }
+    ]
+  },
+  "chibisafe": {
+    "volumes": [
+      {
+        "container_path": "/app/database",
+        "name": "chibisafe-database"
+      },
+      {
+        "container_path": "/app/logs",
+        "name": "chibisafe-logs"
+      },
+      {
+        "container_path": "/app/uploads",
+        "name": "chibisafe-uploads"
+      }
+    ]
+  },
+  "chroma": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "chroma-data"
+      }
+    ]
+  },
+  "classicpress-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "classicpress-files"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      }
+    ]
+  },
+  "classicpress-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "classicpress-files"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      }
+    ]
+  },
+  "classicpress-without-database": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "classicpress-files"
+      }
+    ]
+  },
+  "cloudbeaver": {
+    "volumes": [
+      {
+        "container_path": "/opt/cloudbeaver/workspace",
+        "name": "cloudbeaver-data"
+      }
+    ]
+  },
+  "cloudreve": {
+    "volumes": [
+      {
+        "container_path": "/cloudreve/data",
+        "name": "cloudreve-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "cockpit": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/config",
+        "name": "cockpit-config"
+      },
+      {
+        "container_path": "/var/www/html/.spaces",
+        "name": "cockpit-spaces"
+      },
+      {
+        "container_path": "/var/www/html/storage",
+        "name": "cockpit-storage"
+      }
+    ]
+  },
+  "code-server": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "code-server-config"
+      }
+    ]
+  },
+  "codimd": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "codimd_postgres_data"
+      },
+      {
+        "container_path": "/home/hackmd/app/public/uploads",
+        "name": "uploads_data"
+      }
+    ]
+  },
+  "convertx": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "convertx_data"
+      }
+    ]
+  },
+  "convex": {
+    "volumes": [
+      {
+        "container_path": "/convex/data",
+        "name": "data"
+      }
+    ]
+  },
+  "cyberchef": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "cyberchef-data"
+      }
+    ]
+  },
+  "databasus": {
+    "volumes": [
+      {
+        "container_path": "/databasus-data",
+        "name": "databasus-data"
+      }
+    ]
+  },
+  "directus": {
+    "volumes": [
+      {
+        "container_path": "/directus/database",
+        "name": "directus-database"
+      },
+      {
+        "container_path": "/directus/extensions",
+        "name": "directus-extensions"
+      },
+      {
+        "container_path": "/directus/templates",
+        "name": "directus-templates"
+      },
+      {
+        "container_path": "/directus/uploads",
+        "name": "directus-uploads"
+      }
+    ]
+  },
+  "directus-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/directus/extensions",
+        "name": "directus-extensions"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "directus-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "directus-redis-data"
+      },
+      {
+        "container_path": "/directus/templates",
+        "name": "directus-templates"
+      },
+      {
+        "container_path": "/directus/uploads",
+        "name": "directus-uploads"
+      }
+    ]
+  },
+  "diun": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "diun_data"
+      }
+    ]
+  },
+  "docker-registry": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/registry",
+        "name": "registry-data"
+      }
+    ]
+  },
+  "docmost": {
+    "volumes": [
+      {
+        "container_path": "/app/data/storage",
+        "name": "docmost"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "documenso": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "documenso_postgresql_data"
+      }
+    ]
+  },
+  "docuseal": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "docuseal-data"
+      }
+    ]
+  },
+  "docuseal-with-postgres": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "docuseal-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "dokuwiki": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "dokuwiki-config"
+      }
+    ]
+  },
+  "dolibarr": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/custom",
+        "name": "dolibarr_custom"
+      },
+      {
+        "container_path": "/var/www/documents",
+        "name": "dolibarr_docs"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "dolibarr_mariadb_data"
+      }
+    ]
+  },
+  "dozzle": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "dozzle-with-auth": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "drizzle-gateway": {
+    "volumes": [
+      {
+        "container_path": "/app",
+        "name": "drizzle-gateway-data"
+      }
+    ]
+  },
+  "drupal-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/modules",
+        "name": "drupal_modules"
+      },
+      {
+        "container_path": "/var/www/html/profiles",
+        "name": "drupal_profiles"
+      },
+      {
+        "container_path": "/var/www/html/sites",
+        "name": "drupal_sites"
+      },
+      {
+        "container_path": "/var/www/html/themes",
+        "name": "drupal_themes"
+      }
+    ]
+  },
+  "duplicati": {
+    "volumes": [
+      {
+        "container_path": "/backups",
+        "name": "duplicati-backups"
+      },
+      {
+        "container_path": "/config",
+        "name": "duplicati-config"
+      }
+    ]
+  },
+  "easyappointments": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "easyappointments-mysql-data"
+      }
+    ]
+  },
+  "elasticsearch": {
+    "volumes": [
+      {
+        "container_path": "/usr/share/elasticsearch/data",
+        "name": "elasticsearch-data"
+      }
+    ]
+  },
+  "elasticsearch-with-kibana": {
+    "volumes": [
+      {
+        "container_path": "/usr/share/elasticsearch/data",
+        "name": "elasticsearch-data"
+      },
+      {
+        "container_path": "/usr/share/kibana/data",
+        "name": "kibana-data"
+      }
+    ]
+  },
+  "electricsql": {
+    "volumes": [
+      {
+        "container_path": "/app/persistent",
+        "name": "electric_data"
+      }
+    ]
+  },
+  "emby": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "emby-config"
+      },
+      {
+        "container_path": "/movies",
+        "name": "emby-movies"
+      },
+      {
+        "container_path": "/tvshows",
+        "name": "emby-tvshows"
+      }
+    ]
+  },
+  "embystat": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "embystat-config"
+      }
+    ]
+  },
+  "emqx-enterprise": {
+    "volumes": [
+      {
+        "container_path": "/opt/emqx/data",
+        "name": "emqx_data"
+      },
+      {
+        "container_path": "/opt/emqx/log",
+        "name": "emqx_log"
+      }
+    ]
+  },
+  "engram": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "engram-postgresql-data"
+      }
+    ]
+  },
+  "ente-photos": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "museum-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "museum-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "ente-photos-with-s3": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "minio-data"
+      },
+      {
+        "container_path": "/config",
+        "name": "museum-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "museum-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "esphome": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "esp_config"
+      }
+    ]
+  },
+  "espocrm": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/custom",
+        "name": "espocrm-custom"
+      },
+      {
+        "container_path": "/var/www/html/client/custom",
+        "name": "espocrm-custom-client"
+      },
+      {
+        "container_path": "/var/www/html/data",
+        "name": "espocrm-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "espocrm-db"
+      }
+    ]
+  },
+  "evolution-api": {
+    "volumes": [
+      {
+        "container_path": "/evolution/instances",
+        "name": "evolution_instances"
+      },
+      {
+        "container_path": "/data",
+        "name": "evolution_redis"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      }
+    ]
+  },
+  "executor": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "executor-data"
+      }
+    ]
+  },
+  "faraday": {
+    "volumes": [
+      {
+        "container_path": "/home/faraday/.faraday",
+        "name": "faraday"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "faraday-db"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis"
+      }
+    ]
+  },
+  "fider": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg_data"
+      }
+    ]
+  },
+  "fileflows": {
+    "volumes": [
+      {
+        "container_path": "/app/common",
+        "name": "fileflows_common"
+      },
+      {
+        "container_path": "/app/Data",
+        "name": "fileflows_configs"
+      },
+      {
+        "container_path": "/app/Logs",
+        "name": "fileflows_logs"
+      },
+      {
+        "container_path": "/temp",
+        "name": "fileflows_temp"
+      }
+    ]
+  },
+  "firefly": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "firefly-mysql-data"
+      },
+      {
+        "container_path": "/var/www/html/storage/upload",
+        "name": "firefly-upload"
+      }
+    ]
+  },
+  "firefox": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "firefox_config"
+      }
+    ]
+  },
+  "fizzy": {
+    "volumes": [
+      {
+        "container_path": "/rails/db",
+        "name": "fizzy-data"
+      },
+      {
+        "container_path": "/rails/storage",
+        "name": "fizzy-storage"
+      }
+    ]
+  },
+  "flipt": {
+    "volumes": [
+      {
+        "container_path": "/var/opt/flipt",
+        "name": "flipt-data"
+      }
+    ]
+  },
+  "flowise": {
+    "volumes": [
+      {
+        "container_path": "/root/.flowise",
+        "name": "flowise-data"
+      }
+    ]
+  },
+  "flowise-with-databases": {
+    "volumes": [
+      {
+        "container_path": "/root/.flowise",
+        "name": "flowise-data"
+      },
+      {
+        "container_path": "/qdrant/storage",
+        "name": "flowise-qdrant-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "flowise-redis-cache-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg-record-manager-data"
+      }
+    ]
+  },
+  "forgejo": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "forgejo-data"
+      }
+    ]
+  },
+  "forgejo-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "forgejo-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "forgejo-mariadb-data"
+      }
+    ]
+  },
+  "forgejo-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "forgejo-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "forgejo-mysql-data"
+      }
+    ]
+  },
+  "forgejo-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "forgejo-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "forgejo-postgresql-data"
+      }
+    ]
+  },
+  "formbricks": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "formbricks-minio-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "formbricks-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "formbricks-valkey"
+      }
+    ]
+  },
+  "freescout": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "freescout-data"
+      },
+      {
+        "container_path": "/www/logs",
+        "name": "freescout-logs"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      }
+    ]
+  },
+  "freshrss": {
+    "volumes": [
+      {
+        "container_path": "/var/www/FreshRSS/data",
+        "name": "freshrss-data"
+      },
+      {
+        "container_path": "/var/www/FreshRSS/extensions",
+        "name": "freshrss-extensions"
+      }
+    ]
+  },
+  "freshrss-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/www/FreshRSS/data",
+        "name": "freshrss-data"
+      },
+      {
+        "container_path": "/var/www/FreshRSS/extensions",
+        "name": "freshrss-extensions"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      }
+    ]
+  },
+  "freshrss-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/www/FreshRSS/data",
+        "name": "freshrss-data"
+      },
+      {
+        "container_path": "/var/www/FreshRSS/extensions",
+        "name": "freshrss-extensions"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      }
+    ]
+  },
+  "freshrss-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/www/FreshRSS/data",
+        "name": "freshrss-data"
+      },
+      {
+        "container_path": "/var/www/FreshRSS/extensions",
+        "name": "freshrss-extensions"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "freshrss-postgresql-data"
+      }
+    ]
+  },
+  "garage": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/garage/data",
+        "name": "garage-data"
+      },
+      {
+        "container_path": "/var/lib/garage/meta",
+        "name": "garage-meta"
+      }
+    ]
+  },
+  "getoutline": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "database-data"
+      },
+      {
+        "container_path": "/var/lib/outline/data",
+        "name": "storage-data"
+      }
+    ]
+  },
+  "ghost": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/ghost/content",
+        "name": "ghost-content-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "ghost-mysql-data"
+      }
+    ]
+  },
+  "gitea": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "gitea-data"
+      }
+    ]
+  },
+  "gitea-runner": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "runner-data"
+      }
+    ]
+  },
+  "gitea-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "gitea-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "gitea-mariadb-data"
+      }
+    ]
+  },
+  "gitea-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "gitea-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "gitea-mysql-data"
+      }
+    ]
+  },
+  "gitea-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "gitea-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "gitea-postgresql-data"
+      }
+    ]
+  },
+  "github-runner": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/runner",
+        "name": "runner-data"
+      }
+    ]
+  },
+  "gitlab": {
+    "volumes": [
+      {
+        "container_path": "/etc/gitlab",
+        "name": "gitlab-config"
+      },
+      {
+        "container_path": "/var/opt/gitlab",
+        "name": "gitlab-data"
+      },
+      {
+        "container_path": "/var/log/gitlab",
+        "name": "gitlab-logs"
+      }
+    ]
+  },
+  "glance": {
+    "volumes": [
+      {
+        "container_path": "/user/assets",
+        "name": "glance-assets"
+      }
+    ]
+  },
+  "glances": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "glitchtip": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "glitchtip-postgres-data"
+      },
+      {
+        "container_path": "/code/uploads",
+        "name": "uploads"
+      }
+    ]
+  },
+  "glpi": {
+    "volumes": [
+      {
+        "container_path": "/var/glpi",
+        "name": "glpi-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      }
+    ]
+  },
+  "goatcounter": {
+    "volumes": [
+      {
+        "container_path": "/home/goatcounter/goatcounter-data",
+        "name": "goatcounter-data"
+      }
+    ]
+  },
+  "gotify": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "gotify-data"
+      }
+    ]
+  },
+  "gowa": {
+    "volumes": [
+      {
+        "container_path": "/app/storages",
+        "name": "gowa_data"
+      }
+    ]
+  },
+  "grafana": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/grafana",
+        "name": "grafana-data"
+      }
+    ]
+  },
+  "grafana-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/grafana",
+        "name": "grafana-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "gramps-web": {
+    "volumes": [
+      {
+        "container_path": "/app/cache",
+        "name": "gramps_cache"
+      },
+      {
+        "container_path": "/root/.gramps/grampsdb",
+        "name": "gramps_db"
+      },
+      {
+        "container_path": "/app/indexdir",
+        "name": "gramps_index"
+      },
+      {
+        "container_path": "/app/media",
+        "name": "gramps_media"
+      },
+      {
+        "container_path": "/app/secret",
+        "name": "gramps_secret"
+      },
+      {
+        "container_path": "/app/thumbnail_cache",
+        "name": "gramps_thumb_cache"
+      },
+      {
+        "container_path": "/tmp",
+        "name": "gramps_tmp"
+      },
+      {
+        "container_path": "/app/users",
+        "name": "gramps_users"
+      }
+    ]
+  },
+  "grimmory": {
+    "volumes": [
+      {
+        "container_path": "/bookdrop",
+        "name": "grimmory-bookdrop"
+      },
+      {
+        "container_path": "/books",
+        "name": "grimmory-books"
+      },
+      {
+        "container_path": "/app/data",
+        "name": "grimmory-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      }
+    ]
+  },
+  "grist": {
+    "volumes": [
+      {
+        "container_path": "/persist",
+        "name": "grist-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "grist_postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "grist_redis_data"
+      }
+    ]
+  },
+  "grocy": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "grocy-config"
+      }
+    ]
+  },
+  "hatchet": {
+    "volumes": [
+      {
+        "container_path": "/hatchet/certs",
+        "name": "hatchet-certs"
+      },
+      {
+        "container_path": "/hatchet/config",
+        "name": "hatchet-config"
+      },
+      {
+        "container_path": "/hatchet/certs",
+        "name": "hatchet_certs"
+      },
+      {
+        "container_path": "/hatchet/config",
+        "name": "hatchet_config"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "healthchecks": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "healthchecks-data"
+      }
+    ]
+  },
+  "heimdall": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "heimdall-config"
+      }
+    ]
+  },
+  "hermes-agent": {
+    "volumes": [
+      {
+        "container_path": "/opt/data",
+        "name": "hermes-home"
+      }
+    ]
+  },
+  "hermes-agent-with-webui": {
+    "volumes": [
+      {
+        "container_path": "/opt/hermes",
+        "name": "hermes-agent-src"
+      },
+      {
+        "container_path": "/home/hermes/.hermes",
+        "name": "hermes-home"
+      },
+      {
+        "container_path": "/home/hermes/.hermes/skills",
+        "name": "hermes-skills"
+      },
+      {
+        "container_path": "/workspace",
+        "name": "hermes-workspace"
+      }
+    ]
+  },
+  "heyform": {
+    "volumes": [
+      {
+        "container_path": "/app/static/upload",
+        "name": "heyform-assets"
+      },
+      {
+        "container_path": "/data",
+        "name": "heyform-keydb-data"
+      },
+      {
+        "container_path": "/data/db",
+        "name": "heyform-mongo-data"
+      }
+    ]
+  },
+  "homarr": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "home-assistant": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "homeassistant-config"
+      }
+    ]
+  },
+  "homebox": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "homebox-data"
+      }
+    ]
+  },
+  "homepage": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "honcho": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "honcho_redis_data"
+      }
+    ]
+  },
+  "hoppscotch": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      }
+    ]
+  },
+  "immich": {
+    "volumes": [
+      {
+        "container_path": "/cache",
+        "name": "immich-model-cache"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "immich-postgres-data"
+      },
+      {
+        "container_path": "/usr/src/app/upload",
+        "name": "immich-uploads"
+      }
+    ]
+  },
+  "infisical": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "influxdb": {
+    "volumes": [
+      {
+        "container_path": "/etc/influxdb2",
+        "name": "influxdb-config"
+      },
+      {
+        "container_path": "/var/lib/influxdb2",
+        "name": "influxdb-data"
+      }
+    ]
+  },
+  "inngest": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "invoice-ninja": {
+    "volumes": [
+      {
+        "container_path": "/var/www/app/public",
+        "name": "invoice-ninja-public"
+      },
+      {
+        "container_path": "/data",
+        "name": "invoice-ninja-redis-data"
+      },
+      {
+        "container_path": "/var/www/app/storage",
+        "name": "invoice-ninja-storage"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      }
+    ]
+  },
+  "it-tools": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "it-tools-data"
+      }
+    ]
+  },
+  "jean": {
+    "volumes": [
+      {
+        "container_path": "/home/jean/.local/share/com.jean.desktop",
+        "name": "jean-data"
+      }
+    ]
+  },
+  "jellyfin": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "jellyfin-config"
+      },
+      {
+        "container_path": "/data/movies",
+        "name": "jellyfin-movies"
+      },
+      {
+        "container_path": "/data/tvshows",
+        "name": "jellyfin-tvshows"
+      }
+    ]
+  },
+  "jenkins": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/jenkins_home",
+        "name": "jenkins-home"
+      }
+    ]
+  },
+  "jitsi": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "jitsi-jicofo"
+      },
+      {
+        "container_path": "/config",
+        "name": "jitsi-jvb"
+      },
+      {
+        "container_path": "/config",
+        "name": "jitsi-prosody"
+      },
+      {
+        "container_path": "/config",
+        "name": "jitsi-web"
+      }
+    ]
+  },
+  "joomla-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "joomla_data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "joomla_mariadb_data"
+      }
+    ]
+  },
+  "joplin": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "joplin-postgresql-data"
+      }
+    ]
+  },
+  "karakeep": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "karakeep-data"
+      },
+      {
+        "container_path": "/meili_data",
+        "name": "karakeep-meilisearch"
+      }
+    ]
+  },
+  "keycloak": {
+    "volumes": [
+      {
+        "container_path": "/opt/keycloak/data",
+        "name": "keycloak-data"
+      }
+    ]
+  },
+  "keycloak-with-postgres": {
+    "volumes": [
+      {
+        "container_path": "/opt/keycloak/data",
+        "name": "keycloak-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "keycloak-postgresql-data"
+      }
+    ]
+  },
+  "kimai": {
+    "volumes": [
+      {
+        "container_path": "/opt/kimai/var/data",
+        "name": "kimai-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "kimai-mysql-data"
+      }
+    ]
+  },
+  "kuzzle": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "elastic-redis-data"
+      }
+    ]
+  },
+  "labelstudio": {
+    "volumes": [
+      {
+        "container_path": "/label-studio/data",
+        "name": "labelstudio-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg-data"
+      }
+    ]
+  },
+  "langflow": {
+    "volumes": [
+      {
+        "container_path": "/app/langflow",
+        "name": "langflow-data"
+      },
+      {
+        "container_path": "/var/lib/postgres/data",
+        "name": "langflow-postgres"
+      }
+    ]
+  },
+  "langfuse": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "langfuse_clickhouse_data"
+      },
+      {
+        "container_path": "/var/log/clickhouse-server",
+        "name": "langfuse_clickhouse_logs"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "langfuse_postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "langfuse_redis_data"
+      }
+    ]
+  },
+  "leantime": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "leantime_mysql_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "leantime_redis_data"
+      },
+      {
+        "container_path": "/var/www/html/app/Plugins",
+        "name": "plugins"
+      },
+      {
+        "container_path": "/var/www/html/public/userfiles",
+        "name": "public-userfiles"
+      },
+      {
+        "container_path": "/var/www/html/userfiles",
+        "name": "userfiles"
+      }
+    ]
+  },
+  "librechat": {
+    "volumes": [
+      {
+        "container_path": "/app/client/public/images",
+        "name": "librechat-images"
+      },
+      {
+        "container_path": "/app/api/logs",
+        "name": "librechat-logs"
+      },
+      {
+        "container_path": "/app/uploads",
+        "name": "librechat-uploads"
+      },
+      {
+        "container_path": "/meili_data",
+        "name": "meilisearch-data"
+      },
+      {
+        "container_path": "/data/db",
+        "name": "mongodb-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "vectordb-data"
+      }
+    ]
+  },
+  "libreoffice": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "libreoffice-config"
+      }
+    ]
+  },
+  "libretranslate": {
+    "volumes": [
+      {
+        "container_path": "/app/db",
+        "name": "libretranslate-api-keys"
+      },
+      {
+        "container_path": "/home/libretranslate/.local",
+        "name": "libretranslate-models"
+      }
+    ]
+  },
+  "lidarr": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "lidarr-config"
+      },
+      {
+        "container_path": "/downloads",
+        "name": "lidarr-downloads"
+      },
+      {
+        "container_path": "/music",
+        "name": "lidarr-music"
+      }
+    ]
+  },
+  "limesurvey": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/application/config",
+        "name": "limesurvey_config_data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "limesurvey_mariadb_data"
+      },
+      {
+        "container_path": "/var/www/html/plugins",
+        "name": "limesurvey_plugins_data"
+      },
+      {
+        "container_path": "/var/lime/sessions",
+        "name": "limesurvey_sessions_data"
+      },
+      {
+        "container_path": "/var/www/html/upload",
+        "name": "limesurvey_upload_data"
+      }
+    ]
+  },
+  "linkding": {
+    "volumes": [
+      {
+        "container_path": "/etc/linkding/data",
+        "name": "linkding_data"
+      }
+    ]
+  },
+  "linkding-plus": {
+    "volumes": [
+      {
+        "container_path": "/etc/linkding/data",
+        "name": "linkding_data"
+      }
+    ]
+  },
+  "linkwarden": {
+    "volumes": [
+      {
+        "container_path": "/data/data",
+        "name": "linkwarden-data"
+      },
+      {
+        "container_path": "/meili_data",
+        "name": "meilisearch-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "listmonk": {
+    "volumes": [
+      {
+        "container_path": "/listmonk/uploads",
+        "name": "listmonk-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "litellm": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "logto": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "logto-postgres-data"
+      }
+    ]
+  },
+  "lowcoder": {
+    "volumes": [
+      {
+        "container_path": "/lowcoder-stacks",
+        "name": "lowcoder_data"
+      }
+    ]
+  },
+  "mailpit": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "mailpit-data"
+      }
+    ]
+  },
+  "marimo": {
+    "volumes": [
+      {
+        "container_path": "/app",
+        "name": "marimo"
+      }
+    ]
+  },
+  "martin": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "martin-postgresql-data"
+      }
+    ]
+  },
+  "matrix-synapse-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "synapse-data"
+      }
+    ]
+  },
+  "matrix-synapse-with-sqlite": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "synapse-data"
+      }
+    ]
+  },
+  "mattermost": {
+    "volumes": [
+      {
+        "container_path": "/mattermost/bleve-indexes",
+        "name": "mattermost-data-bleve-indexes"
+      },
+      {
+        "container_path": "/mattermost/client/plugins",
+        "name": "mattermost-data-client-plugins"
+      },
+      {
+        "container_path": "/mattermost/config",
+        "name": "mattermost-data-config"
+      },
+      {
+        "container_path": "/mattermost/data",
+        "name": "mattermost-data-data"
+      },
+      {
+        "container_path": "/mattermost/logs",
+        "name": "mattermost-data-logs"
+      },
+      {
+        "container_path": "/mattermost/plugins",
+        "name": "mattermost-data-plugins"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "mealie": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "mealie_data"
+      }
+    ]
+  },
+  "mediawiki": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/images",
+        "name": "mediawiki-images"
+      },
+      {
+        "container_path": "/var/www/html/data",
+        "name": "mediawiki-sqlite"
+      }
+    ]
+  },
+  "meilisearch": {
+    "volumes": [
+      {
+        "container_path": "/meili_data",
+        "name": "meilisearch-data"
+      }
+    ]
+  },
+  "metabase": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "metabase-postgresql-data"
+      }
+    ]
+  },
+  "metamcp": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      }
+    ]
+  },
+  "metube": {
+    "volumes": [
+      {
+        "container_path": "/downloads",
+        "name": "metube-downloads"
+      }
+    ]
+  },
+  "mindsdb": {
+    "volumes": [
+      {
+        "container_path": "/mindsdb/var",
+        "name": "mindsdb-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "mindsdb-postgresql-data"
+      }
+    ]
+  },
+  "miniflux": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "miniflux-postgres-data"
+      }
+    ]
+  },
+  "mixpost": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html/storage/logs",
+        "name": "mixpost-logs"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mixpost-mysql"
+      },
+      {
+        "container_path": "/var/www/html/storage/app",
+        "name": "mixpost-storage"
+      }
+    ]
+  },
+  "moodle": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      },
+      {
+        "container_path": "/bitnami/moodle",
+        "name": "moodle-data"
+      },
+      {
+        "container_path": "/bitnami/moodledata",
+        "name": "moodledata-data"
+      }
+    ]
+  },
+  "n8n": {
+    "volumes": [
+      {
+        "container_path": "/home/node/.n8n",
+        "name": "n8n-data"
+      }
+    ]
+  },
+  "n8n-with-postgres-and-worker": {
+    "volumes": [
+      {
+        "container_path": "/home/node/.n8n",
+        "name": "n8n-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "n8n-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/home/node/.n8n",
+        "name": "n8n-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "neon-ws-proxy": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "netbird-client": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/netbird",
+        "name": "netbird-client"
+      }
+    ]
+  },
+  "newapi": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "nextcloud": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "nextcloud-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-data"
+      }
+    ]
+  },
+  "nextcloud-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "nextcloud-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "nextcloud-mariadb-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-redis-data"
+      }
+    ]
+  },
+  "nextcloud-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "nextcloud-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "nextcloud-mysql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-redis-data"
+      }
+    ]
+  },
+  "nextcloud-with-postgres": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "nextcloud-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "nextcloud-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "nextcloud-redis-data"
+      }
+    ]
+  },
+  "nexus": {
+    "volumes": [
+      {
+        "container_path": "/nexus-data",
+        "name": "nexus_data"
+      }
+    ]
+  },
+  "nexus-arm": {
+    "volumes": [
+      {
+        "container_path": "/nexus-data",
+        "name": "nexus_data"
+      }
+    ]
+  },
+  "nitropage": {
+    "volumes": [
+      {
+        "container_path": "/app/.data",
+        "name": "nitropage-data"
+      }
+    ]
+  },
+  "nitropage-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/app/.data",
+        "name": "nitropage-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "nitropage-postgresql-data"
+      }
+    ]
+  },
+  "nocobase": {
+    "volumes": [
+      {
+        "container_path": "/app/nocobase/storage",
+        "name": "nocobase-storage"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "nodebb": {
+    "volumes": [
+      {
+        "container_path": "/usr/src/app/build",
+        "name": "nodebb_build"
+      },
+      {
+        "container_path": "/opt/config",
+        "name": "nodebb_config"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "nodebb_postgres_data"
+      },
+      {
+        "container_path": "/usr/src/app/public/uploads",
+        "name": "nodebb_uploads"
+      }
+    ]
+  },
+  "ntfy": {
+    "volumes": [
+      {
+        "container_path": "/var/cache/ntfy",
+        "name": "ntfy-cache"
+      }
+    ]
+  },
+  "observium": {
+    "volumes": [
+      {
+        "container_path": "/opt/observium/logs",
+        "name": "observium_logs"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "observium_mariadb_data"
+      },
+      {
+        "container_path": "/opt/observium/rrd",
+        "name": "observium_rrd"
+      }
+    ]
+  },
+  "obsidian": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "obsidian-config"
+      }
+    ]
+  },
+  "obsidian-livesync": {
+    "volumes": [
+      {
+        "container_path": "/opt/couchdb/data",
+        "name": "couchdb-data"
+      }
+    ]
+  },
+  "odoo": {
+    "volumes": [
+      {
+        "container_path": "/mnt/extra-addons",
+        "name": "odoo-extra-addons"
+      },
+      {
+        "container_path": "/var/lib/odoo",
+        "name": "odoo-web-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "ollama-with-open-webui": {
+    "volumes": [
+      {
+        "container_path": "/root/.ollama",
+        "name": "ollama"
+      },
+      {
+        "container_path": "/app/backend/data",
+        "name": "open-webui"
+      }
+    ]
+  },
+  "once-campfire": {
+    "volumes": [
+      {
+        "container_path": "/rails/storage",
+        "name": "campfire-storage"
+      }
+    ]
+  },
+  "onedev": {
+    "volumes": [
+      {
+        "container_path": "/opt/onedev",
+        "name": "onedev-data"
+      },
+      {
+        "container_path": "/var/run/docker.sock",
+        "name": "onedev-docker-sock"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "onedev-postgresql-data"
+      }
+    ]
+  },
+  "open-archiver": {
+    "volumes": [
+      {
+        "container_path": "/var/data/open-archiver",
+        "name": "archiver-data"
+      },
+      {
+        "container_path": "/meili_data",
+        "name": "meilisearch-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "valkey-data"
+      }
+    ]
+  },
+  "open-webui": {
+    "volumes": [
+      {
+        "container_path": "/app/backend/data",
+        "name": "open-webui"
+      }
+    ]
+  },
+  "openclaw": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "browser-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "openclaw-data"
+      }
+    ]
+  },
+  "openobserve": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "openobserve-data"
+      }
+    ]
+  },
+  "openpanel": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "openpanel_clickhouse_data"
+      },
+      {
+        "container_path": "/var/log/clickhouse-server",
+        "name": "openpanel_clickhouse_logs"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "openpanel_postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "openpanel_redis_data"
+      }
+    ]
+  },
+  "openwa": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "openwa-data"
+      }
+    ]
+  },
+  "openwa-with-postgresql-and-redis": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "openwa-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "opnform": {
+    "volumes": [
+      {
+        "container_path": "/usr/share/nginx/html/storage",
+        "name": "api-storage"
+      },
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "opnform-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "orangehrm": {
+    "volumes": [
+      {
+        "container_path": "/orangehrm",
+        "name": "orangehrm-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "orangehrm_mariadb_data"
+      }
+    ]
+  },
+  "organizr": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "organizr-data"
+      }
+    ]
+  },
+  "overseerr": {
+    "volumes": [
+      {
+        "container_path": "/app/config",
+        "name": "overseerr-config"
+      }
+    ]
+  },
+  "owncloud": {
+    "volumes": [
+      {
+        "container_path": "/mnt/data",
+        "name": "owncloud-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "owncloud-mysql-data"
+      }
+    ]
+  },
+  "paperless": {
+    "volumes": [
+      {
+        "container_path": "/usr/src/paperless/data",
+        "name": "paperless-data"
+      },
+      {
+        "container_path": "/usr/src/paperless/media",
+        "name": "paperless-media"
+      },
+      {
+        "container_path": "/data",
+        "name": "paperless-redis"
+      }
+    ]
+  },
+  "passbolt": {
+    "volumes": [
+      {
+        "container_path": "/etc/passbolt/gpg",
+        "name": "gpg_volume"
+      },
+      {
+        "container_path": "/etc/passbolt/jwt",
+        "name": "jwt_volume"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "passbolt_mariadb_data"
+      }
+    ]
+  },
+  "paymenter": {
+    "volumes": [
+      {
+        "container_path": "/app/storage/logs",
+        "name": "app_logs"
+      },
+      {
+        "container_path": "/app/storage/app/public",
+        "name": "app_public_storage"
+      },
+      {
+        "container_path": "/app/storage/app",
+        "name": "app_storage"
+      },
+      {
+        "container_path": "/app/extensions",
+        "name": "extenstions"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "paymenter_mariadb_data"
+      },
+      {
+        "container_path": "/app/themes",
+        "name": "themes"
+      }
+    ]
+  },
+  "peertube": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "db-data"
+      },
+      {
+        "container_path": "/config",
+        "name": "peertube-config"
+      },
+      {
+        "container_path": "/data",
+        "name": "peertube-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "penpot": {
+    "volumes": [
+      {
+        "container_path": "/opt/data/assets",
+        "name": "penpot-assets"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "penpot-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "penpot-valkey-data"
+      }
+    ]
+  },
+  "penpot-with-s3": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "minio-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "penpot-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "penpot-valkey-data"
+      }
+    ]
+  },
+  "pgadmin": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/pgadmin",
+        "name": "pgadmin-data"
+      }
+    ]
+  },
+  "pgbackweb": {
+    "volumes": [
+      {
+        "container_path": "/backups",
+        "name": "pgbackweb_backups"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pgbackweb_postgres_data"
+      }
+    ]
+  },
+  "phpmyadmin": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "phpmyadmin-config"
+      }
+    ]
+  },
+  "pi-hole": {
+    "volumes": [
+      {
+        "container_path": "/etc/pihole",
+        "name": "pihole-data"
+      }
+    ]
+  },
+  "plane": {
+    "volumes": [
+      {
+        "container_path": "/code/plane/logs",
+        "name": "logs_api"
+      },
+      {
+        "container_path": "/code/plane/logs",
+        "name": "logs_beat-worker"
+      },
+      {
+        "container_path": "/code/plane/logs",
+        "name": "logs_migrator"
+      },
+      {
+        "container_path": "/code/plane/logs",
+        "name": "logs_worker"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pgdata"
+      },
+      {
+        "container_path": "/config",
+        "name": "proxy_config"
+      },
+      {
+        "container_path": "/data",
+        "name": "proxy_data"
+      },
+      {
+        "container_path": "/var/lib/rabbitmq",
+        "name": "rabbitmq_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redisdata"
+      },
+      {
+        "container_path": "/export",
+        "name": "uploads"
+      }
+    ]
+  },
+  "plex": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "plex-config"
+      },
+      {
+        "container_path": "/movies",
+        "name": "plex-movies"
+      },
+      {
+        "container_path": "/tv",
+        "name": "plex-tv"
+      }
+    ]
+  },
+  "plunk": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "plunk-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "plunk-redis-data"
+      }
+    ]
+  },
+  "pocket-id": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "pocket-id-data"
+      }
+    ]
+  },
+  "pocket-id-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "pocket-id-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pocket-id-postgresql-data"
+      }
+    ]
+  },
+  "pocketbase": {
+    "volumes": [
+      {
+        "container_path": "/app/pb_data",
+        "name": "pocketbase-data"
+      },
+      {
+        "container_path": "/app/pb_hooks",
+        "name": "pocketbase-hooks"
+      }
+    ]
+  },
+  "portabase": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "portabase-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "portainer": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "portainer_data"
+      }
+    ]
+  },
+  "postiz": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postiz_postgresql_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "postiz_redis_data"
+      }
+    ]
+  },
+  "prefect": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "pg-data"
+      }
+    ]
+  },
+  "privatebin": {
+    "volumes": [
+      {
+        "container_path": "/srv/data",
+        "name": "privatebin_data"
+      }
+    ]
+  },
+  "prowlarr": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "prowlarr-config"
+      }
+    ]
+  },
+  "pterodactyl-panel": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "pterodactyl-db"
+      }
+    ]
+  },
+  "pterodactyl-with-wings": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "pterodactyl-db"
+      }
+    ]
+  },
+  "pydio-cells": {
+    "volumes": [
+      {
+        "container_path": "/var/cells",
+        "name": "cells_data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql_data"
+      }
+    ]
+  },
+  "qbittorrent": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "qbittorrent-config"
+      },
+      {
+        "container_path": "/downloads",
+        "name": "qbittorrent-downloads"
+      },
+      {
+        "container_path": "/torrents",
+        "name": "qbittorrent-torrents"
+      },
+      {
+        "container_path": "/config",
+        "name": "vuetorrent-config"
+      }
+    ]
+  },
+  "qdrant": {
+    "volumes": [
+      {
+        "container_path": "/qdrant/storage",
+        "name": "qdrant-storage"
+      }
+    ]
+  },
+  "radarr": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "radarr-config"
+      }
+    ]
+  },
+  "rallly": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "postgres-data"
+      }
+    ]
+  },
+  "reactive-resume": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "minio-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis_data"
+      }
+    ]
+  },
+  "readeck": {
+    "volumes": [
+      {
+        "container_path": "/readeck",
+        "name": "readeck_data"
+      }
+    ]
+  },
+  "redis-insight": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "redis_insight_data"
+      }
+    ]
+  },
+  "redmine": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/usr/src/redmine/config",
+        "name": "redmine-config"
+      },
+      {
+        "container_path": "/usr/src/redmine/files",
+        "name": "redmine-files"
+      },
+      {
+        "container_path": "/usr/src/redmine/plugins",
+        "name": "redmine-plugins"
+      },
+      {
+        "container_path": "/usr/src/redmine/themes",
+        "name": "redmine-themes"
+      }
+    ]
+  },
+  "rivet-engine": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "rivet-data"
+      }
+    ]
+  },
+  "rocketchat": {
+    "volumes": [
+      {
+        "container_path": "/data/db",
+        "name": "mongodb_data"
+      }
+    ]
+  },
+  "rybbit": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "clickhouse_data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      }
+    ]
+  },
+  "ryot": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "ryot_postgresql_data"
+      }
+    ]
+  },
+  "satisfactory": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "satisfactory-server"
+      }
+    ]
+  },
+  "seafile": {
+    "volumes": [
+      {
+        "container_path": "/shared",
+        "name": "seafile-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "seafile_mariadb_data"
+      }
+    ]
+  },
+  "searxng": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      }
+    ]
+  },
+  "seaweedfs": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "seaweedfs-admin-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "seaweedfs-s3-data"
+      }
+    ]
+  },
+  "sequin": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis_data"
+      }
+    ]
+  },
+  "sessy": {
+    "volumes": [
+      {
+        "container_path": "/rails/storage",
+        "name": "sessy-data"
+      }
+    ]
+  },
+  "sftpgo": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/srv/sftpgo/data",
+        "name": "sftpgo-data"
+      },
+      {
+        "container_path": "/var/lib/sftpgo",
+        "name": "sftpgo-keys"
+      }
+    ]
+  },
+  "shlink": {
+    "volumes": [
+      {
+        "container_path": "/etc/shlink/data",
+        "name": "shlink-data"
+      }
+    ]
+  },
+  "signoz": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse/user_scripts",
+        "name": "user-scripts"
+      },
+      {
+        "container_path": "/bitnami/zookeeper",
+        "name": "zookeeper"
+      }
+    ]
+  },
+  "silverbullet": {
+    "volumes": [
+      {
+        "container_path": "/space",
+        "name": "silverbullet-space"
+      }
+    ]
+  },
+  "siyuan": {
+    "volumes": [
+      {
+        "container_path": "/siyuan/workspace",
+        "name": "siyuan_workspace"
+      }
+    ]
+  },
+  "slash": {
+    "volumes": [
+      {
+        "container_path": "/var/opt/slash",
+        "name": "slash-data"
+      }
+    ]
+  },
+  "snapdrop": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "snapdrop-config"
+      }
+    ]
+  },
+  "snipe-it": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "db_data"
+      },
+      {
+        "container_path": "/var/lib/snipeit",
+        "name": "storage"
+      }
+    ]
+  },
+  "soju": {
+    "volumes": [
+      {
+        "container_path": "/db",
+        "name": "soju-db"
+      },
+      {
+        "container_path": "/run/soju",
+        "name": "soju-run"
+      },
+      {
+        "container_path": "/uploads",
+        "name": "soju-uploads"
+      }
+    ]
+  },
+  "sonarr": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "sonarr-config"
+      }
+    ]
+  },
+  "spacebot": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "spacebot-data"
+      }
+    ]
+  },
+  "sparkyfitness": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "sparkyfitness-db-postgresql"
+      },
+      {
+        "container_path": "/app/SparkyFitnessServer/backup",
+        "name": "sparkyfitness-server-backup"
+      },
+      {
+        "container_path": "/app/SparkyFitnessServer/uploads",
+        "name": "sparkyfitness-server-uploads"
+      }
+    ]
+  },
+  "stalwart": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/stalwart",
+        "name": "stalwart-data"
+      },
+      {
+        "container_path": "/etc/stalwart",
+        "name": "stalwart-mail"
+      }
+    ]
+  },
+  "statusnook": {
+    "volumes": [
+      {
+        "container_path": "/app/statusnook-data",
+        "name": "statusnook-data"
+      }
+    ]
+  },
+  "stirling-pdf": {
+    "volumes": [
+      {
+        "container_path": "/configs",
+        "name": "stirling-configs"
+      },
+      {
+        "container_path": "/usr/share/tesseract-ocr/5/tessdata",
+        "name": "stirling-training-data"
+      }
+    ]
+  },
+  "strapi": {
+    "volumes": [
+      {
+        "container_path": "/opt/app/config",
+        "name": "strapi-config"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "strapi-postgresql-data"
+      },
+      {
+        "container_path": "/opt/app/src",
+        "name": "strapi-src"
+      },
+      {
+        "container_path": "/opt/app/public/uploads",
+        "name": "strapi-uploads"
+      }
+    ]
+  },
+  "supabase": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/root/.cache/deno",
+        "name": "deno-cache"
+      },
+      {
+        "container_path": "/etc/postgresql-custom",
+        "name": "supabase-db-config"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "supabase-db-data"
+      }
+    ]
+  },
+  "superset-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "superset_postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "superset_redis_data"
+      }
+    ]
+  },
+  "supertokens-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "supertokens-mysql-data"
+      }
+    ]
+  },
+  "supertokens-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "supertokens-postgres-data"
+      }
+    ]
+  },
+  "sure": {
+    "volumes": [
+      {
+        "container_path": "/rails/storage",
+        "name": "sure-app-storage"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "sure-postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "sure-valkey"
+      }
+    ]
+  },
+  "swetrix": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "swetrix-events-data"
+      }
+    ]
+  },
+  "syncthing": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "syncthing_config"
+      },
+      {
+        "container_path": "/data1",
+        "name": "syncthing_data1"
+      },
+      {
+        "container_path": "/data2",
+        "name": "syncthing_data2"
+      }
+    ]
+  },
+  "tailscale-client": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/tailscale",
+        "name": "tailscale-client"
+      }
+    ]
+  },
+  "teable": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "teable_cache_data"
+      },
+      {
+        "container_path": "/app/.assets",
+        "name": "teable_data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "teable_db_data"
+      }
+    ]
+  },
+  "termix": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "termix-data"
+      }
+    ]
+  },
+  "terraria-server": {
+    "volumes": [
+      {
+        "container_path": "/root/.local/share/Terraria/Worlds",
+        "name": "terraria-server"
+      }
+    ]
+  },
+  "tolgee": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "tolgee-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "tolgee-postgresql-data"
+      }
+    ]
+  },
+  "trailbase": {
+    "volumes": [
+      {
+        "container_path": "/app/traildepot",
+        "name": "trailbase-data"
+      }
+    ]
+  },
+  "transmission": {
+    "volumes": [
+      {
+        "container_path": "/config",
+        "name": "transmission-config"
+      },
+      {
+        "container_path": "/downloads",
+        "name": "transmission-downloads"
+      },
+      {
+        "container_path": "/watch",
+        "name": "transmission-watch"
+      }
+    ]
+  },
+  "trigger": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/clickhouse",
+        "name": "clickhouse-data"
+      },
+      {
+        "container_path": "/var/log/clickhouse-server",
+        "name": "clickhouse-logs"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      },
+      {
+        "container_path": "/home/node/shared",
+        "name": "shared-data"
+      }
+    ]
+  },
+  "triliumnext": {
+    "volumes": [
+      {
+        "container_path": "/home/node/trilium-data",
+        "name": "triliumnext_data"
+      }
+    ]
+  },
+  "twenty": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "redis-data"
+      },
+      {
+        "container_path": "/app/packages/twenty-server/.local-storage",
+        "name": "twenty-local-storage"
+      }
+    ]
+  },
+  "typesense": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "typesense_data"
+      }
+    ]
+  },
+  "umami": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "unleash-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      }
+    ]
+  },
+  "uptime-kuma": {
+    "volumes": [
+      {
+        "container_path": "/app/data",
+        "name": "uptime-kuma-data"
+      }
+    ]
+  },
+  "uptime-kuma-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      },
+      {
+        "container_path": "/app/data",
+        "name": "uptime-kuma-data"
+      }
+    ]
+  },
+  "uptime-kuma-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      },
+      {
+        "container_path": "/app/data",
+        "name": "uptime-kuma-data"
+      }
+    ]
+  },
+  "usesend": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "usesend-postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "usesend-redis-data"
+      }
+    ]
+  },
+  "vault": {
+    "volumes": [
+      {
+        "container_path": "/vault/file",
+        "name": "vault-data"
+      }
+    ]
+  },
+  "vaultwarden": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "vaultwarden-data"
+      }
+    ]
+  },
+  "vikunja": {
+    "volumes": [
+      {
+        "container_path": "/app/vikunja",
+        "name": "vikunja-data"
+      },
+      {
+        "container_path": "/db",
+        "name": "vikunja-sqlite-data"
+      }
+    ]
+  },
+  "vikunja-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "vikunja-postgresql-data"
+      }
+    ]
+  },
+  "vvveb": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "vvveb-data"
+      }
+    ]
+  },
+  "vvveb-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "vvveb-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "vvveb-mariadb-data"
+      }
+    ]
+  },
+  "vvveb-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "vvveb-data"
+      },
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "vvveb-mysql-data"
+      }
+    ]
+  },
+  "wakapi": {
+    "volumes": [
+      {
+        "container_path": "/data",
+        "name": "wakapi-data"
+      },
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "wakapi-postgres-data"
+      }
+    ]
+  },
+  "weaviate": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/weaviate",
+        "name": "weaviate-data"
+      }
+    ]
+  },
+  "weblate": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "postgresql-data"
+      },
+      {
+        "container_path": "/app/cache",
+        "name": "weblate-cache"
+      },
+      {
+        "container_path": "/app/data",
+        "name": "weblate-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "weblate-redis-data"
+      }
+    ]
+  },
+  "wikijs": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "wikijs-postgresql-data"
+      }
+    ]
+  },
+  "windmill": {
+    "docker_socket": true,
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "db-data"
+      },
+      {
+        "container_path": "/root/.cache",
+        "name": "lsp-cache"
+      },
+      {
+        "container_path": "/tmp/windmill/cache",
+        "name": "worker-dependency-cache"
+      },
+      {
+        "container_path": "/tmp/windmill/logs",
+        "name": "worker-logs"
+      }
+    ]
+  },
+  "wings": {
+    "docker_socket": true,
+    "volumes": []
+  },
+  "wireguard-easy": {
+    "volumes": [
+      {
+        "container_path": "/etc/wireguard",
+        "name": "wg-easy"
+      }
+    ]
+  },
+  "wordpress-with-mariadb": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mariadb-data"
+      },
+      {
+        "container_path": "/var/www/html",
+        "name": "wordpress-files"
+      }
+    ]
+  },
+  "wordpress-with-mysql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/mysql",
+        "name": "mysql-data"
+      },
+      {
+        "container_path": "/var/www/html",
+        "name": "wordpress-files"
+      }
+    ]
+  },
+  "wordpress-without-database": {
+    "volumes": [
+      {
+        "container_path": "/var/www/html",
+        "name": "wordpress-files"
+      }
+    ]
+  },
+  "yamtrack": {
+    "volumes": [
+      {
+        "container_path": "/yamtrack/db",
+        "name": "yamtrack_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "yamtrack_redis_data"
+      }
+    ]
+  },
+  "yamtrack-with-postgresql": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "yamtrack_postgres_data"
+      },
+      {
+        "container_path": "/data",
+        "name": "yamtrack_redis_data"
+      }
+    ]
+  },
+  "zero": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql",
+        "name": "postgres-data"
+      },
+      {
+        "container_path": "/data",
+        "name": "zero-data"
+      }
+    ]
+  },
+  "zipline": {
+    "volumes": [
+      {
+        "container_path": "/var/lib/postgresql/data",
+        "name": "zipline-postgres-data"
+      },
+      {
+        "container_path": "/zipline/public",
+        "name": "zipline-public"
+      },
+      {
+        "container_path": "/zipline/uploads",
+        "name": "zipline-uploads"
+      }
+    ]
+  }
+}

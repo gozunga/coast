@@ -1,0 +1,95 @@
+#!/bin/bash
+#
+# Copyright 2026 Gozunga and Coast contributors
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
+
+# Address and uWSGI helpers for the Coast API.
+# These functions have no DevStack side effects.
+
+# Print one host address. Refuse a wildcard listener.
+# coast_api_listen_address [address]
+function coast_api_listen_address {
+    local address
+    if [[ $# -gt 0 ]]; then
+        address="$1"
+    else
+        address="${COAST_SERVICE_LISTEN_ADDRESS:-${HOST_IP:-127.0.0.1}}"
+    fi
+    case "$address" in
+        ''|0.0.0.0|::|'[::]'|'*')
+            echo "Coast API listen address must be one host address." >&2
+            return 1
+            ;;
+    esac
+    printf '%s\n' "$address"
+}
+
+# Print host:port for a uWSGI HTTP socket. Bracket a raw IPv6 address.
+# coast_api_http_socket address port
+function coast_api_http_socket {
+    local address host port
+    address=$(coast_api_listen_address "$1") || return 1
+    port="$2"
+    case "$port" in
+        ''|*[!0-9]*)
+            echo "Coast API port must be numeric." >&2
+            return 1
+            ;;
+    esac
+    if [[ "$address" == \[*\] ]]; then
+        host="$address"
+    elif [[ "$address" == *:* ]]; then
+        host="[$address]"
+    else
+        host="$address"
+    fi
+    printf '%s:%s\n' "$host" "$port"
+}
+
+# One catalog URL. Public, internal and admin all use this value.
+# coast_api_endpoint_url address port
+function coast_api_endpoint_url {
+    local socket
+    socket=$(coast_api_http_socket "$1" "$2") || return 1
+    printf 'http://%s\n' "$socket"
+}
+
+# Write a uWSGI ini that loads the coast-wsgi-api script.
+# coast_write_uwsgi_config conf script address port
+function coast_write_uwsgi_config {
+    local conf="$1"
+    local script="$2"
+    local socket workers
+    case "$script" in
+        */coast-wsgi-api|coast-wsgi-api) ;;
+        *)
+            echo "Coast API must use the coast-wsgi-api script." >&2
+            return 1
+            ;;
+    esac
+    socket=$(coast_api_http_socket "$3" "$4") || return 1
+    workers="${API_WORKERS:-1}"
+    cat >"$conf" <<EOF
+[uwsgi]
+wsgi-file = ${script}
+http-socket = ${socket}
+master = true
+die-on-term = true
+processes = ${workers}
+enable-threads = true
+lazy-apps = true
+thunder-lock = true
+buffer-size = 65535
+EOF
+}

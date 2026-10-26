@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Heartbeat writes set ``last_heartbeat_at`` and preserve
+    ``servers.updated_at``, which conductor server add and remove compare
+    with the revision accepted by the API. When a server operation does
+    not start, the conductor logs the operation, server ID and failed check.

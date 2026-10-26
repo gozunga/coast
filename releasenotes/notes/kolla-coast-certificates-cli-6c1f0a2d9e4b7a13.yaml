@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Add the ``kolla-ansible coast-certificates`` command as a
+    kolla-ansible CLI plugin in ``tools/kolla/cli``. Install it into the
+    kolla-ansible virtualenv. It runs Coast's certificate play, which calls
+    ``tools/gen-ca.sh`` unchanged; ``--check-expiry DAYS`` is read-only.
+    The Coast CA stays separate from the Kolla CA.

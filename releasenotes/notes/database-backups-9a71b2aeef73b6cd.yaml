@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Database backups require Barbican and object storage in the customer
+    project. The Coast service user needs Swift reseller-admin rights or
+    equivalent RGW cross-account permissions. A free account temporary URL
+    key slot is required; customer keys are preserved. Workers receive
+    temporary links and an in-memory AES key, never an OpenStack
+    credential.
+  - |
+    API 1.20 adds database backup policies, manual and scheduled backups,
+    authenticated dump downloads, and restore as a new template service or
+    overwrite after a required safety backup and typed name confirmation.
+    PostgreSQL, MySQL, MariaDB and MongoDB are supported. Scheduling is off
+    by default. Daily and weekly retention excludes manual and safety copies.

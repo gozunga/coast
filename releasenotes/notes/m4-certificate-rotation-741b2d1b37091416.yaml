@@ -1,0 +1,14 @@
+features:
+  - |
+    Coast rotates controller, worker and build agent serverAuth certificates
+    at 80 percent of their actual validity. The health-manager performs bounded
+    checks and the conductor verifies a fresh TLS connection before publishing
+    the new certificate serial and expiry. Set
+    ``[health_manager] cert_rotation_interval`` to control the check interval.
+security:
+  - |
+    Config drives include the existing server CA public certificate through
+    ``[agent] server_ca``. The management mTLS rotation endpoint cannot replace
+    CA trust or other credentials. Updates validate identity and key usage,
+    retain a private previous pair, and fail closed on an uncertain install.
+    Failed or interrupted attempts require operator recovery.

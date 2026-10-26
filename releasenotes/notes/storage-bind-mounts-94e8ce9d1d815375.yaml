@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    API 1.19 supports service-owned bind mounts and named Docker volumes
+    with explicit type, source, container path and read-only mode. Storage
+    create accepts the service and mount path in one request; PATCH edits
+    the source, target or mode, and DELETE accepts attached user mounts.
+    Service storage listings include immutable template mounts with null
+    IDs, including read-only socket binds. Apply changes with redeploy.
+    Bind folders are created on the dedicated worker when applied. Binds
+    consume no named-storage capacity quota and add no host-path denylist.

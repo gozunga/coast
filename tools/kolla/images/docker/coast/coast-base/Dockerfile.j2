@@ -1,0 +1,52 @@
+{#- Copyright 2026 Gozunga and Coast contributors
+    SPDX-License-Identifier: Apache-2.0
+    kolla-build overlay (Q141), modeled on docker/octavia/octavia-base.
+    COAST_KOLLA_PARENT lets build.sh pin an existing openstack-base image
+    whose tag differs from the Coast image tag; default is Kolla's own. -#}
+FROM {{ env.get('COAST_KOLLA_PARENT') or (namespace ~ '/' ~ image_prefix ~ 'openstack-base:' ~ tag) }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block coast_base_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+USER root
+ENV PATH=/var/lib/kolla/venv/bin:${PATH}
+ENV PBR_VERSION={{ env.get('COAST_PBR_VERSION', '0.1.0') }}
+
+# Development allocation verified not to clash on the DevStack AIO.
+RUN groupadd --gid 42499 coast \
+    && useradd -l -M --uid 42499 --gid coast --groups kolla \
+        --home-dir /var/lib/coast --shell /usr/sbin/nologin coast \
+    && install -d -o coast -g coast /etc/coast /var/lib/coast \
+    && install -d -m 0700 -o coast -g coast /etc/coast/certs \
+        /var/lib/coast/health-manager
+
+# Source comes from the [coast-base] section of kolla-build.conf
+# (build.sh: a git archive of committed HEAD under coast/).
+ADD coast-base-archive /coast-base-source
+COPY extend_start.sh /usr/local/bin/kolla_extend_start
+
+{% set coast_base_pip_packages = ['/coast-base-source/coast'] %}
+
+RUN {{ macros.install_pip(['-r /coast-base-source/coast/requirements.txt']) }} \
+    && python3 -m pip --no-cache-dir install --no-build-isolation \
+        -c /requirements/upper-constraints.txt \
+        {{ coast_base_pip_packages | customizable("pip_packages") | join(' ') }} \
+    && cp /coast-base-source/coast/etc/coast/api-paste.ini /etc/coast/api-paste.ini \
+    && chmod 644 /usr/local/bin/kolla_extend_start \
+    && rm -rf /coast-base-source \
+    && coast-api --help >/dev/null \
+    && coast-conductor --help >/dev/null \
+    && coast-health-manager --help >/dev/null \
+    && coast-console-proxy --help >/dev/null \
+    && coast-db-manage --help >/dev/null \
+    && coast-db-manage version >/dev/null \
+    && python -c "import pymysql" \
+    && test -s /etc/ssl/certs/ca-certificates.crt
+
+{{ macros.kolla_patch_sources() }}
+
+{% block coast_base_footer %}{% endblock %}

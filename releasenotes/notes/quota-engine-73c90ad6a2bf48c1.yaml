@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Add project quota reservation, commit and rollback using the existing
+    quota usage lock. Enforce configured and per-project limits for
+    environment, server, app, domain and volume creates and volume growth.
+    Add the v1 quota API for reading defaults and managing project limits.
+    Limit export concurrency and selected volume capacity using operator
+    configuration. Over-quota requests return HTTP 403.

@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    API microversion 1.13 adds read-only compose service container list,
+    detail and logs. Project readers can see each compose service key,
+    image, state, health, restart count, environment and observed
+    CPU/memory limits. Coast Secret-flagged values are masked; plain
+    variables remain text. No host configuration, paths, Docker IDs or
+    ownership labels are returned.
+security:
+  - |
+    The compose editor rejects reserved workload ownership labels. Worker
+    container reads check project and workload ownership before returning
+    selected fields.

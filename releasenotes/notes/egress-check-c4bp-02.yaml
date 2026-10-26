@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Guest internal health reports a bounded environment-route and DNS
+    check. Operators can set controller_worker.egress_check_url to enable
+    a verified HTTPS registry probe. The default is empty and skips HTTPS.
+    Any HTTP response, including authentication errors, proves egress.
+    Egress failures stop provisioning with the fixed fault
+    "no internet egress via stack router". Public API, DB, driver and
+    heartbeat schemas are unchanged.
+  - |
+    Before controller boot, the conductor verifies that the stack router
+    has an external gateway and the environment subnet has a gateway_ip.
+    Missing resources or gateways fail before Nova creation.

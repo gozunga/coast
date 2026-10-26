@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Deleting an app or service during provisioning, deployment or rollback
+    cancels the in-flight deployment in Coast and the engine before cleanup.

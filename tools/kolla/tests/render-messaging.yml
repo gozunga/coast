@@ -1,0 +1,88 @@
+---
+- name: Check shared Kolla transports and Octavia queue settings
+  vars:
+    item:
+      key: "{{ messaging_service }}"
+    database_enable_tls_internal: "{{ tls_enabled }}"
+    om_enable_rabbitmq_tls: "{{ tls_enabled }}"
+    rabbitmq_enable_tls: "{{ tls_enabled }}"
+    om_enable_rabbitmq_stream_fanout: "{{ tls_enabled }}"
+    conf: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast.conf.j2') }}"
+    expected_url: "rabbit://openstack:test-only-rpc-password@192.0.2.1:{{ 5671 if tls_enabled else 5672 }},openstack:test-only-rpc-password@192.0.2.2:{{ 5671 if tls_enabled else 5672 }},openstack:test-only-rpc-password@192.0.2.3:{{ 5671 if tls_enabled else 5672 }}//"
+    expected_rabbit: |
+      use_queue_manager = true
+      processname = {{ messaging_service }}
+      heartbeat_in_pthread = {{ messaging_service == 'coast-api' }}
+      ssl = {{ tls_enabled | lower }}
+      {% if tls_enabled %}
+      ssl_ca_file = /etc/coast/rabbit-ca.pem
+      {% endif %}
+      rabbit_quorum_queue = true
+      {% if tls_enabled %}
+      rabbit_stream_fanout = true
+      rabbit_qos_prefetch_count = 50
+      {% endif %}
+      rabbit_transient_quorum_queue = true
+  ansible.builtin.assert:
+    that:
+      - rpc_transport_url == expected_url
+      - notify_transport_url == expected_url
+      - "conf.split('[DEFAULT]\n')[1].split('\n')[0] == 'transport_url = ' ~ expected_url"
+      - "conf.split('[oslo_messaging_notifications]\n')[1].split('\n')[0] == 'transport_url = ' ~ expected_url"
+      - "conf.split('[oslo_messaging_rabbit]\n')[1].split('\n[service_auth]')[0] == expected_rabbit"
+      - "('driver = messagingv2' in conf) == tls_enabled"
+      - "('topics = notifications' in conf) == tls_enabled"
+      - "('driver = noop' in conf) == (not tls_enabled)"
+
+- name: Check removed dedicated broker inputs in role sources
+  ansible.builtin.assert:
+    that:
+      - "lookup('file', role_file) is not search('coast_' ~ 'rabbitmq_|coast_' ~ 'transport_url|service-rabbitmq')"
+  loop:
+    - ../ansible/roles/coast/defaults/main.yml
+    - ../ansible/roles/coast/tasks/register.yml
+    - ../ansible/roles/coast/tasks/validate.yml
+    - ../ansible/roles/coast/templates/coast.conf.j2
+  loop_control:
+    loop_var: role_file
+
+- name: Check notification transport remains independent of RPC
+  vars:
+    item:
+      key: "{{ messaging_service }}"
+    database_enable_tls_internal: "{{ tls_enabled }}"
+    om_enable_rabbitmq_tls: "{{ tls_enabled }}"
+    rabbitmq_enable_tls: "{{ tls_enabled }}"
+    om_notify_vhost: notification-test
+    conf: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast.conf.j2') }}"
+  ansible.builtin.assert:
+    that:
+      - notify_transport_url != rpc_transport_url
+      - "conf.split('[DEFAULT]\n')[1].split('\n')[0] == 'transport_url = ' ~ rpc_transport_url"
+      - "conf.split('[oslo_messaging_notifications]\n')[1].split('\n')[0] == 'transport_url = ' ~ notify_transport_url"
+
+- name: Check secret storage defaults and explicit override in every service
+  vars:
+    item:
+      key: "{{ messaging_service }}"
+    database_enable_tls_internal: "{{ tls_enabled }}"
+    om_enable_rabbitmq_tls: "{{ tls_enabled }}"
+    rabbitmq_enable_tls: "{{ tls_enabled }}"
+    om_enable_rabbitmq_stream_fanout: "{{ tls_enabled }}"
+    enable_barbican: "{{ tls_enabled }}"
+    conf: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast.conf.j2') }}"
+  block:
+    - name: Check enabled and disabled defaults
+      ansible.builtin.assert:
+        that:
+          - "('backend = barbican' in conf) == (enable_barbican | bool)"
+          - "('backend = disabled' in conf) == (not (enable_barbican | bool))"
+          - "'max_secret_bytes = 20000' in conf"
+    - name: Check operator overrides
+      vars:
+        coast_secrets_backend: disabled
+        coast_max_secret_bytes: 65536
+      ansible.builtin.assert:
+        that:
+          - "'backend = disabled' in conf"
+          - "'max_secret_bytes = 65536' in conf"

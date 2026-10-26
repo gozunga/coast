@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Server failover preserves the moved Cinder volumes. Replacement
+    cloud-init uses ``partition: auto`` and keeps an existing ext4 file
+    system with the matching label.

@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Git-source and other Coolify applications receive Coast runtime
+    environment variables. Every deploy and rollback syncs current Coast
+    variables before engine work starts. A sync failure fails the deployment
+    with a fault that contains no values. Drift repair removes only obsolete
+    Coast-managed variables and preserves engine defaults. Application
+    variables support build-time and runtime exposure flags.

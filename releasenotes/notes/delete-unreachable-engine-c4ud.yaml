@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Whole-stack deletion continues cloud teardown when the engine is
+    unreachable, including an expired agent certificate. A durable event
+    records skipped engine cleanup. Authentication and other engine errors
+    still block deletion. Export, storage safety checks, quota completion,
+    and delete notifications retain their existing requirements.

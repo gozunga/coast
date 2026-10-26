@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Stack provisioning uses ordered Taskflow steps and reverse-order
+    cleanup. Controllers use isolated management and stack ports,
+    persistent Cinder volumes, config-drive identity, mTLS agent health and
+    bootstrap, and Barbican engine credentials.
+  - |
+    Configure control-role VM plans, the image tag and owner, Coast server
+    and client CA paths, the conductor client certificate and key,
+    health-manager management addresses, and the control-side management
+    namespace before provisioning.
+issues:
+  - |
+    A process crash or failed cleanup requires operator inspection. A
+    consumed bootstrap is never retried on the same guest.
+security:
+  - |
+    Nova config-drive and Barbican SDK HTTP payload logging is suppressed
+    even with debug enabled. Production engine requests use management
+    namespace sockets and the controller agent mTLS endpoint.

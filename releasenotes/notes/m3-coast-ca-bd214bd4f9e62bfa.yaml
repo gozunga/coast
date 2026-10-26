@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Operators can create the Coast CA with ``tools/gen-ca.sh``. The
+    script writes a server CA, a client CA, and the controller client
+    certificate. ``--check-expiry <days>`` is read-only. It prints one
+    ``OK`` or ``EXPIRING`` line per certificate and exits nonzero when
+    a certificate expires within that many days. ``coast.common.tls``
+    issues leaf certificates from the configured CA. The leaf lifetime
+    is ``[certificates] cert_validity_time``, in seconds.

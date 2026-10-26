@@ -1,0 +1,9 @@
+features:
+  - |
+    Runtime log capture retries empty output and driver errors during
+    deployment settling, service reconciliation, and log requests. Captured
+    output is appended and deduplicated under a deployment row lock, capped
+    at 64 KB. Service logs return the newest stored deployment output with
+    captured_at when live output is unavailable. The refresh message is
+    used only when nothing has been captured and explains that background
+    capture continues.

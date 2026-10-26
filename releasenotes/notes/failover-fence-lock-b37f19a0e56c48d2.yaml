@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Failover and engine upgrades lock the old Nova server before moving its
+    ports or volumes, preventing tenant restarts during replacement. The
+    lock reason includes the Coast failover receipt on Nova API 2.73 and
+    later; older Nova uses a plain lock. Lock failures prevent resource
+    moves. Safe rollback unlocks before restarting the original server;
+    successful retirement unlocks before deletion. An uncertain replacement
+    leaves the original server stopped and locked for operator recovery.

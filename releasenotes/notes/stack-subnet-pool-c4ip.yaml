@@ -1,0 +1,7 @@
+features:
+  - |
+    Stack subnets reserve address offsets 2 through 9 for Coast fixed
+    addresses. Automatic Neutron allocations start at offset 10, so
+    DHCP/metadata ports cannot take the controller address at offset 2.
+    Subnets smaller than /28 are rejected before network creation.
+    Existing subnets with a different allocation pool are not adopted.

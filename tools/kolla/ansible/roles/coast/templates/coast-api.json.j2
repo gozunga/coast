@@ -1,0 +1,46 @@
+{
+    "command": "uwsgi /etc/coast/coast-api-uwsgi.ini",
+    "config_files": [
+        {
+            "source": "/var/lib/kolla/config_files/coast-api-uwsgi.ini",
+            "dest": "/etc/coast/coast-api-uwsgi.ini",
+            "owner": "coast",
+            "perm": "0600"
+        },
+{% if coast_enable_tls_backend | bool %}
+{% for kind in ['cert', 'key'] %}
+        {
+            "source": "/var/lib/kolla/config_files/coast-{{ kind }}.pem",
+            "dest": "/etc/coast/certs/coast-{{ kind }}.pem",
+            "owner": "coast",
+            "perm": "0600"
+        },
+{% endfor %}
+{% endif %}
+        {
+            "source": "/var/lib/kolla/config_files/coast.conf",
+            "dest": "/etc/coast/coast.conf",
+            "owner": "coast",
+            "perm": "0600"
+        },
+        {
+            "source": "{{ coast_openstack_ca_source }}",
+            "dest": "{{ coast_openstack_cafile }}",
+            "owner": "coast",
+            "perm": "0644"
+        },
+        {
+            "source": "/var/lib/kolla/config_files/api-paste.ini",
+            "dest": "/etc/coast/api-paste.ini",
+            "owner": "coast",
+            "perm": "0600"
+        }
+    ],
+    "permissions": [
+        {
+            "path": "/var/log/kolla/coast",
+            "owner": "coast:coast",
+            "recurse": true
+        }
+    ]
+}

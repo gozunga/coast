@@ -1,0 +1,24 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+umask 022
+
+# shellcheck disable=SC1091
+. /etc/coast/build.env
+
+mkdir -p /etc/coast /data
+printf '%s\n' worker > /etc/coast/role
+chmod 0644 /etc/coast/role
+
+cat > /etc/coast/image-release <<EOF
+role=worker
+distro=${COAST_DISTRO:-ubuntu}
+release=${COAST_RELEASE:-noble}
+coolify_version=${COAST_COOLIFY_VERSION:-}
+install=none
+autoupdate=false
+EOF
+chmod 0644 /etc/coast/image-release

@@ -1,0 +1,13 @@
+---
+security:
+  - |
+    Environment security groups exclude configured control-plane CIDRs,
+    management subnets and the IPv4 metadata address from egress. Internet
+    egress rules reference a per-stack Neutron address group that holds the
+    allowed prefixes, so the rule count stays small. The
+    control_plane_cidrs option sets the exclusions; operators must
+    configure every control-plane range, and Neutron must provide the
+    address-group extensions. Existing stacks converge through a separate,
+    time-bounded repair sweep (network_repair_interval,
+    network_repair_timeout). Management heartbeat and agent mTLS rules are
+    unchanged.

@@ -1,0 +1,4 @@
+recursive-include coast/drivers/coolify/templates catalog-*.json
+recursive-include coast/drivers/coolify/templates volumes-*.json
+recursive-include coast/db/migration/alembic_migrations *.mako
+recursive-include coast/drivers/coolify/templates compose-*.json

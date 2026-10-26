@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    ``GET /v1/plans`` returns the name-sorted operator plan catalog with
+    name, kind, roles and nullable description, without pagination. Empty
+    configuration advertises no plans. Nova flavor data is exposed only at
+    API microversion 1.1. Stack create validates controller, worker and
+    optional build plans against their kind and role at every microversion
+    before reserving quota or creating records. Invalid selections return a
+    specific 400.

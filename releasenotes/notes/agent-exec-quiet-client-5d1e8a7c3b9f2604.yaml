@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Shell sessions accept idle client connections subject to the configured
+    idle and duration limits.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Image builds support a normal user with passwordless sudo. The
+    coast-base, coast-agent and coast-controller root.d hooks use sudo
+    for writes to the root-owned diskimage-builder target filesystem.

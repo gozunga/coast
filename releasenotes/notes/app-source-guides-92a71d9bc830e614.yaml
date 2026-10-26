@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added user and CLI guides for private Git repositories with generated
+    or uploaded read-only deploy keys, repository-free Dockerfiles and
+    pasted Compose services. The guides cover key rotation, source editing,
+    separate deployment, ports, domains and workloads on your own workers.

@@ -1,0 +1,200 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+umask 022
+
+mkdir -p /etc/coast /etc/cloud/cloud.cfg.d /etc/ssh/sshd_config.d \
+    /etc/systemd/system/docker.service.d \
+    /etc/systemd/system/systemd-networkd-wait-online.service.d \
+    /etc/systemd/system/multi-user.target.wants \
+    /usr/local/sbin \
+    /data /var/lib/docker
+chmod 0755 /data
+chmod 0711 /var/lib/docker
+
+printf '%s\n' /data /var/lib/docker > /etc/coast/volume-mounts
+chmod 0644 /etc/coast/volume-mounts
+
+cat > /etc/cloud/cloud.cfg.d/90-coast.cfg <<'EOF'
+# Coast guests boot from the config drive only.
+datasource_list: [ ConfigDrive, None ]
+datasource:
+  ConfigDrive:
+    dsmode: local
+disable_ec2_metadata: true
+disable_root: true
+ssh_pwauth: false
+lock_passwd: true
+users: []
+EOF
+chmod 0644 /etc/cloud/cloud.cfg.d/90-coast.cfg
+
+# Sort after netplan's 10-netplan.conf, including the config-drive first boot.
+# The agent egress gate owns the bounded environment DHCP/default-route wait.
+cat > /etc/systemd/system/systemd-networkd-wait-online.service.d/90-coast.conf <<'EOF'
+[Service]
+ExecStart=
+ExecStart=/lib/systemd/systemd-networkd-wait-online --any -o routable
+TimeoutStartSec=30s
+EOF
+chmod 0644 /etc/systemd/system/systemd-networkd-wait-online.service.d/90-coast.conf
+
+if [ -f /etc/cloud/cloud.cfg ]; then
+    sed -i \
+        -e 's/^disable_root:.*/disable_root: true/' \
+        -e 's/^ssh_pwauth:.*/ssh_pwauth: false/' \
+        /etc/cloud/cloud.cfg
+fi
+
+passwd -l root
+if id ubuntu >/dev/null 2>&1; then
+    passwd -l ubuntu
+fi
+
+cat > /etc/ssh/sshd_config.d/90-coast.conf <<'EOF'
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin prohibit-password
+PermitEmptyPasswords no
+PubkeyAuthentication yes
+X11Forwarding no
+AllowTcpForwarding no
+UseDNS no
+ClientAliveInterval 300
+ClientAliveCountMax 2
+EOF
+chmod 0644 /etc/ssh/sshd_config.d/90-coast.conf
+
+cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
+chmod 0644 /etc/apt/apt.conf.d/20auto-upgrades
+
+cat > /etc/apt/apt.conf.d/52coast-unattended-upgrades <<'EOF'
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+EOF
+chmod 0644 /etc/apt/apt.conf.d/52coast-unattended-upgrades
+
+cat > /etc/systemd/system/docker.service.d/coast-volumes.conf <<'EOF'
+[Unit]
+# purpose=data is /data. purpose=docker is /var/lib/docker.
+# Mount both before dockerd starts.
+ConditionPathIsMountPoint=/data
+ConditionPathIsMountPoint=/var/lib/docker
+Requires=coast-volume-mounts.service
+After=local-fs.target cloud-final.service coast-volume-mounts.service
+
+[Install]
+WantedBy=
+WantedBy=cloud-init.target
+EOF
+chmod 0644 /etc/systemd/system/docker.service.d/coast-volumes.conf
+
+# Keep all Docker image and container state on the purpose=docker volume.
+# Docker 29 defaults to the containerd image store under /var/lib/containerd
+# on the root disk. A failover replacement then sees retained containers
+# whose layers are gone, and Compose cannot start or remove them.
+mkdir -p /etc/docker
+cat > /etc/docker/daemon.json <<'EOF'
+{"features": {"containerd-snapshotter": false}, "storage-driver": "overlay2"}
+EOF
+chmod 0644 /etc/docker/daemon.json
+
+# cloud-init writes the fstab mounts. This oneshot then blocks dockerd.
+mkdir -p /usr/local/sbin
+cat > /usr/local/sbin/coast-wait-mounts <<'EOF'
+#!/bin/bash
+set -eu
+list=/etc/coast/volume-mounts
+limit=240
+n=0
+while [ "$n" -lt "$limit" ]; do
+    pending=0
+    while IFS= read -r path; do
+        if [ -z "$path" ]; then
+            continue
+        fi
+        if ! mountpoint -q "$path"; then
+            pending=1
+        fi
+    done < "$list"
+    if [ "$pending" -eq 0 ]; then
+        exit 0
+    fi
+    n=$((n + 1))
+    sleep 1
+done
+echo "coast: Cinder volume is not mounted" >&2
+exit 1
+EOF
+chmod 0755 /usr/local/sbin/coast-wait-mounts
+
+cat > /etc/systemd/system/coast-volume-mounts.service <<'EOF'
+[Unit]
+Description=Wait until Coast Cinder volumes are mounted
+DefaultDependencies=no
+After=cloud-final.service
+Before=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/coast-wait-mounts
+TimeoutStartSec=300
+
+[Install]
+WantedBy=cloud-init.target
+EOF
+chmod 0644 /etc/systemd/system/coast-volume-mounts.service
+
+# docker.service Requires=docker.socket and starts dockerd with -H fd://.
+# A mask fails that requirement, so Docker and the agent never start.
+# DefaultDependencies=no drops Before=sockets.target. That edge cycles
+# with After=coast-volume-mounts.service (systemd.socket(5)).
+mkdir -p /etc/systemd/system/docker.socket.d
+cat > /etc/systemd/system/docker.socket.d/coast-volumes.conf <<'EOF'
+[Unit]
+DefaultDependencies=no
+Requires=coast-volume-mounts.service
+After=coast-volume-mounts.service
+EOF
+chmod 0644 /etc/systemd/system/docker.socket.d/coast-volumes.conf
+
+# The package starts the socket from sockets.target, before the mounts.
+# Do not mask the unit. docker.service can still require it.
+rm -f /etc/systemd/system/sockets.target.wants/docker.socket \
+    /lib/systemd/system/sockets.target.wants/docker.socket \
+    /usr/lib/systemd/system/sockets.target.wants/docker.socket
+
+enable_unit() {
+    unit=$1
+    target=${2:-multi-user.target}
+    wants=/etc/systemd/system/${target}.wants
+    if [ "$target" = cloud-init.target ]; then
+        rm -f "/etc/systemd/system/multi-user.target.wants/${unit}"
+    fi
+    mkdir -p "$wants"
+    if [ -e "/lib/systemd/system/${unit}" ]; then
+        ln -sfn "/lib/systemd/system/${unit}" "${wants}/${unit}"
+        return 0
+    fi
+    if [ -e "/usr/lib/systemd/system/${unit}" ]; then
+        ln -sfn "/usr/lib/systemd/system/${unit}" "${wants}/${unit}"
+        return 0
+    fi
+    if [ -e "/etc/systemd/system/${unit}" ]; then
+        ln -sfn "/etc/systemd/system/${unit}" "${wants}/${unit}"
+        return 0
+    fi
+    echo "coast-base: unit ${unit} is missing" >&2
+    return 1
+}
+
+enable_unit coast-volume-mounts.service cloud-init.target
+enable_unit docker.service cloud-init.target
+enable_unit chrony.service

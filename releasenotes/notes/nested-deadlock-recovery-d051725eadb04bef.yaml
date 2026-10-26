@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Nested database and quota writes now defer deadlock retries to the owning
+    transaction. The conductor also retries the whole operation when a deadlock
+    is masked by a database error or a missing MySQL savepoint. Concurrent
+    database public-access changes can recover from this contention instead of
+    leaving a database in ERROR after an inner write retries in an invalid
+    transaction.

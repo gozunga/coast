@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The Coolify driver uses the engine public API. Direct verified HTTPS
+    access is available for development only. Full deployment commit SHAs
+    are reported through DriverResult.extra and the optional
+    ObservedStatus.resolved_ref field for conductor persistence. Image tags
+    are not digests.
+issues:
+  - |
+    The driver uses the documented engine API. Hidden engine variables
+    suppress returned log content to prevent secret disclosure.

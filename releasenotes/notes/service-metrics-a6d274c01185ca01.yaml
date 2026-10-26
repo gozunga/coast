@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Configure worker sampling with ``[agent] metrics_interval`` and
+    retention with ``[metrics]`` options. The heartbeat path carries
+    samples.
+  - |
+    API 1.21 adds GET /v1/services/{service_id}/metrics with per-container
+    CPU and memory history. Workers send authenticated samples every 30
+    seconds. The health manager keeps 30-second detail for 24 hours,
+    five-minute averages to seven days and hourly averages to 30 days.
+    Project readers can read their services; administrators can read any.

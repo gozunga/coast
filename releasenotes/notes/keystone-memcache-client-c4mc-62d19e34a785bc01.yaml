@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The service includes the python-memcached client required when
+    ``[keystone_authtoken] memcached_servers`` is configured. Operators
+    provide the memcached daemon separately.

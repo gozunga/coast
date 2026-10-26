@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Coast owns the default service hostname. ``[domains] default_suffix``
+    defaults to ``sslip.io``. When a worker floating IP is valid, the
+    hostname embeds that address with dashes. The value is stored as
+    ``default_domain`` and returned as ``default_url``. Create and each
+    deploy set it explicitly. ``coast-manage dns refresh-default-domains``
+    updates it without a redeploy. ``--service`` and ``--dry-run`` limit or
+    preview that update.
+  - |
+    ``[domains] skip_verification`` applies a custom domain without a DNS
+    check. The verify action checks the TXT record during the request and
+    returns the updated domain. Microversion 1.2 accepts per-domain
+    ``tls`` of ``letsencrypt`` or ``none``.
+fixes:
+  - |
+    ``pending_changes`` compares deployment-affecting fields with the
+    frozen spec when that spec has ``ports`` and ``source``. Name and
+    description do not set the flag. An idle known service pushes those
+    fields immediately.

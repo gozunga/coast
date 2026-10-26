@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Project members can list, create, read, extend, and snapshot volumes on
+    a stack through ``/v1/stacks/{stack_id}/volumes``. Project managers can
+    delete data volumes. Create accepts only purpose=data. Coast-managed
+    docker, scratch, and controller volumes cannot be extended or deleted
+    through the API. Snapshot is limited to data and docker volumes. Admins
+    who pass coast:volume:get_detail can read cinder_volume_id.

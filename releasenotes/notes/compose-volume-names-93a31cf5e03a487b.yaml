@@ -1,0 +1,4 @@
+fixes:
+  - |
+    Reject invalid top-level Compose volume names before saving or deploying
+    the document.

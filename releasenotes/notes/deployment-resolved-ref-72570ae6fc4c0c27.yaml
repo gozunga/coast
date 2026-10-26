@@ -1,0 +1,5 @@
+features:
+  - |
+    Deployments expose a read-only ``resolved_ref`` with the exact commit
+    SHA or image digest used, when reported by the driver. Rollback uses this
+    reference when available and otherwise uses the original source reference.

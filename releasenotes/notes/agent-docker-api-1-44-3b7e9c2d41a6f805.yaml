@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The guest agent uses the Docker Engine API for shell sessions and logs
+    the error class when a session fails.

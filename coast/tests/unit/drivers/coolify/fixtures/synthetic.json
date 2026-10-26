@@ -1,0 +1,83 @@
+{
+  "projects": [
+    {
+      "uuid": "project-uuid",
+      "name": "coast-env"
+    }
+  ],
+  "environment_created": {
+    "uuid": "production-uuid"
+  },
+  "keys": [
+    {
+      "uuid": "key-uuid",
+      "name": "coast-env",
+      "private_key": "***"
+    }
+  ],
+  "key_created": {
+    "uuid": "key-uuid"
+  },
+  "server_created": {
+    "uuid": "server-uuid"
+  },
+  "envs": [
+    {
+      "uuid": "old-env",
+      "key": "OLD",
+      "value": "old-value",
+      "is_buildtime": false,
+      "is_runtime": true,
+      "is_shown_once": false
+    }
+  ],
+  "mounts": {
+    "persistent_storages": [
+      {
+        "uuid": "persistent-old",
+        "name": "old",
+        "mount_path": "/old"
+      }
+    ],
+    "file_storages": [
+      {
+        "uuid": "file-keep",
+        "fs_path": "/data/app",
+        "mount_path": "/data",
+        "is_directory": true
+      },
+      {
+        "uuid": "file-old",
+        "fs_path": "/data/old",
+        "mount_path": "/old",
+        "is_directory": true
+      }
+    ]
+  },
+  "deployment": {
+    "deployment_uuid": "deployment-uuid",
+    "status": "finished",
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "docker_registry_image_tag": "v1",
+    "logs": "[{\"timestamp\": \"2026-10-10T01:00:00Z\", \"output\": \"Build complete\", \"type\": \"stdout\"}, {\"timestamp\": \"2026-10-10T01:00:01Z\", \"output\": \"Deploy complete\", \"type\": \"stdout\"}]"
+  },
+  "queued": {
+    "deployment_uuid": "deployment-uuid",
+    "status": "queued",
+    "commit": "HEAD",
+    "logs": "[]"
+  },
+  "error": {
+    "message": "password=response-secret token=engine-secret"
+  },
+  "adopted_server": {
+    "uuid": "adopted-server-uuid",
+    "name": "existing-worker",
+    "ip": "192.0.2.40",
+    "settings": {
+      "is_reachable": true,
+      "is_usable": true,
+      "server_role": "both"
+    }
+  }
+}

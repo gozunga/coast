@@ -1,0 +1,7 @@
+features:
+  - |
+    The conductor logs the last agent health failure class at INFO,
+    at most once per minute, with elapsed seconds and the management
+    address. The health deadline error includes the last failure class.
+    These diagnostics omit response bodies, exception messages, and
+    certificate material.

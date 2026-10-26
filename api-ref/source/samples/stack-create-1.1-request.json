@@ -1,0 +1,17 @@
+{
+  "stack": {
+    "name": "example-stack",
+    "plan": "controller-plan",
+    "image": "published-controller-image",
+    "workers": [
+      {
+        "kind": "vm",
+        "plan": "worker-plan",
+        "image": "published-worker-image"
+      }
+    ],
+    "build_server": true,
+    "build_server_plan": "build-plan",
+    "build_server_image": "published-build-image"
+  }
+}

@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    For a service with ``health_check`` set to ``http``, the conductor
+    checks that its default URL answers below HTTP 500 at the worker
+    floating IP before a started, restarted or deployed service becomes
+    ``ACTIVE`` (``[conductor] http_check``, default on). Services with
+    ``health_check`` set to ``none`` skip this check. ``none`` is the default,
+    except that a service created from a template whose catalog entry
+    supplies an HTTP port defaults to ``http``.
+    Start and restart wait for observed engine readiness.

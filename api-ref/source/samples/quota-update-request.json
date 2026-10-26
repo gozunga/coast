@@ -1,0 +1,6 @@
+{
+    "quota": {
+        "apps": 20,
+        "volume_gb": null
+    }
+}

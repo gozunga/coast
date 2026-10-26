@@ -1,0 +1,44 @@
+---
+# Never distribute the client CA signing key.
+- name: Copy only the required runtime certificate material
+  become: true
+  ansible.builtin.copy:
+    src: "{{ coast_certificates_dir }}/{{ item.1 }}"
+    dest: "{{ coast_config_dir }}/{{ item.0 }}/{{ item.1 }}"
+    mode: "0600"
+  loop: "{{ ['coast-conductor'] | product([
+    'coast_server_ca.cert.pem', 'coast_server_ca.key.pem',
+    'coast_client_ca.cert.pem', 'coast_client.cert-and-key.pem']) | list }}"
+  when: inventory_hostname in groups['coast-conductor']
+  no_log: true
+  notify: Restart coast-conductor container
+
+# The health manager checks agent certificate lifetimes over mTLS, so it
+# needs the client credential and the server CA certificate, never a CA key.
+- name: Copy health manager agent mTLS material
+  become: true
+  ansible.builtin.copy:
+    src: "{{ coast_certificates_dir }}/{{ item.1 }}"
+    dest: "{{ coast_config_dir }}/{{ item.0 }}/{{ item.1 }}"
+    mode: "0600"
+  loop: "{{ ['coast-health-manager'] | product([
+    'coast_server_ca.cert.pem', 'coast_client.cert-and-key.pem']) | list }}"
+  when:
+    - coast_enable_health_manager | bool
+    - inventory_hostname in groups['coast-health-manager']
+  no_log: true
+  notify: Restart coast-health-manager container
+
+# The shell listener opens agent exec streams. It needs the client
+# credential and the server CA certificate, never a CA key.
+- name: Copy console listener agent mTLS material
+  become: true
+  ansible.builtin.copy:
+    src: "{{ coast_certificates_dir }}/{{ item.1 }}"
+    dest: "{{ coast_config_dir }}/{{ item.0 }}/{{ item.1 }}"
+    mode: "0600"
+  loop: "{{ ['coast-console-proxy'] | product([
+    'coast_server_ca.cert.pem', 'coast_client.cert-and-key.pem']) | list }}"
+  when: inventory_hostname in groups['coast-console-proxy']
+  no_log: true
+  notify: Restart coast-console-proxy container

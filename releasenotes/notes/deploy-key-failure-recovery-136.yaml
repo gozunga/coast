@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Git app creation now persists the default nixpacks build pack when omitted.
+    Failed deploy-key replacement releases the app operation claim and returns
+    a safe conflict response while durable recovery cleans up. Apps without
+    an engine application reject replacement before creating a secret.

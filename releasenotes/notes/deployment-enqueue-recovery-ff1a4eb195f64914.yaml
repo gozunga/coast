@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Adopted-engine deployment and rollback requests persist enqueue
+    checkpoints and engine references before polling. Startup and periodic
+    recovery use the existing deployment-status driver method. Set
+    ``[conductor] deploy_reconcile_interval`` to control the sweep interval.
+  - |
+    An unknown enqueue outcome is never submitted again. Coast records a
+    sanitized failure, releases its task locks, and requires an operator
+    check of the engine. Recovery waits for ``deploy_timeout`` before it
+    fails an enqueue checkpoint without a reference after a conductor crash.
+    Initial engine-app creation accounts for app quota independently of the
+    deployment result. No exactly-once enqueue guarantee is made.

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The controller agent passes whole-second ``Retry-After`` headers on
+    HTTP 429. Without that header, the client holds its last retry until
+    just before the ``[coolify] rate_limit_timeout`` budget ends. No retry,
+    including one after a connection error, starts after the budget.

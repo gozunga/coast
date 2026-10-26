@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Template list requests cache raw catalogs in each API worker,
+    keyed by driver and engine version. The thread-safe in-memory cache
+    uses ``[templates] cache_ttl`` (3600 seconds by default; 0 disables
+    caching). Policy checks run on every request.
+    List responses include an ETag for the visible list and return HTTP
+    304 with no body for a matching ``If-None-Match`` header.

@@ -1,0 +1,19 @@
+---
+features:
+  - |
+    Stack deletion refuses with HTTP 409 naming remaining app groups,
+    including for administrators. Delete their contents and then the groups
+    first.
+  - |
+    Failed stack teardown logs the masked exception message and traceback,
+    records the existing fault for tenant stack reads and releases the task.
+    Service, environment and app group cleanup accepts an ERROR stack so
+    users can finish cleanup and retry stack deletion.
+  - |
+    Stack teardown waits for Nova server deletion before removing their
+    Neutron ports, preventing attached-port cleanup failures.
+  - |
+    Tenant stack faults and deletion failure events use generic engine
+    and routing wording without em dashes. Masked original diagnostics and
+    tracebacks remain in operator logs; the admin stack detail policy
+    retains the masked diagnostic fault.

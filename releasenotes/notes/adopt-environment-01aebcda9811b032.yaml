@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Operators can adopt an existing app engine server with
+    ``coast-manage adopt-stack``. The command records project ownership
+    and an engine token secret reference, reserves quota, and returns
+    the endpoint mapping for operator configuration.

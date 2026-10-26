@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Restart the Coast API and conductor after adding Designate to a cloud
+    where Coast is running. Until then, Coast reports DNS as not available.
+fixes:
+  - |
+    Unexpected DNS API failures log the exception class and request ID only.

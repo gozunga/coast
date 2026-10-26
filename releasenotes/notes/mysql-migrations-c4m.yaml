@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Coast supports initializing an empty MySQL or MariaDB database.
+    Migration command failures log the cause and traceback with passwords
+    masked and connection URLs removed.

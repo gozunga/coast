@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Engine API tokens rotate with crash-safe two-phase checkpoints.
+    Configure ``[secrets] engine_token_rotation_days`` (default 30; 0
+    disables) and ``rotation_max_concurrent`` (default 2), or use
+    ``coast-manage rotate-engine-token <stack>`` to rotate or retry
+    explicitly.
+fixes:
+  - |
+    Keep the previous engine token working until its replacement is stored and
+    checkpointed. Interrupted rotations resume without losing engine access.
+security:
+  - |
+    Engine root credentials and application encryption keys remain on the
+    controller data volume and in its volume snapshots.

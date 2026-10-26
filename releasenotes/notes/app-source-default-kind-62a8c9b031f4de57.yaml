@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    API microversion 1.28 defaults new image and Git workloads (including
+    Dockerfile and compose-from-repository sources) to ``kind=app`` when
+    kind is omitted. They appear in app-filtered service listings.
+    One-click templates still default to ``kind=service``. Explicit kind
+    takes precedence. Earlier microversions and existing stored resources
+    retain their previous behavior.

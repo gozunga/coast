@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    API microversion 1.8 adds GET /v1/stacks/{stack_id}/events for the
+    stack Activity timeline. Events include safe infrastructure detail,
+    newest-first marker paging and stack/server filtering.

@@ -1,0 +1,11 @@
+{
+    "quota": {
+        "environments": 1,
+        "servers": 2,
+        "baremetal_servers": 0,
+        "build_servers": 1,
+        "apps": 20,
+        "domains": 20,
+        "volume_gb": 200
+    }
+}

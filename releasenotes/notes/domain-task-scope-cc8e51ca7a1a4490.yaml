@@ -1,0 +1,20 @@
+features:
+  - |
+    Periodic domain DNS, routing and TLS checks and service engine comparisons
+    perform network reads before claiming the service task. Changed observations
+    are revalidated before state or routing writes.
+  - |
+    Storage reconciliation observes and prepares changes before claiming
+    the app task, including the real engine storage read path. Unchanged
+    storage performs no engine reads while the task is held. DNS ensures
+    compensate stale or partial writes after concurrent domain or app
+    deletion so delayed creates do not leave orphaned records.
+  - |
+    Preserve valid managed DNS records when unrelated operations change the
+    service during a DNS check. Late writes for deleted or superseded DNS
+    links are still removed. Runtime log capture and its retries also run
+    before claiming the service task, allowing domain removal during reads.
+  - |
+    API 1.24 adds read-only service task_owner and task_started_at fields.
+    Busy responses identify known operations and their UTC start time;
+    DEBUG logs record task acquisition and release.

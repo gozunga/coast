@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Coast provides Kolla installation and user quickstart guides, a guest
+    networking diagram and an environment-driven CLI walkthrough with bounded
+    waits and stack cleanup on exit.

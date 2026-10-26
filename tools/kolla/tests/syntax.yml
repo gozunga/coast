@@ -1,0 +1,41 @@
+---
+# Syntax only: use real Kolla roles and plugins, never execute this play.
+- name: Check Coast role and every supported action
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check action dispatch
+      ansible.builtin.import_role:
+        name: coast
+    - name: Check precheck
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: precheck
+    - name: Check deploy
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: deploy
+    - name: Check reconfigure
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: reconfigure
+    - name: Check upgrade
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: upgrade
+    - name: Check stop
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: stop
+    - name: Check management interface
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: hm-interface
+    - name: Check management application tasks
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: hm-interface-apply
+    - name: Check loadbalancer configuration
+      ansible.builtin.import_role:
+        name: coast
+        tasks_from: loadbalancer

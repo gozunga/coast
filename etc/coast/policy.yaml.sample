@@ -1,0 +1,628 @@
+# Check the project reader persona.
+# Intended scope(s): project
+#"PROJECT_READER": "role:reader and project_id:%(project_id)s"
+
+# Check the project member persona.
+# Intended scope(s): project
+#"PROJECT_MEMBER": "role:member and project_id:%(project_id)s"
+
+# Check the project manager persona.
+# Intended scope(s): project
+#"PROJECT_MANAGER": "role:manager and project_id:%(project_id)s"
+
+# Check the admin persona.
+# Intended scope(s): project
+#"ADMIN": "role:admin"
+
+# Limited agent credential. No Coast API rule uses this check.
+# Intended scope(s): project
+#"AGENT": "role:coast_agent"
+
+# Check the project reader or admin persona.
+# Intended scope(s): project
+#"PROJECT_READER_OR_ADMIN": "rule:PROJECT_READER or rule:ADMIN"
+
+# Check the project member or admin persona.
+# Intended scope(s): project
+#"PROJECT_MEMBER_OR_ADMIN": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Check the project manager or admin persona.
+# Intended scope(s): project
+#"PROJECT_MANAGER_OR_ADMIN": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Database backup get policy.
+# GET  /v1/services/{id}/backup_policy
+# GET  /v1/databases/{id}/backup_policy
+# Intended scope(s): project
+#"coast:backup:get_policy": "rule:PROJECT_READER or rule:ADMIN"
+
+# Database backup set policy.
+# PUT  /v1/services/{id}/backup_policy
+# PUT  /v1/databases/{id}/backup_policy
+# Intended scope(s): project
+#"coast:backup:set_policy": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Database backup get all.
+# GET  /v1/services/{id}/backups
+# GET  /v1/databases/{id}/backups
+# Intended scope(s): project
+#"coast:backup:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Database backup create.
+# POST  /v1/services/{id}/backups
+# POST  /v1/databases/{id}/backups
+# Intended scope(s): project
+#"coast:backup:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Database backup get one.
+# GET  /v1/backups/{id}
+# Intended scope(s): project
+#"coast:backup:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Database backup delete.
+# DELETE  /v1/backups/{id}
+# Intended scope(s): project
+#"coast:backup:delete": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Database backup download.
+# GET  /v1/backups/{id}/download
+# Intended scope(s): project
+#"coast:backup:download": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Database backup restore.
+# POST  /v1/backups/{id}/restore
+# Intended scope(s): project
+#"coast:backup:restore": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database get all.
+# GET  /v1/databases
+# GET  /v1/database_engines
+# Intended scope(s): project
+#"coast:database:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Authorize database get one.
+# GET  /v1/databases/{database_id}
+# Intended scope(s): project
+#"coast:database:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Authorize database create.
+# POST  /v1/databases
+# Intended scope(s): project
+#"coast:database:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database update.
+# PATCH  /v1/databases/{database_id}
+# Intended scope(s): project
+#"coast:database:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database delete.
+# DELETE  /v1/databases/{database_id}
+# Intended scope(s): project
+#"coast:database:delete": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database get credentials.
+# GET  /v1/databases/{database_id}/credentials
+# Intended scope(s): project
+#"coast:database:get_credentials": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database start.
+# POST  /v1/databases/{database_id}/action
+# Intended scope(s): project
+#"coast:database:start": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database stop.
+# POST  /v1/databases/{database_id}/action
+# Intended scope(s): project
+#"coast:database:stop": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database restart.
+# POST  /v1/databases/{database_id}/action
+# Intended scope(s): project
+#"coast:database:restart": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Authorize database get logs.
+# GET  /v1/databases/{database_id}/logs
+# Intended scope(s): project
+#"coast:database:get_logs": "rule:PROJECT_READER or rule:ADMIN"
+
+# Resize workers serially to a larger flavor.
+# POST  /v1/stacks/{stack_id}/action
+# Intended scope(s): project
+#"coast:stack:resize_workers": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List worker ingress rules.
+# GET  /v1/stacks/{stack_id}/ingress_rules
+# Intended scope(s): project
+#"coast:stack:ingress_rules:list": "rule:PROJECT_READER or rule:ADMIN"
+
+# Manage worker ingress rules.
+# POST  /v1/stacks/{stack_id}/ingress_rules
+# Intended scope(s): project
+#"coast:stack:ingress_rules:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Manage worker ingress rules.
+# DELETE  /v1/stacks/{stack_id}/ingress_rules/{rule_id}
+# Intended scope(s): project
+#"coast:stack:ingress_rules:delete": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read the stack event timeline.
+# GET  /v1/stacks/{stack_id}/events
+# Intended scope(s): project
+#"coast:stack:events:get": "rule:coast:stack:get_one"
+
+# List stacks.
+# GET  /v1/stacks
+# Intended scope(s): project
+#"coast:stack:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a stack.
+# GET  /v1/stacks/{env_id}
+# Intended scope(s): project
+#"coast:stack:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create a stack as a project member.
+# POST  /v1/stacks
+# Intended scope(s): project
+#"coast:stack:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update stack.
+# PATCH  /v1/stacks/{env_id}
+# Intended scope(s): project
+#"coast:stack:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete stack.
+# DELETE  /v1/stacks/{env_id}
+# Intended scope(s): project
+#"coast:stack:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Upgrade stack.
+# POST  /v1/stacks/{env_id}/action
+# Intended scope(s): project
+#"coast:stack:upgrade": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Restore the last engine upgrade rollback point.
+# POST  /v1/stacks/{env_id}/action
+# Intended scope(s): project
+#"coast:stack:upgrade_rollback": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read admin-only stack infrastructure and counts.
+# GET  /v1/stacks
+# GET  /v1/stacks/{env_id}
+# Intended scope(s): project
+#"coast:stack:get_detail": "role:admin"
+
+# List exports.
+# GET  /v1/stacks/{env_id}/exports
+# Intended scope(s): project
+#"coast:export:get_all": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read an export.
+# GET  /v1/stacks/{env_id}/exports/{export_id}
+# Intended scope(s): project
+#"coast:export:get_one": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Create export.
+# POST  /v1/stacks/{env_id}/exports
+# Intended scope(s): project
+#"coast:export:create": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Renew export download URLs while the objects exist.
+# POST  /v1/stacks/{env_id}/exports/{export_id}/action
+# Intended scope(s): project
+#"coast:export:renew_url": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Delete export.
+# DELETE  /v1/stacks/{env_id}/exports/{export_id}
+# Intended scope(s): project
+#"coast:export:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# List appgroups.
+# GET  /v1/stacks/{stack_id}/appgroups
+# Intended scope(s): project
+#"coast:appgroup:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read an appgroup.
+# GET  /v1/appgroups/{appgroup_id}
+# Intended scope(s): project
+#"coast:appgroup:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create appgroup.
+# POST  /v1/stacks/{stack_id}/appgroups
+# Intended scope(s): project
+#"coast:appgroup:create": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Update appgroup.
+# PATCH  /v1/appgroups/{appgroup_id}
+# Intended scope(s): project
+#"coast:appgroup:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete appgroup.
+# DELETE  /v1/appgroups/{appgroup_id}
+# Intended scope(s): project
+#"coast:appgroup:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# List environments.
+# GET  /v1/appgroups/{appgroup_id}/environments
+# Intended scope(s): project
+#"coast:environment:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read an environment.
+# GET  /v1/environments/{environment_id}
+# Intended scope(s): project
+#"coast:environment:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create environment.
+# POST  /v1/appgroups/{appgroup_id}/environments
+# Intended scope(s): project
+#"coast:environment:create": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Update environment.
+# PATCH  /v1/environments/{environment_id}
+# Intended scope(s): project
+#"coast:environment:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete environment.
+# DELETE  /v1/environments/{environment_id}
+# Intended scope(s): project
+#"coast:environment:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Resize a server to a larger flavor.
+# POST  /v1/stacks/{stack_id}/servers/{server_id}/action
+# Intended scope(s): project
+#"coast:server:resize": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List servers.
+# GET  /v1/stacks/{env_id}/servers
+# Intended scope(s): project
+#"coast:server:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a server.
+# GET  /v1/stacks/{env_id}/servers/{server_id}
+# Intended scope(s): project
+#"coast:server:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create server.
+# POST  /v1/stacks/{env_id}/servers
+# Intended scope(s): project
+#"coast:server:create": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Delete server.
+# DELETE  /v1/stacks/{env_id}/servers/{server_id}
+# Intended scope(s): project
+#"coast:server:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Failover server.
+# POST  /v1/stacks/{env_id}/servers/{server_id}/action
+# Intended scope(s): project
+#"coast:server:failover": "role:admin"
+
+# Read admin-only server fields.
+# GET  /v1/stacks/{env_id}/servers
+# GET  /v1/stacks/{env_id}/servers/{server_id}
+# Intended scope(s): project
+#"coast:server:get_detail": "role:admin"
+
+# List volumes.
+# GET  /v1/stacks/{env_id}/volumes
+# Intended scope(s): project
+#"coast:volume:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a volume.
+# GET  /v1/stacks/{env_id}/volumes/{volume_id}
+# Intended scope(s): project
+#"coast:volume:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create volume.
+# POST  /v1/stacks/{env_id}/volumes
+# Intended scope(s): project
+#"coast:volume:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update volume.
+# PATCH  /v1/stacks/{env_id}/volumes/{volume_id}
+# Intended scope(s): project
+#"coast:volume:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete detached retained data volume.
+# DELETE  /v1/stacks/{env_id}/volumes/{volume_id}
+# Intended scope(s): project
+#"coast:volume:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# Snapshot volume.
+# POST  /v1/stacks/{env_id}/volumes/{volume_id}/action
+# Intended scope(s): project
+#"coast:volume:snapshot": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read admin-only volume fields.
+# GET  /v1/stacks/{env_id}/volumes
+# GET  /v1/stacks/{env_id}/volumes/{volume_id}
+# Intended scope(s): project
+#"coast:volume:get_detail": "role:admin"
+
+# List storage mounts.
+# GET  /v1/stacks/{stack_id}/storages
+# Intended scope(s): project
+#"coast:storage:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a storage mount.
+# GET  /v1/stacks/{stack_id}/storages/{storage_id}
+# Intended scope(s): project
+#"coast:storage:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create storage or attach a service mount.
+# POST  /v1/stacks/{stack_id}/storages
+# Intended scope(s): project
+#"coast:storage:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Attach storage or edit a service mount.
+# POST  /v1/stacks/{stack_id}/storages/{storage_id}/attach
+# PATCH  /v1/stacks/{stack_id}/storages/{storage_id}
+# Intended scope(s): project
+#"coast:storage:attach": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Detach a storage volume.
+# POST  /v1/stacks/{stack_id}/storages/{storage_id}/detach
+# Intended scope(s): project
+#"coast:storage:detach": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete a user storage mount.
+# DELETE  /v1/stacks/{stack_id}/storages/{storage_id}
+# Intended scope(s): project
+#"coast:storage:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# List container file mount metadata.
+# GET  /v1/apps/{service_id}/file_mounts
+# GET  /v1/services/{service_id}/file_mounts
+# Intended scope(s): project
+#"coast:file_mount:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read container file mount metadata.
+# GET  /v1/apps/{service_id}/file_mounts/{file_mount_id}
+# GET  /v1/services/{service_id}/file_mounts/{file_mount_id}
+# Intended scope(s): project
+#"coast:file_mount:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create a container file mount.
+# POST  /v1/apps/{service_id}/file_mounts
+# POST  /v1/services/{service_id}/file_mounts
+# Intended scope(s): project
+#"coast:file_mount:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update a container file mount.
+# PATCH  /v1/apps/{service_id}/file_mounts/{file_mount_id}
+# PATCH  /v1/services/{service_id}/file_mounts/{file_mount_id}
+# Intended scope(s): project
+#"coast:file_mount:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete a container file mount.
+# DELETE  /v1/apps/{service_id}/file_mounts/{file_mount_id}
+# DELETE  /v1/services/{service_id}/file_mounts/{file_mount_id}
+# Intended scope(s): project
+#"coast:file_mount:delete": "rule:PROJECT_MANAGER or rule:ADMIN"
+
+# List services.
+# GET  /v1/services
+# Intended scope(s): project
+#"coast:service:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a service or its CPU and memory metrics.
+# GET  /v1/services/{service_id}
+# GET  /v1/services/{service_id}/metrics
+# Intended scope(s): project
+#"coast:service:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create service.
+# POST  /v1/services
+# Intended scope(s): project
+#"coast:service:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update service metadata, settings or image source.
+# PATCH  /v1/services/{service_id}
+# Intended scope(s): project
+#"coast:service:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete service.
+# DELETE  /v1/services/{service_id}
+# Intended scope(s): project
+#"coast:service:delete": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Start service.
+# POST  /v1/services/{service_id}/action
+# Intended scope(s): project
+#"coast:service:start": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Stop service.
+# POST  /v1/services/{service_id}/action
+# Intended scope(s): project
+#"coast:service:stop": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Show the app deploy and Git webhook URLs (tokens).
+# GET  /v1/services/{service_id}/webhooks
+# Intended scope(s): project
+#"coast:service:get_webhooks": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Regenerate the app webhook token.
+# POST  /v1/services/{service_id}/webhooks/regenerate
+# Intended scope(s): project
+#"coast:service:regenerate_webhooks": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Restart service.
+# POST  /v1/services/{service_id}/action
+# Intended scope(s): project
+#"coast:service:restart": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read live application logs.
+# GET  /v1/services/{service_id}/logs
+# Intended scope(s): project
+#"coast:service:get_logs": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read compose YAML (can contain secrets).
+# GET  /v1/services/{service_id}/compose
+# Intended scope(s): project
+#"coast:service:get_compose": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Replace desired compose YAML.
+# PUT  /v1/services/{service_id}/compose
+# Intended scope(s): project
+#"coast:service:update_compose": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read dockerfile text (can contain secrets).
+# GET  /v1/services/{service_id}/dockerfile
+# Intended scope(s): project
+#"coast:service:get_dockerfile": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Replace desired dockerfile text.
+# PUT  /v1/services/{service_id}/dockerfile
+# Intended scope(s): project
+#"coast:service:update_dockerfile": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List compose service containers.
+# GET  /v1/services/{service_id}/containers
+# Intended scope(s): project
+#"coast:service:get_containers": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read container environment and limits.
+# GET  /v1/services/{service_id}/containers/{container_id}
+# Intended scope(s): project
+#"coast:service:get_container": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read recent container logs.
+# GET  /v1/services/{service_id}/containers/{container_id}/logs
+# Intended scope(s): project
+#"coast:service:get_container_logs": "rule:PROJECT_READER or rule:ADMIN"
+
+# Open a shell on an application.
+# POST  /v1/apps/{app_id}/console
+# Intended scope(s): project
+#"coast:app:console": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Open a shell on a service.
+# POST  /v1/services/{service_id}/console
+# Intended scope(s): project
+#"coast:service:console": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List deployments.
+# GET  /v1/services/{service_id}/deployments
+# Intended scope(s): project
+#"coast:deployment:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a deployment.
+# GET  /v1/services/{service_id}/deployments/{dep_id}
+# Intended scope(s): project
+#"coast:deployment:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create deployment.
+# POST  /v1/services/{service_id}/deployments
+# Intended scope(s): project
+#"coast:deployment:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Rollback deployment.
+# POST  /v1/services/{service_id}/deployments/{dep_id}/action
+# Intended scope(s): project
+#"coast:deployment:rollback": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Cancel deployment.
+# POST  /v1/services/{service_id}/deployments/{dep_id}/action
+# Intended scope(s): project
+#"coast:deployment:cancel": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Read the deployment build log.
+# GET  /v1/services/{service_id}/deployments/{dep_id}/log
+# Intended scope(s): project
+#"coast:deployment:get_log": "rule:PROJECT_READER or rule:ADMIN"
+
+# List domains.
+# GET  /v1/services/{service_id}/domains
+# Intended scope(s): project
+#"coast:domain:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# Read a domain.
+# GET  /v1/services/{service_id}/domains/{domain_id}
+# Intended scope(s): project
+#"coast:domain:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Create domain.
+# POST  /v1/services/{service_id}/domains
+# Intended scope(s): project
+#"coast:domain:create": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Delete domain.
+# DELETE  /v1/services/{service_id}/domains/{domain_id}
+# Intended scope(s): project
+#"coast:domain:delete": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update a domain and its primary address preference.
+# PATCH  /v1/services/{service_id}/domains/{domain_id}
+# Intended scope(s): project
+#"coast:domain:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Verify domain.
+# POST  /v1/services/{service_id}/domains/{domain_id}/action
+# Intended scope(s): project
+#"coast:domain:verify": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List DNS zones in the caller project.
+# GET  /v1/dns/zones
+# Intended scope(s): project
+#"coast:dns:zones:list": "rule:PROJECT_READER_OR_ADMIN or rule:PROJECT_MEMBER_OR_ADMIN or rule:PROJECT_MANAGER_OR_ADMIN"
+
+# List environment variables with secret values masked.
+# GET  /v1/services/{service_id}/env
+# Intended scope(s): project
+#"coast:secret:get_all": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# Update secret.
+# PUT  /v1/services/{service_id}/env
+# PATCH  /v1/services/{service_id}/env
+# Intended scope(s): project
+#"coast:secret:update": "rule:PROJECT_MEMBER or rule:ADMIN"
+
+# List events.
+# GET  /v1/events
+# Intended scope(s): project
+#"coast:event:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# List quotas.
+# GET  /v1/quotas
+# Intended scope(s): project
+#"coast:quota:get_all": "role:admin"
+
+# Read a quota.
+# GET  /v1/quotas/{project_id}
+# Intended scope(s): project
+#"coast:quota:get_one": "rule:PROJECT_READER or rule:ADMIN"
+
+# Update quota.
+# PUT  /v1/quotas/{project_id}
+# Intended scope(s): project
+#"coast:quota:update": "role:admin"
+
+# Delete quota.
+# DELETE  /v1/quotas/{project_id}
+# Intended scope(s): project
+#"coast:quota:delete": "role:admin"
+
+# Read default project quotas.
+# GET  /v1/quotas/defaults
+# Intended scope(s): project
+#"coast:quota:get_defaults": "rule:PROJECT_READER or rule:ADMIN"
+
+# List allowed VM flavors and their plans.
+# GET  /v1/flavors
+# Intended scope(s): project
+#"coast:flavor:get_all": "rule:PROJECT_READER or rule:ADMIN"
+
+# List plans.
+# GET  /v1/plans
+# Intended scope(s): project
+#"coast:plan:get_all": "@"
+
+# List permitted templates for a stack.
+# GET  /v1/templates
+# Intended scope(s): project
+#"coast:template:list": "rule:PROJECT_READER_OR_ADMIN or rule:PROJECT_MEMBER_OR_ADMIN or rule:PROJECT_MANAGER_OR_ADMIN"
+
+# Read a permitted template for a stack.
+# GET  /v1/templates/{template_id}
+# Intended scope(s): project
+#"coast:template:get": "rule:PROJECT_READER_OR_ADMIN or rule:PROJECT_MEMBER_OR_ADMIN or rule:PROJECT_MANAGER_OR_ADMIN"
+

@@ -1,0 +1,37 @@
+{
+  "keys": [
+    {
+      "uuid": "key-uuid",
+      "name": "coast-app"
+    },
+    {
+      "uuid": "other-key",
+      "name": "coast-other"
+    }
+  ],
+  "multiple_keys": [
+    {
+      "uuid": "old-key",
+      "name": "coast-app"
+    },
+    {
+      "uuid": "key-uuid",
+      "name": "coast-app"
+    },
+    {
+      "uuid": "other-key",
+      "name": "coast-other"
+    }
+  ],
+  "updated": {
+    "uuid": "key-uuid"
+  },
+  "rejected": {
+    "message": "pasted-private-data",
+    "errors": {
+      "private_key": [
+        "pasted-private-data"
+      ]
+    }
+  }
+}

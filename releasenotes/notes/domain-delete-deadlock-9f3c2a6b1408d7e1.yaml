@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Domain deletion retries the complete database claim transaction after
+    a deadlock. Task acquisition retries transactions it owns. Conductor
+    domain operations lock the parent service before the domain. Exhausted
+    retries return HTTP 409 so cloud users can retry.

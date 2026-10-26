@@ -1,0 +1,4 @@
+---
+- name: Configure management attachment outside Ansible check mode
+  ansible.builtin.include_tasks: hm-interface-apply.yml
+  when: not ansible_check_mode

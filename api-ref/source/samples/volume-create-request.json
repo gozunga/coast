@@ -1,0 +1,10 @@
+{
+    "volume": {
+        "name": "app-data",
+        "size_gb": 100,
+        "server_id": null,
+        "volume_type": null,
+        "mount_path": "/data",
+        "purpose": "data"
+    }
+}

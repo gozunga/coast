@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Domain readiness checks use dnspython 2.4.2 or later. They match the
+    ``_coast-challenge`` TXT token, accept a CNAME to the default hostname or an A or AAAA answer equal to
+    the worker floating IP, and complete a TLS handshake on port 443. An
+    empty ``[domains] nameservers`` list uses the system resolver.
+    ``poll_interval`` defaults to 30 seconds, ``verification_timeout`` to
+    24 hours, and ``activation_timeout`` to 1 hour.

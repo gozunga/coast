@@ -1,0 +1,2563 @@
+[DEFAULT]
+
+#
+# From coast
+#
+
+# Stable conductor host identity for restart recovery. Use a different value
+# for each conductor host. (string value)
+#
+# This option has a sample default set, which means that
+# its actual default value may vary from the one documented
+# below.
+#host = conductor.example.com
+
+# Prefix prepended to names of cloud resources Coast creates, e.g.
+# coast-e2e-20261010 for test runs. Existing resources are not renamed. (string
+# value)
+#resource_name_prefix = coast
+
+#
+# From coast.messaging
+#
+
+# Size of executor thread pool when executor is threading or eventlet. (integer
+# value)
+# Deprecated group/name - [DEFAULT]/rpc_thread_pool_size
+#executor_thread_pool_size = 64
+
+# Seconds to wait for a response from a call. (integer value)
+#rpc_response_timeout = 60
+
+# The network address and optional user credentials for connecting to the
+# messaging backend, in URL format. The expected format is:
+#
+# driver://[user:pass@]host:port[,[userN:passN@]hostN:portN]/virtual_host?query
+#
+# Example: rabbit://rabbitmq:password@127.0.0.1:5672//
+#
+# For full details on the fields in the URL see the documentation of
+# oslo_messaging.TransportURL at
+# https://docs.openstack.org/oslo.messaging/latest/reference/transport.html
+# (string value)
+#transport_url = rabbit://
+
+# The default exchange under which topics are scoped. May be overridden by an
+# exchange name specified in the transport_url option. (string value)
+#control_exchange = openstack
+
+# Add an endpoint to answer to ping calls. Endpoint is named
+# oslo_rpc_server_ping (boolean value)
+#rpc_ping_enabled = false
+
+#
+# From oslo.log
+#
+
+# If set to true, the logging level will be set to DEBUG instead of the default
+# INFO level. (boolean value)
+# Note: This option can be changed without restarting.
+#debug = false
+
+# The name of a logging configuration file. This file is appended to any
+# existing logging configuration files. For details about logging configuration
+# files, see the Python logging module documentation. Note that when logging
+# configuration files are used then all logging configuration is set in the
+# configuration file and other logging configuration options are ignored (for
+# example, log-date-format). (string value)
+# Note: This option can be changed without restarting.
+# Deprecated group/name - [DEFAULT]/log_config
+#log_config_append = <None>
+
+# Defines the format string for %%(asctime)s in log records. Default:
+# %(default)s . This option is ignored if log_config_append is set. (string
+# value)
+#log_date_format = %Y-%m-%d %H:%M:%S
+
+# (Optional) Name of log file to send logging output to. If no default is set,
+# logging will go to stderr as defined by use_stderr. This option is ignored if
+# log_config_append is set. (string value)
+# Deprecated group/name - [DEFAULT]/logfile
+#log_file = <None>
+
+# (Optional) The base directory used for relative log_file  paths. This option
+# is ignored if log_config_append is set. (string value)
+# Deprecated group/name - [DEFAULT]/logdir
+#log_dir = <None>
+
+# Use syslog for logging. Existing syslog format is DEPRECATED and will be
+# changed later to honor RFC5424. This option is ignored if log_config_append
+# is set. (boolean value)
+#use_syslog = false
+
+# Enable journald for logging. If running in a systemd environment you may wish
+# to enable journal support. Doing so will use the journal native protocol
+# which includes structured metadata in addition to log messages.This option is
+# ignored if log_config_append is set. (boolean value)
+#use_journal = false
+
+# Syslog facility to receive log lines. This option is ignored if
+# log_config_append is set. (string value)
+#syslog_log_facility = LOG_USER
+
+# Use JSON formatting for logging. This option is ignored if log_config_append
+# is set. (boolean value)
+#use_json = false
+
+# Log output to standard error. This option is ignored if log_config_append is
+# set. (boolean value)
+#use_stderr = false
+
+# (Optional) Set the 'color' key according to log levels. This option takes
+# effect only when logging to stderr or stdout is used. This option is ignored
+# if log_config_append is set. (boolean value)
+#log_color = false
+
+# The amount of time before the log files are rotated. This option is ignored
+# unless log_rotation_type is set to "interval". (integer value)
+#log_rotate_interval = 1
+
+# Rotation interval type. The time of the last file change (or the time when
+# the service was started) is used when scheduling the next rotation. (string
+# value)
+# Possible values:
+# Seconds - <No description provided>
+# Minutes - <No description provided>
+# Hours - <No description provided>
+# Days - <No description provided>
+# Weekday - <No description provided>
+# Midnight - <No description provided>
+#log_rotate_interval_type = days
+
+# Maximum number of rotated log files. (integer value)
+#max_logfile_count = 30
+
+# Log file maximum size in MB. This option is ignored if "log_rotation_type" is
+# not set to "size". (integer value)
+#max_logfile_size_mb = 200
+
+# Log rotation type. (string value)
+# Possible values:
+# interval - Rotate logs at predefined time intervals.
+# size - Rotate logs once they reach a predefined size.
+# none - Do not rotate log files.
+#log_rotation_type = none
+
+# Format string to use for log messages with context. Used by
+# oslo_log.formatters.ContextFormatter (string value)
+#logging_context_format_string = %(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [%(global_request_id)s %(request_id)s %(user_identity)s] %(instance)s%(message)s
+
+# Format string to use for log messages when context is undefined. Used by
+# oslo_log.formatters.ContextFormatter (string value)
+#logging_default_format_string = %(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [-] %(instance)s%(message)s
+
+# Additional data to append to log message when logging level for the message
+# is DEBUG. Used by oslo_log.formatters.ContextFormatter (string value)
+#logging_debug_format_suffix = %(funcName)s %(pathname)s:%(lineno)d
+
+# Prefix each line of exception output with this format. Used by
+# oslo_log.formatters.ContextFormatter (string value)
+#logging_exception_prefix = %(asctime)s.%(msecs)03d %(process)d ERROR %(name)s %(instance)s
+
+# Defines the format string for %(user_identity)s that is used in
+# logging_context_format_string. Used by oslo_log.formatters.ContextFormatter
+# (string value)
+#logging_user_identity_format = %(user)s %(project)s %(domain)s %(system_scope)s %(user_domain)s %(project_domain)s
+
+# List of package logging levels in logger=LEVEL pairs. This option is ignored
+# if log_config_append is set. (list value)
+#default_log_levels = amqp=WARN,boto=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=INFO,oslo_messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN,keystoneauth=WARN,oslo.cache=INFO,oslo_policy=INFO,dogpile.core.dogpile=INFO
+
+# Enables or disables publication of error events. (boolean value)
+#publish_errors = false
+
+# The format for an instance that is passed with the log message. (string
+# value)
+#instance_format = "[instance: %(uuid)s] "
+
+# The format for an instance UUID that is passed with the log message. (string
+# value)
+#instance_uuid_format = "[instance: %(uuid)s] "
+
+# Interval, number of seconds, of log rate limiting. (integer value)
+#rate_limit_interval = 0
+
+# Maximum number of logged messages per rate_limit_interval. (integer value)
+#rate_limit_burst = 0
+
+# Log level name used by rate limiting. Logs with level greater or equal to
+# rate_limit_except_level are not filtered. An empty string means that all
+# levels are filtered. (string value)
+# Possible values:
+# CRITICAL - <No description provided>
+# ERROR - <No description provided>
+# INFO - <No description provided>
+# WARNING - <No description provided>
+# DEBUG - <No description provided>
+# '' - <No description provided>
+#rate_limit_except_level = CRITICAL
+
+# Enables or disables fatal status of deprecations. (boolean value)
+#fatal_deprecations = false
+
+
+[agent]
+
+#
+# From coast
+#
+
+# HTTPS registry URL from the conductor. Empty checks environment routing and
+# Docker Hub DNS only. (string value)
+#egress_check_url =
+
+# Maximum export or engine quiesce lease in seconds. Expired leases resume only
+# containers stopped by that operation. (integer value)
+# Minimum value: 1
+#export_auto_resume_timeout = 900
+
+# Required management NIC IPv4 address. (string value)
+#bind_ip = <None>
+
+# Agent mTLS listen port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#bind_port = 9443
+
+# Agent server certificate PEM file. (string value)
+#server_cert = <None>
+
+# Agent server private key PEM file. (string value)
+#server_key = <None>
+
+# Coast client CA PEM file; no system CAs. (string value)
+#client_ca = <None>
+
+# Existing Coast server CA public PEM file. Required for certificate rotation;
+# never updated by HTTP. (string value)
+#server_ca = <None>
+
+# Coast server UUID for heartbeats. (string value)
+#server_id = <None>
+
+# Coast stack UUID. (string value)
+#stack_id = <None>
+
+# Coast project id for this guest. Container exec fails closed when this value
+# is empty or does not match the request. (string value)
+#project_id =
+
+# Guest role; only controllers can bootstrap Coolify. (string value)
+# Possible values:
+# controller - <No description provided>
+# worker - <No description provided>
+# build - <No description provided>
+#role = worker
+
+# Owned 0700 directory on persistent data volume for one-shot markers and
+# staged rotation tokens. Preserve during guest replacement. (string value)
+#state_path = /data/coast-agent
+
+# Owned 0700 volatile directory for temporary token files. Use tmpfs; abandoned
+# token directories are removed at startup without resetting persistent
+# markers. (string value)
+#runtime_path = /run/coast-agent
+
+# Health-manager IPv4 addresses; no DNS on management. (list value)
+#health_manager_ips =
+
+# Heartbeat destination port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#heartbeat_port = 5565
+
+# Per-stack 32-byte HMAC key in hexadecimal. (string value)
+#heartbeat_key = <None>
+
+# Heartbeat send interval in seconds. (integer value)
+# Minimum value: 1
+#heartbeat_interval = 10
+
+# Maximum concurrent Docker container statistics reads. (integer value)
+# Minimum value: 1
+# Maximum value: 64
+#metrics_max_workers = 8
+
+# Seconds between worker CPU and memory samples. (integer value)
+# Minimum value: 30
+#metrics_interval = 30
+
+# Maximum HTTP request or engine response body bytes. (integer value)
+# Minimum value: 1
+#max_body_size = 1048576
+
+# Total request and engine proxy time limit in seconds. (integer value)
+# Minimum value: 1
+#request_timeout = 30
+
+# Bootstrap response deadline in seconds; local steps also have fixed
+# subprocess and API time limits. (integer value)
+# Minimum value: 1
+#bootstrap_timeout = 600
+
+# Idle seconds before a container exec session closes. (integer value)
+# Minimum value: 1
+#exec_idle_timeout = 900
+
+# Maximum seconds for one container exec session. (integer value)
+# Minimum value: 1
+#exec_max_duration = 14400
+
+# Maximum connections, including TLS handshakes. (integer value)
+# Minimum value: 1
+#max_connections = 16
+
+
+[agent_auth]
+
+#
+# From coast
+#
+
+# Authentication type to load (string value)
+# Deprecated group/name - [agent_auth]/auth_plugin
+#auth_type = <None>
+
+# Config Section from which to load plugin specific options (string value)
+#auth_section = <None>
+
+# Authentication URL (string value)
+#auth_url = <None>
+
+# Scope for system operations (string value)
+#system_scope = <None>
+
+# Domain ID to scope to (string value)
+#domain_id = <None>
+
+# Domain name to scope to (string value)
+#domain_name = <None>
+
+# Project ID to scope to (string value)
+# Deprecated group/name - [agent_auth]/tenant_id
+#project_id = <None>
+
+# Project name to scope to (string value)
+# Deprecated group/name - [agent_auth]/tenant_name
+#project_name = <None>
+
+# Domain ID containing project (string value)
+#project_domain_id = <None>
+
+# Domain name containing project (string value)
+#project_domain_name = <None>
+
+# ID of the trust to use as a trustee use (string value)
+#trust_id = <None>
+
+# Optional domain ID to use with v3 and v2 parameters. It will be used for both
+# the user and project domain in v3 and ignored in v2 authentication. (string
+# value)
+#default_domain_id = <None>
+
+# Optional domain name to use with v3 API and v2 parameters. It will be used
+# for both the user and project domain in v3 and ignored in v2 authentication.
+# (string value)
+#default_domain_name = <None>
+
+# User id (string value)
+#user_id = <None>
+
+# Username (string value)
+# Deprecated group/name - [agent_auth]/user_name
+#username = <None>
+
+# User's domain id (string value)
+#user_domain_id = <None>
+
+# User's domain name (string value)
+#user_domain_name = <None>
+
+# User's password (string value)
+#password = <None>
+
+# PEM encoded Certificate Authority to use when verifying HTTPs connections.
+# (string value)
+#cafile = <None>
+
+# PEM encoded client certificate cert file (string value)
+#certfile = <None>
+
+# PEM encoded client certificate key file (string value)
+#keyfile = <None>
+
+# Verify HTTPS connections. (boolean value)
+#insecure = false
+
+# Timeout value for http requests (integer value)
+#timeout = <None>
+
+# Collect per-API call timing information. (boolean value)
+#collect_timing = false
+
+# Log requests to multiple loggers. (boolean value)
+#split_loggers = false
+
+
+[api]
+
+#
+# From coast
+#
+
+# Maximum UTF-8 compose YAML bytes. Keep within Barbican secret and request
+# size limits. (integer value)
+# Minimum value: 1
+#max_compose_bytes = 10000
+
+# API authentication strategy. Use noauth only for tests and isolated
+# development; it trusts identity headers. (string value)
+# Possible values:
+# keystone - <No description provided>
+# noauth - <No description provided>
+#auth_strategy = keystone
+
+# API Paste pipeline file, relative to config directories or an absolute path.
+# (string value)
+#api_paste_config = api-paste.ini
+
+# Address on which to bind the API. (string value)
+#bind_host = 0.0.0.0
+
+# API listen port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#bind_port = 9600
+
+# Public API endpoint used in links. (string value)
+#public_endpoint = <None>
+
+# Maximum pagination limit. (integer value)
+#max_limit = 1000
+
+
+[backup]
+
+#
+# From coast
+#
+
+# Object storage catalog region; defaults to the configured Nova region.
+# (string value)
+#region_name = <None>
+
+# Swift catalog interface reachable by workers. (string value)
+# Possible values:
+# public - <No description provided>
+# internal - <No description provided>
+# admin - <No description provided>
+#interface = public
+
+# Seconds between durable backup job and schedule scans. (integer value)
+# Minimum value: 1
+#poll_interval = 60
+
+# Encrypted bytes per Swift segment. (integer value)
+# Minimum value: 1048576
+# Maximum value: 4294967296
+#segment_bytes = 67108864
+
+# Maximum segments per backup; bounds dump size and URLs. (integer value)
+# Minimum value: 1
+# Maximum value: 4096
+#max_segments = 1024
+
+# Temporary link lifetime; must exceed command timeout. (integer value)
+# Minimum value: 60
+#url_ttl = 7200
+
+
+[barbican]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = key-manager
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[certificates]
+
+#
+# From coast
+#
+
+# Path to the Coast CA certificate. (string value)
+#ca_certificate = <None>
+
+# Path to the Coast CA private key. (string value)
+#ca_private_key = <None>
+
+# Passphrase for the Coast CA private key. (string value)
+#ca_private_key_passphrase = <None>
+
+# Digest used to sign Coast leaf certificates. (string value)
+# Possible values:
+# sha256 - <No description provided>
+# sha384 - <No description provided>
+# sha512 - <No description provided>
+#signing_digest = sha256
+
+# Lifetime of issued leaf certificates, in seconds. The default is 730 days.
+# (integer value)
+# Minimum value: 1
+#cert_validity_time = 63072000
+
+
+[cinder]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = block-storage
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[conductor]
+
+#
+# From coast
+#
+
+# Seconds between bounded service reconcile scan rounds. Rounds have up to ten
+# percent jitter; failures back off up to one hour. No automatic restart is
+# performed. (integer value)
+# Minimum value: 1
+#service_reconcile_interval = 600
+
+# Number of conductor workers. (integer value)
+#workers = 2
+
+# Before a deployment goes ACTIVE, sample the container status this many times,
+# stable_sample_interval apart. Any sample that is not running restarts the
+# stability window, so a fast crash loop is not taken as stable. (integer
+# value)
+# Minimum value: 1
+#stable_samples = 6
+
+# Seconds between stability samples. (floating point value)
+# Minimum value: 0
+#stable_sample_interval = 2.0
+
+# Seconds a container must run without a restart before a deployment or start
+# becomes ACTIVE, or runtime reconcile recovers its own ERROR status. (integer
+# value)
+# Minimum value: 0
+#stable_seconds = 20
+
+# Deployment timeout in seconds. (integer value)
+# Minimum value: 1
+#deploy_timeout = 600
+
+# Seconds of container crash loops after rollout, or HTTP no answer/502/503
+# with an HTTP health check, before deployment failure or runtime reconcile
+# ERROR. 0 disables this deadline; deploy_timeout remains the final limit.
+# (integer value)
+# Minimum value: 0
+#deploy_unreachable_timeout = 150
+
+# Before marking a started or deployed service ACTIVE, require apps with HTTP
+# checks to answer below HTTP 500 at the worker floating IP. Disable when the
+# conductor cannot reach worker floating IPs. (boolean value)
+#http_check = true
+
+# Seconds a started or restarted service may stay STARTING before it is marked
+# ERROR. Checked by the deployment settle poll (settle_poll_interval). (integer
+# value)
+# Minimum value: 1
+#start_timeout = 180
+
+# Interval in seconds for deployment recovery. Startup also checks deployments.
+# Unknown enqueue outcomes fail after deploy_timeout; they are never
+# resubmitted. (integer value)
+# Minimum value: 1
+#deploy_reconcile_interval = 60
+
+# Interval in seconds for checking DEPLOYING and STARTING services and moving
+# them to ACTIVE, FAILED or ERROR. Only services in those states are checked.
+# Export and snapshot housekeeping stay on deploy_reconcile_interval. (integer
+# value)
+# Minimum value: 1
+#settle_poll_interval = 15
+
+# Stack and server boot timeout in seconds. (integer value)
+#build_timeout = 900
+
+
+[console]
+
+#
+# From coast
+#
+
+# Address on which the console session service listens. (string value)
+#bind_host = 0.0.0.0
+
+# Console session listen port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#bind_port = 9610
+
+# Public host and optional port for console session URLs, without a scheme.
+# Example: console.example.com:9610. (string value)
+#public_endpoint =
+
+# Use wss in session URLs. Set false only when the public listener is not TLS.
+# (boolean value)
+#tls = true
+
+# Seconds a console session token stays valid. (integer value)
+# Minimum value: 1
+#token_ttl = 60
+
+# Seconds of no session data before the session closes. This is
+# console_idle_timeout. (integer value)
+# Minimum value: 1
+#idle_timeout = 900
+
+# Maximum session length in seconds. This is console_max_duration. (integer
+# value)
+# Minimum value: 1
+#max_duration = 14400
+
+
+[controller_worker]
+
+#
+# From coast
+#
+
+# Nova keypair name owned by the service project for operator SSH to
+# controller, worker and build VMs. Empty disables key injection. This option
+# does not open SSH in management security groups. (string value)
+#admin_ssh_key_name =
+
+# HTTPS registry URL for guest first-start egress checks. Any HTTP response is
+# success. Empty checks environment routing and Docker Hub DNS without HTTPS.
+# Use no credentials, query parameters or fragment. (string value)
+#egress_check_url =
+
+# Maximum seconds to wait for confirmed Cinder deletion. (integer value)
+# Minimum value: 1
+#volume_delete_timeout = 300
+
+# Seconds between Cinder volume deletion checks. (integer value)
+# Minimum value: 1
+#volume_delete_poll_interval = 5
+
+# Controller boot, volume, agent health and engine server validation timeout in
+# seconds. (integer value)
+# Minimum value: 1
+#build_timeout = 900
+
+# Controller provisioning poll interval in seconds. (integer value)
+# Minimum value: 1
+#build_poll_interval = 5
+
+# Managed Docker volume size in GiB; conductor accounts for this capacity
+# before Cinder creation. (integer value)
+# Minimum value: 1
+#docker_volume_size_gb = 20
+
+# Accounted size in GiB for each named volume declared by a template service.
+# (integer value)
+# Minimum value: 1
+#template_storage_gb = 1
+
+# Managed Docker Cinder volume type. (string value)
+#docker_volume_type = <None>
+
+# Private registry volume size in GiB. The conductor accounts for this capacity
+# before Cinder creation. The volume is attached only to the controller.
+# (integer value)
+# Minimum value: 1
+#registry_volume_size_gb = 20
+
+# Private registry Cinder volume type. (string value)
+#registry_volume_type = <None>
+
+# Private registry TCP port on the controller environment address. Security
+# group rules use this same value. The registry accepts connections from the
+# stack environment subnet only when the stack has a build server. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#registry_port = 5000
+
+# Pinned registry image reference. The value must match registry:3 in the
+# controller image lock. First boot refuses a different reference. (string
+# value)
+#registry_image = registry:3@sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8
+
+# Seconds between private registry garbage collection on active stacks.
+# (integer value)
+# Minimum value: 1
+#registry_gc_interval = 3600
+
+# Conductor clientAuth certificate PEM file. (string value)
+#agent_client_cert = <None>
+
+# Conductor clientAuth private key PEM file. (string value)
+#agent_client_key = <None>
+
+# Coast client CA PEM file delivered to guest agents. (string value)
+#agent_client_ca = <None>
+
+# Health-manager management IPv4 addresses for guests. (list value)
+#health_manager_ips =
+
+# Allow-list of engine driver entry point names. (list value)
+#enabled_drivers = noop
+
+# Default driver for new stacks. (string value)
+#driver = coolify_v4
+
+# Management network ID. (string value)
+#mgmt_net_id = <None>
+
+# Management security group ID. (string value)
+#mgmt_sg_id = <None>
+
+# External network ID for routers and floating IPs. (string value)
+#external_network_id = <None>
+
+# Operator IPv4 CIDR pool for stack subnets. Each isolated router reuses the
+# first subnet in this pool. (string value)
+#env_cidr_pool = <None>
+
+# IPv4 prefix length for stack subnets. (integer value)
+# Minimum value: 1
+# Maximum value: 30
+#env_subnet_prefix = 24
+
+# Maximum attempts for transient Neutron delete errors. (integer value)
+# Minimum value: 1
+#network_delete_attempts = 3
+
+# Delay in seconds between Neutron cleanup attempts. (floating point value)
+# Minimum value: 0.0
+#network_delete_retry_interval = 1.0
+
+# Controller image tag. (string value)
+#image_tag_controller = <None>
+
+# Worker image tag. (string value)
+#image_tag_worker = <None>
+
+# Optional controller image ID; owner, tag, active status and
+# coast_role=controller are still required. (string value)
+#controller_image_id = <None>
+
+# Optional worker/build image ID; owner, tag, active status and
+# coast_role=worker are still required. (string value)
+#worker_image_id = <None>
+
+# Image owner project ID. (string value)
+#image_owner_id = <None>
+
+# Controller flavor ID. (string value)
+#controller_flavor_id = <None>
+
+# Default data volume size in GiB. (integer value)
+#data_volume_size_gb = 100
+
+# Default Cinder volume type. (string value)
+#data_volume_type = <None>
+
+# Blocked guest egress ports. (list value)
+#egress_blocked_ports = 25,465,587
+
+# IPv4/IPv6 control-plane CIDRs excluded from guest environment-NIC egress.
+# Include internal API, database and message-broker ranges. Management subnet
+# ranges and IPv4 metadata are always excluded. Empty excludes only management
+# and metadata ranges. (list value)
+#control_plane_cidrs =
+
+# Maximum customer ingress rules per stack. (integer value)
+# Minimum value: 0
+#ingress_rules_per_stack = 50
+
+# Seconds between security group repair sweeps that apply control-plane egress
+# exclusions to existing stacks. 0 disables the sweep. It runs on its own
+# timer, not in the service reconcile loop. (integer value)
+# Minimum value: 0
+#network_repair_interval = 600
+
+# Time budget in seconds for one security group repair sweep. Unfinished stacks
+# continue on the next sweep. (integer value)
+# Minimum value: 1
+#network_repair_timeout = 120
+
+# Allowed guest DNS servers; empty allows any. (list value)
+#dns_servers =
+
+# Allowed guest NTP servers; empty allows any. (list value)
+#ntp_servers =
+
+# Enable Ironic bare metal servers. (boolean value)
+#enable_baremetal = false
+
+# Control-side management network namespace. An empty value uses the host
+# namespace without setns. (string value)
+#mgmt_netns = coast-mgmt
+
+# Guest agent mTLS port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#agent_port = 9443
+
+# Default snapshot retention on delete in days. (integer value)
+#offboard_snapshot_retention_days = 14
+
+
+[coolify]
+
+#
+# From coast
+#
+
+# M2 development only: stack ID to HTTPS engine URL mapping. Replaced by agent
+# endpoints in M3. (dict value)
+#adopted_endpoints =
+
+# Permit direct engine access without agent mTLS for isolated M2 development
+# only. TLS verification remains enabled; never enable in production. (boolean
+# value)
+#insecure_direct_url = false
+
+# Supported Coolify release selected for new stacks only. Must be one of
+# SUPPORTED_ENGINE_VERSIONS in coast/common/engine_versions.py; the default is
+# the newest one. (string value)
+#
+# This option has a sample default set, which means that
+# its actual default value may vary from the one documented
+# below.
+#pinned_version = <newest release in engine_versions.py>
+
+# Engine API timeout in seconds. (integer value)
+# Minimum value: 1
+#api_timeout = 30
+
+# Maximum attempts for idempotent API requests only. (integer value)
+# Minimum value: 1
+#retry_attempts = 3
+
+# Initial exponential retry delay in seconds. (floating point value)
+# Minimum value: 0.0
+#retry_wait = 1.0
+
+# Maximum attempts after HTTP 429, including POSTs. (integer value)
+# Minimum value: 1
+#rate_limit_attempts = 8
+
+# Maximum elapsed seconds before starting another engine retry. An in-flight
+# request may add api_timeout. (floating point value)
+# Minimum value: 0.0
+#rate_limit_timeout = 60.0
+
+# SSH user on stack workers and build servers. (string value)
+#ssh_user = root
+
+# Fallback registry image name template for dedicated builds. Must contain
+# {environment_id} and {app_id}. A stack with a private registry uses
+# <environment-address>:<port>/{environment_id}/{app_id} instead. This option
+# applies only when that per-stack template is empty. (string value)
+#build_registry_image_template = <None>
+
+
+[cors]
+
+#
+# From oslo.middleware.cors
+#
+
+# Indicate whether this resource may be shared with the domain received in the
+# requests "origin" header. Format: "<protocol>://<host>[:<port>]", no trailing
+# slash. Example: https://horizon.example.com (list value)
+#allowed_origin = <None>
+
+# Indicate that the actual request can include user credentials (boolean value)
+#allow_credentials = true
+
+# Indicate which headers are safe to expose to the API. Defaults to HTTP Simple
+# Headers. (list value)
+#expose_headers =
+
+# Maximum cache age of CORS preflight requests. (integer value)
+#max_age = 3600
+
+# Indicate which methods can be used during the actual request. (list value)
+#allow_methods = OPTIONS,GET,HEAD,POST,PUT,DELETE,TRACE,PATCH
+
+# Indicate which header field names may be used during the actual request.
+# (list value)
+#allow_headers =
+
+
+[database]
+
+#
+# From oslo.db
+#
+
+# If True, SQLite uses synchronous mode. (boolean value)
+#sqlite_synchronous = true
+
+# The back end to use for the database. (string value)
+#backend = sqlalchemy
+
+# The SQLAlchemy connection string to use to connect to the database. (string
+# value)
+#connection = <None>
+
+# The SQLAlchemy connection string to use to connect to the slave database.
+# (string value)
+#slave_connection = <None>
+
+# The SQLAlchemy asyncio connection string to use to connect to the database.
+# (string value)
+#asyncio_connection = <None>
+
+# The SQLAlchemy asyncio connection string to use to connect to the slave
+# database. (string value)
+#asyncio_slave_connection = <None>
+
+# Whether or not to assume a reader context needs to guarantee it can read data
+# committed by a writer assuming replication lag is present; defaults to True.
+# When False, a reader context works the same as async_reader and will select
+# the slave database if present. When using a galera cluster, this can be set
+# to False only if you set mysql_wsrep_sync_wait to 1 (this will guarantee that
+# the reader will wait until writesets are committed).Note that this may incur
+# a performance degradation within the galera cluster. Note also that this
+# parameter has no effect if you do not set any slave_connection. (boolean
+# value)
+#synchronous_reader = true
+
+# The SQL mode to be used for MySQL sessions. This option, including the
+# default, overrides any server-set SQL mode. To use whatever SQL mode is set
+# by the server configuration, set this to no value. Example: mysql_sql_mode=
+# (string value)
+#mysql_sql_mode = TRADITIONAL
+
+# For Galera only, configure wsrep_sync_wait causality checks on new
+# connections.  Default is None, meaning don't configure any setting. (integer
+# value)
+#mysql_wsrep_sync_wait = <None>
+
+# Connections which have been present in the connection pool longer than this
+# number of seconds will be replaced with a new one the next time they are
+# checked out from the pool. (integer value)
+#connection_recycle_time = 3600
+
+# Maximum number of SQL connections to keep open in a pool. Setting a value of
+# 0 indicates no limit. (integer value)
+#max_pool_size = 5
+
+# Maximum number of database connection retries during startup. Set to -1 to
+# specify an infinite retry count. (integer value)
+#max_retries = 10
+
+# Interval between retries of opening a SQL connection. (integer value)
+#retry_interval = 10
+
+# If set, use this value for max_overflow with SQLAlchemy. (integer value)
+#max_overflow = 50
+
+# Verbosity of SQL debugging information: 0=None, 100=Everything. (integer
+# value)
+# Minimum value: 0
+# Maximum value: 100
+#connection_debug = 0
+
+# Add Python stack traces to SQL as comment strings. (boolean value)
+#connection_trace = false
+
+# If set, use this value for pool_timeout with SQLAlchemy. (integer value)
+#pool_timeout = <None>
+
+# Enable the experimental use of database reconnect on connection lost.
+# (boolean value)
+#use_db_reconnect = false
+
+# Seconds between retries of a database transaction. (integer value)
+#db_retry_interval = 1
+
+# If True, increases the interval between retries of a database operation up to
+# db_max_retry_interval. (boolean value)
+#db_inc_retry_interval = true
+
+# If db_inc_retry_interval is set, the maximum seconds between retries of a
+# database operation. (integer value)
+#db_max_retry_interval = 10
+
+# Maximum retries in case of connection error or deadlock error before error is
+# raised. Set to -1 to specify an infinite retry count. (integer value)
+#db_max_retries = 20
+
+# Optional URL parameters to append onto the connection URL at connect time;
+# specify as param1=value1&param2=value2&... (string value)
+#connection_parameters =
+
+
+[databases]
+
+#
+# From coast
+#
+
+# First port for automatic database public allocation. (integer value)
+# Minimum value: 1024
+# Maximum value: 65535
+#public_port_min = 15432
+
+# Last port for automatic database public allocation. (integer value)
+# Minimum value: 1024
+# Maximum value: 65535
+#public_port_max = 15999
+
+
+[designate]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = dns
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[dns]
+
+#
+# From coast
+#
+
+# Customer DNS credentials: service-account sudo or a Keystone trust supplied
+# on each zone link. (string value)
+# Possible values:
+# service_account - <No description provided>
+# trust - <No description provided>
+#credential_provider = service_account
+
+# TTL in seconds for managed default-service DNS records. (integer value)
+# Minimum value: 1
+#record_ttl = 300
+
+# Manage default service DNS records with Designate. (boolean value)
+#use_designate = false
+
+# Designate zone ID for default service URLs. (string value)
+#designate_zone_id = <None>
+
+
+[domains]
+
+#
+# From coast
+#
+
+# DNS nameserver addresses for domain checks. Empty uses the system resolver
+# configuration. (list value)
+#nameservers =
+
+# Domain verification poll interval in seconds. (integer value)
+# Minimum value: 1
+#poll_interval = 30
+
+# TXT ownership verification timeout in seconds. (integer value)
+# Minimum value: 1
+#verification_timeout = 86400
+
+# Routing and TLS activation timeout in seconds. (integer value)
+# Minimum value: 1
+#activation_timeout = 3600
+
+# Suffix for the default service hostname. The form is <name>-<id4>.<dashed-
+# ip>.<suffix> when the worker has a floating IP, otherwise
+# <name>-<id4>.<suffix>. An empty value disables the default hostname. (string
+# value)
+#default_suffix = sslip.io
+
+# Development only: apply custom domains without DNS verification (boolean
+# value)
+#skip_verification = false
+
+
+[export]
+
+#
+# From coast
+#
+
+# Archive creation and upload time limit in seconds. (integer value)
+# Minimum value: 1
+#archive_timeout = 3600
+
+# Maximum compressed single-object upload size in GiB. Set no higher than the
+# storage backend limit. (integer value)
+# Minimum value: 1
+#max_object_size_gb = 5
+
+# Coast client CA-issued certificate PEM file for export agent requests.
+# (string value)
+#client_certificate = <None>
+
+# Private key PEM file for export agent requests. (string value)
+#client_key = <None>
+
+# Coast server CA PEM file for export agent verification. (string value)
+#server_ca = <None>
+
+# Object storage backend. (string value)
+# Possible values:
+# swift - <No description provided>
+# s3 - <No description provided>
+#backend = swift
+
+# Swift container or S3 bucket for export objects. (string value)
+#container = coast-exports
+
+# Download URL lifetime in seconds. (integer value)
+#url_ttl = 86400
+
+# Export object retention in hours. (integer value)
+#retention_hours = 72
+
+# Component that uploads export data. Only guest is supported: the guest agent
+# uploads each volume image to a pre-signed object-store URL, so guests must
+# reach the Swift or S3 endpoint. Conductor relay upload is not supported yet
+# (gozunga/coast#87). (string value)
+# Possible values:
+# guest - <No description provided>
+#upload_via = guest
+
+# Maximum export size in GiB. (integer value)
+#max_size_gb = 500
+
+# Maximum concurrent exports per project. (integer value)
+#max_concurrent_per_project = 1
+
+# Default snapshot retention in days. (integer value)
+#snapshot_retention_days = 14
+
+# Maximum snapshot retention in days. (integer value)
+#max_snapshot_retention_days = 90
+
+# HTTPS S3 API endpoint for the S3 backend. Do not put credentials in this URL.
+# Coast uses path-style addressing. (string value)
+#s3_endpoint = <None>
+
+# SigV4 signing region for the S3 endpoint. (string value)
+#s3_region = <None>
+
+# Barbican text secret reference for S3 credentials. The payload is JSON with
+# access_key_id and secret_access_key only. Coast does not read environment or
+# instance credentials. (string value)
+#s3_credentials_ref = <None>
+
+
+[glance]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = image
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[health_manager]
+
+#
+# From coast
+#
+
+# Seconds between bounded agent certificate checks. Rotate serverAuth leaves at
+# 80 percent of validity. (integer value)
+# Minimum value: 1
+#cert_rotation_interval = 3600
+
+# Maximum seconds after heartbeat key cache expiry to use the last good key
+# when secret storage is unavailable. (integer value)
+# Minimum value: 0
+#key_cache_max_stale = 3600
+
+# Import path of a no-argument callable class. Instances take a stack UUID and
+# return 32 raw HMAC key bytes, or None. Use
+# coast.health_manager.keys.StackKeyLookup for Barbican refs. Operators can
+# override this lookup. Never put key contents in this option. (string value)
+#key_lookup = coast.health_manager.keys.StackKeyLookup
+
+# Private durable directory for replay sequence checkpoints. Preserve across
+# service restart. (string value)
+#state_path = /var/lib/coast/health-manager
+
+# Maximum heartbeat datagram size including HMAC. (integer value)
+# Minimum value: 256
+# Maximum value: 65507
+#max_packet_size = 4096
+
+# Global heartbeat processing limit per second. Excess packets are dropped
+# before parsing or key lookup. (integer value)
+# Minimum value: 1
+#max_packets_per_second = 1000
+
+# Maximum number of pending server last-seen writes. (integer value)
+# Minimum value: 1
+#batch_size = 100
+
+# Maximum normal delay in seconds before a batch write. (floating point value)
+# Minimum value: 0.5
+#batch_interval = 1.0
+
+# Management address for the UDP listener. (string value)
+#bind_ip = <None>
+
+# Heartbeat UDP port. (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#bind_port = 5565
+
+# Heartbeat and stale-check interval in seconds. (integer value)
+# Minimum value: 1
+#heartbeat_interval = 10
+
+# Heartbeat timeout and startup grace in seconds. (integer value)
+# Minimum value: 1
+#heartbeat_timeout = 60
+
+# Failover grace period in seconds. (integer value)
+# Minimum value: 0
+#failover_grace = 120
+
+# Seconds since the last server update before an admin may retry a stuck
+# FAILOVER/FAILING_OVER task. (integer value)
+# Minimum value: 1
+#admin_failover_stuck_timeout = 600
+
+# Global maximum of claimed worker, build and controller VM failovers; shared
+# by all health managers and conductors. (integer value)
+# Minimum value: 1
+#failover_max_concurrent = 2
+
+# Reconcile interval in seconds. (integer value)
+#reconcile_interval = 600
+
+# Enable automatic failover. (boolean value)
+#enable_failover = true
+
+
+[healthcheck]
+
+#
+# From oslo.middleware.healthcheck
+#
+
+# Show more detailed information as part of the response. Security note:
+# Enabling this option may expose sensitive details about the service being
+# monitored. Be sure to verify that it will not violate your security policies.
+# (boolean value)
+#detailed = false
+
+# Additional backends that can perform health checks and report that
+# information back as part of a request. (list value)
+#backends =
+
+# A list of network addresses to limit source ip allowed to access healthcheck
+# information. Any request from ip outside of these network addresses are
+# ignored. (list value)
+#allowed_source_ranges =
+
+# Ignore requests with proxy headers. (boolean value)
+#ignore_proxied_requests = false
+
+# Check the presence of a file to determine if an application is running on a
+# port. Used by DisableByFileHealthcheck plugin. (string value)
+#disable_by_file_path = <None>
+
+# Check the presence of a file based on a port to determine if an application
+# is running on a port. Expects a "port:path" list of strings. Used by
+# DisableByFilesPortsHealthcheck plugin. (list value)
+#disable_by_file_paths =
+
+# Check the presence of files. Used by EnableByFilesHealthcheck plugin. (list
+# value)
+#enable_by_file_paths =
+
+
+[keystone_authtoken]
+
+#
+# From keystonemiddleware.auth_token
+#
+
+# Complete "public" Identity API endpoint. This endpoint should not be an
+# "admin" endpoint, as it should be accessible by all end users.
+# Unauthenticated clients are redirected to this endpoint to authenticate.
+# Although this endpoint should ideally be unversioned, client support in the
+# wild varies. If you're using a versioned v2 endpoint here, then this should
+# *not* be the same endpoint the service user utilizes for validating tokens,
+# because normal end users may not be able to reach that endpoint. (string
+# value)
+# Deprecated group/name - [keystone_authtoken]/auth_uri
+#www_authenticate_uri = <None>
+
+# DEPRECATED: Complete "public" Identity API endpoint. This endpoint should not
+# be an "admin" endpoint, as it should be accessible by all end users.
+# Unauthenticated clients are redirected to this endpoint to authenticate.
+# Although this endpoint should ideally be unversioned, client support in the
+# wild varies. If you're using a versioned v2 endpoint here, then this should
+# *not* be the same endpoint the service user utilizes for validating tokens,
+# because normal end users may not be able to reach that endpoint. This option
+# is deprecated in favor of www_authenticate_uri and will be removed in the S
+# release. (string value)
+# This option is deprecated for removal since Queens.
+# Its value may be silently ignored in the future.
+# Reason: The auth_uri option is deprecated in favor of www_authenticate_uri
+# and will be removed in the S  release.
+#auth_uri = <None>
+
+# API version of the Identity API endpoint. (string value)
+#auth_version = <None>
+
+# Interface to use for the Identity API endpoint. Valid values are "public",
+# "internal" (default) or "admin". (string value)
+#interface = internal
+
+# Do not handle authorization requests within the middleware, but delegate the
+# authorization decision to downstream WSGI components. (boolean value)
+#delay_auth_decision = false
+
+# Request timeout value for communicating with Identity API server. (integer
+# value)
+#http_connect_timeout = <None>
+
+# How many times are we trying to reconnect when communicating with Identity
+# API Server. (integer value)
+#http_request_max_retries = 3
+
+# Request environment key where the Swift cache object is stored. When
+# auth_token middleware is deployed with a Swift cache, use this option to have
+# the middleware share a caching backend with swift. Otherwise, use the
+# ``memcached_servers`` option instead. (string value)
+#cache = <None>
+
+# Required if identity server requires client certificate (string value)
+#certfile = <None>
+
+# Required if identity server requires client certificate (string value)
+#keyfile = <None>
+
+# A PEM encoded Certificate Authority to use when verifying HTTPs connections.
+# Defaults to system CAs. (string value)
+#cafile = <None>
+
+# Verify HTTPS connections. (boolean value)
+#insecure = false
+
+# The region in which the identity server can be found. (string value)
+#region_name = <None>
+
+# Optionally specify a list of memcached server(s) to use for caching. If left
+# undefined, tokens will instead be cached in-process. (list value)
+# Deprecated group/name - [keystone_authtoken]/memcache_servers
+#memcached_servers = <None>
+
+# In order to prevent excessive effort spent validating tokens, the middleware
+# caches previously-seen tokens for a configurable duration (in seconds). Set
+# to -1 to disable caching completely. (integer value)
+#token_cache_time = 300
+
+# (Optional) If defined, indicate whether token data should be authenticated or
+# authenticated and encrypted. If MAC, token data is authenticated (with HMAC)
+# in the cache. If ENCRYPT, token data is encrypted and authenticated in the
+# cache. If the value is not one of these options or empty, auth_token will
+# raise an exception on initialization. (string value)
+# Possible values:
+# None - <No description provided>
+# MAC - <No description provided>
+# ENCRYPT - <No description provided>
+#memcache_security_strategy = None
+
+# (Optional, mandatory if memcache_security_strategy is defined) This string is
+# used for key derivation. (string value)
+#memcache_secret_key = <None>
+
+# (Optional) Global toggle for TLS usage when comunicating with the caching
+# servers. (boolean value)
+#memcache_tls_enabled = false
+
+# (Optional) Path to a file of concatenated CA certificates in PEM format
+# necessary to establish the caching server's authenticity. If tls_enabled is
+# False, this option is ignored. (string value)
+#memcache_tls_cafile = <None>
+
+# (Optional) Path to a single file in PEM format containing the client's
+# certificate as well as any number of CA certificates needed to establish the
+# certificate's authenticity. This file is only required when client side
+# authentication is necessary. If tls_enabled is False, this option is ignored.
+# (string value)
+#memcache_tls_certfile = <None>
+
+# (Optional) Path to a single file containing the client's private key in.
+# Otherwhise the private key will be taken from the file specified in
+# tls_certfile. If tls_enabled is False, this option is ignored. (string value)
+#memcache_tls_keyfile = <None>
+
+# (Optional) Set the available ciphers for sockets created with the TLS
+# context. It should be a string in the OpenSSL cipher list format. If not
+# specified, all OpenSSL enabled ciphers will be available. (string value)
+#memcache_tls_allowed_ciphers = <None>
+
+# (Optional) Number of seconds memcached server is considered dead before it is
+# tried again. (integer value)
+#memcache_pool_dead_retry = 300
+
+# (Optional) Maximum total number of open connections to every memcached
+# server. (integer value)
+#memcache_pool_maxsize = 10
+
+# (Optional) Socket timeout in seconds for communicating with a memcached
+# server. (integer value)
+#memcache_pool_socket_timeout = 3
+
+# (Optional) Number of seconds a connection to memcached is held unused in the
+# pool before it is closed. (integer value)
+#memcache_pool_unused_timeout = 60
+
+# (Optional) Number of seconds that an operation will wait to get a memcached
+# client connection from the pool. (integer value)
+#memcache_pool_conn_get_timeout = 10
+
+# (Optional) Use the advanced (eventlet safe) memcached client pool. (boolean
+# value)
+#memcache_use_advanced_pool = true
+
+# (Optional) Indicate whether to set the X-Service-Catalog header. If False,
+# middleware will not ask for service catalog on token validation and will not
+# set the X-Service-Catalog header. (boolean value)
+#include_service_catalog = true
+
+# Used to control the use and type of token binding. Can be set to: "disabled"
+# to not check token binding. "permissive" (default) to validate binding
+# information if the bind type is of a form known to the server and ignore it
+# if not. "strict" like "permissive" but if the bind type is unknown the token
+# will be rejected. "required" any form of token binding is needed to be
+# allowed. Finally the name of a binding method that must be present in tokens.
+# (string value)
+#enforce_token_bind = permissive
+
+# A choice of roles that must be present in a service token. Service tokens are
+# allowed to request that an expired token can be used and so this check should
+# tightly control that only actual services should be sending this token. Roles
+# here are applied as an ANY check so any role in this list must be present.
+# For backwards compatibility reasons this currently only affects the
+# allow_expired check. (list value)
+#service_token_roles = service
+
+# For backwards compatibility reasons we must let valid service tokens pass
+# that don't pass the service_token_roles check as valid. Setting this true
+# will become the default in a future release and should be enabled if
+# possible. (boolean value)
+#service_token_roles_required = false
+
+# The name or type of the service as it appears in the service catalog. This is
+# used to validate tokens that have restricted access rules. (string value)
+#service_type = <None>
+
+# Enable the SASL(Simple Authentication and Security Layer) if the SASL_enable
+# is true, else disable. (boolean value)
+#memcache_sasl_enabled = false
+
+# the user name for the SASL (string value)
+#memcache_username =
+
+# the username password for SASL (string value)
+#memcache_password =
+
+# Authentication type to load (string value)
+# Deprecated group/name - [keystone_authtoken]/auth_plugin
+#auth_type = <None>
+
+# Config Section from which to load plugin specific options (string value)
+#auth_section = <None>
+
+
+[metrics]
+
+#
+# From coast
+#
+
+# Seconds to keep 30-second samples; at least 24 hours. (integer value)
+# Minimum value: 86400
+#detail_retention = 86400
+
+# Seconds to keep five-minute averages; at least 7 days. (integer value)
+# Minimum value: 604800
+#five_minute_retention = 604800
+
+# Seconds to keep hourly averages; at least 30 days. (integer value)
+# Minimum value: 2592000
+#hourly_retention = 2592000
+
+# Seconds between metrics rollup and cleanup passes. (integer value)
+# Minimum value: 1
+#cleanup_interval = 300
+
+# Maximum buckets rolled up or rows deleted per pass. (integer value)
+# Minimum value: 1
+# Maximum value: 1000
+#batch_size = 100
+
+
+[neutron]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = network
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[notifications]
+
+#
+# From coast
+#
+
+# Usage audit sweep interval in seconds. Each process emits once per completed
+# audit period. (integer value)
+# Minimum value: 1
+#exists_notification_interval = 3600
+
+# Previous complete UTC calendar audit period, as in Nova
+# instance_usage_audit_period. Snapshots contain current resources, not
+# deleted-resource history. (string value)
+# Possible values:
+# hour - <No description provided>
+# day - <No description provided>
+# month - <No description provided>
+#usage_audit_period = hour
+
+# Service identifier for usage notifications. (string value)
+#service_id = <None>
+
+
+[nova]
+
+#
+# From coast
+#
+
+# The default service_type for endpoint URL discovery. (string value)
+#service_type = compute
+
+# The default service_name for endpoint URL discovery. (string value)
+#service_name = <None>
+
+# List of interfaces, in order of preference, for endpoint URL. (list value)
+#valid_interfaces = <None>
+
+# The default region_name for endpoint URL discovery. (string value)
+#region_name = <None>
+
+# Always use this endpoint URL for requests for this client. NOTE: The
+# unversioned endpoint should be specified here; to request a particular API
+# version, use the `version`, `min-version`, and/or `max-version` options.
+# (string value)
+#endpoint_override = <None>
+
+# Minimum Major API version within a given Major API version for endpoint URL
+# discovery. Mutually exclusive with min_version and max_version (string value)
+#version = <None>
+
+# The minimum major version of a given API, intended to be used as the lower
+# bound of a range with max_version. Mutually exclusive with version. If
+# min_version is given with no max_version it is as if max version is "latest".
+# (string value)
+#min_version = <None>
+
+# The maximum major version of a given API, intended to be used as the upper
+# bound of a range with min_version. Mutually exclusive with version. (string
+# value)
+#max_version = <None>
+
+# The maximum number of retries that should be attempted for connection errors.
+# (integer value)
+#connect_retries = <None>
+
+# Delay (in seconds) between two retries for connection errors. If not set,
+# exponential retry starting with 0.5 seconds up to a maximum of 60 seconds is
+# used. (floating point value)
+#connect_retry_delay = <None>
+
+# The maximum number of retries that should be attempted for retriable HTTP
+# status codes. (integer value)
+#status_code_retries = <None>
+
+# Delay (in seconds) between two retries for retriable status codes. If not
+# set, exponential retry starting with 0.5 seconds up to a maximum of 60
+# seconds is used. (floating point value)
+#status_code_retry_delay = <None>
+
+# List of retriable HTTP status codes that should be retried. If not set
+# default to  [503] (list value)
+#retriable_status_codes = <None>
+
+# Catalog interface for this service. Use publicURL, internalURL or adminURL.
+# Leave this empty when valid_interfaces is set. (string value)
+#endpoint_type = <None>
+
+# CA certificate file for this service. When unset, the [service_auth] cafile
+# value is used. (string value)
+#ca_certificates_file = <None>
+
+# Disable TLS certificate verification for this service. Do not enable this
+# option in production. (boolean value)
+#insecure = false
+
+
+[oslo_concurrency]
+
+#
+# From oslo.concurrency
+#
+
+# Enables or disables inter-process locks. (boolean value)
+#disable_process_locking = false
+
+# Directory to use for lock files.  For security, the specified directory
+# should only be writable by the user running the processes that need locking.
+# Defaults to environment variable OSLO_LOCK_PATH. If external locks are used,
+# a lock path must be set. (string value)
+#lock_path = <None>
+
+
+[oslo_messaging_kafka]
+
+#
+# From coast.messaging
+#
+
+# Max fetch bytes of Kafka consumer (integer value)
+#kafka_max_fetch_bytes = 1048576
+
+# Default timeout(s) for Kafka consumers (floating point value)
+#kafka_consumer_timeout = 1.0
+
+# Group id for Kafka consumer. Consumers in one group will coordinate message
+# consumption (string value)
+#consumer_group = oslo_messaging_consumer
+
+# Upper bound on the delay for KafkaProducer batching in seconds (floating
+# point value)
+#producer_batch_timeout = 0.0
+
+# Size of batch for the producer async send (integer value)
+#producer_batch_size = 16384
+
+# The compression codec for all data generated by the producer. If not set,
+# compression will not be used. Note that the allowed values of this depend on
+# the kafka version (string value)
+# Possible values:
+# none - <No description provided>
+# gzip - <No description provided>
+# snappy - <No description provided>
+# lz4 - <No description provided>
+# zstd - <No description provided>
+#compression_codec = none
+
+# Enable asynchronous consumer commits (boolean value)
+#enable_auto_commit = false
+
+# The maximum number of records returned in a poll call (integer value)
+#max_poll_records = 500
+
+# Protocol used to communicate with brokers (string value)
+# Possible values:
+# PLAINTEXT - <No description provided>
+# SASL_PLAINTEXT - <No description provided>
+# SSL - <No description provided>
+# SASL_SSL - <No description provided>
+#security_protocol = PLAINTEXT
+
+# Mechanism when security protocol is SASL (string value)
+#sasl_mechanism = PLAIN
+
+# CA certificate PEM file used to verify the server certificate (string value)
+#ssl_cafile =
+
+# Client certificate PEM file used for authentication. (string value)
+#ssl_client_cert_file =
+
+# Client key PEM file used for authentication. (string value)
+#ssl_client_key_file =
+
+# Client key password file used for authentication. (string value)
+#ssl_client_key_password =
+
+
+[oslo_messaging_notifications]
+
+#
+# From coast.messaging
+#
+
+# The Drivers(s) to handle sending notifications. Possible values are
+# messaging, messagingv2, routing, log, test, noop (multi valued)
+#driver = messagingv2
+
+# A URL representing the messaging driver to use for notifications. If not set,
+# we fall back to the same configuration used for RPC. (string value)
+#transport_url = <None>
+
+# AMQP topic used for OpenStack notifications. (list value)
+#topics = notifications
+
+# The maximum number of attempts to re-send a notification message which failed
+# to be delivered due to a recoverable error. 0 - No retry, -1 - indefinite
+# (integer value)
+#retry = 0
+
+
+[oslo_messaging_rabbit]
+
+#
+# From coast.messaging
+#
+
+# Use durable queues in AMQP. If rabbit_quorum_queue is enabled, queues will be
+# durable and this value will be ignored. (boolean value)
+#amqp_durable_queues = false
+
+# Auto-delete queues in AMQP. (boolean value)
+#amqp_auto_delete = false
+
+# Size of RPC connection pool. (integer value)
+# Minimum value: 1
+#rpc_conn_pool_size = 30
+
+# The pool size limit for connections expiration policy (integer value)
+#conn_pool_min_size = 2
+
+# The time-to-live in sec of idle connections in the pool (integer value)
+#conn_pool_ttl = 1200
+
+# Connect over SSL. (boolean value)
+#ssl = true
+
+# SSL version to use (valid only if SSL enabled). Valid values are TLSv1 and
+# SSLv23. SSLv2, SSLv3, TLSv1_1, and TLSv1_2 may be available on some
+# distributions. (string value)
+#ssl_version =
+
+# SSL key file (valid only if SSL enabled). (string value)
+#ssl_key_file =
+
+# SSL cert file (valid only if SSL enabled). (string value)
+#ssl_cert_file =
+
+# SSL certification authority file (valid only if SSL enabled). (string value)
+#ssl_ca_file =
+
+# When true, verify the broker hostname against the certificate when
+# ``ssl_ca_file`` is set. When false (default on stable branches), ``ssl`` with
+# ``ssl_ca_file`` still validates the certificate chain but does not verify the
+# broker hostname. ``ssl=true`` without ``ssl_ca_file`` never enables hostname
+# verification. (boolean value)
+#ssl_enforce_hostname_verification = false
+
+# DEPRECATED: Global toggle for enforcing the OpenSSL FIPS mode. This feature
+# requires Python support. This is available in Python 3.9 in all environments
+# and may have been backported to older Python versions on select environments.
+# If the Python executable used does not support OpenSSL FIPS mode, an
+# exception will be raised. (boolean value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+# Reason: FIPS_mode_set API was removed in OpenSSL 3.0.0. This option has no
+# effect now.
+#ssl_enforce_fips_mode = false
+
+# DEPRECATED: (DEPRECATED) It is recommend not to use this option anymore. Run
+# the health check heartbeat thread through a native python thread by default.
+# If this option is equal to False then the health check heartbeat will inherit
+# the execution model from the parent process. For example if the parent
+# process has monkey patched the stdlib by using eventlet/greenlet then the
+# heartbeat will be run through a green thread. This option should be set to
+# True only for the wsgi services. (boolean value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+# Reason: The option is related to Eventlet which will be removed. In addition
+# this has never worked as expected with services using eventlet for core
+# service framework.
+#heartbeat_in_pthread = false
+
+# How long to wait (in seconds) before reconnecting in response to an AMQP
+# consumer cancel notification. (floating point value)
+# Minimum value: 0.0
+# Maximum value: 4.5
+#kombu_reconnect_delay = 1.0
+
+# Random time to wait for when reconnecting in response to an AMQP consumer
+# cancel notification. (floating point value)
+# Minimum value: 0.0
+#kombu_reconnect_splay = 0.0
+
+# EXPERIMENTAL: Possible values are: gzip, bz2. If not set compression will not
+# be used. This option may not be available in future versions. (string value)
+#kombu_compression = <None>
+
+# How long to wait a missing client before abandoning to send it its replies.
+# This value should not be longer than rpc_response_timeout. (integer value)
+# Deprecated group/name - [oslo_messaging_rabbit]/kombu_reconnect_timeout
+#kombu_missing_consumer_retry_timeout = 60
+
+# Determines how the next RabbitMQ node is chosen in case the one we are
+# currently connected to becomes unavailable. Takes effect only if more than
+# one RabbitMQ node is provided in config. (string value)
+# Possible values:
+# round-robin - <No description provided>
+# shuffle - <No description provided>
+#kombu_failover_strategy = round-robin
+
+# The RabbitMQ login method. (string value)
+# Possible values:
+# PLAIN - <No description provided>
+# AMQPLAIN - <No description provided>
+# EXTERNAL - <No description provided>
+# RABBIT-CR-DEMO - <No description provided>
+#rabbit_login_method = AMQPLAIN
+
+# How frequently to retry connecting with RabbitMQ. (integer value)
+# Minimum value: 1
+#rabbit_retry_interval = 1
+
+# How long to backoff for between retries when connecting to RabbitMQ. (integer
+# value)
+# Minimum value: 0
+#rabbit_retry_backoff = 2
+
+# Maximum interval of RabbitMQ connection retries. (integer value)
+# Minimum value: 1
+#rabbit_interval_max = 30
+
+# Try to use HA queues in RabbitMQ (x-ha-policy: all). If you change this
+# option, you must wipe the RabbitMQ database. In RabbitMQ 3.0, queue mirroring
+# is no longer controlled by the x-ha-policy argument when declaring a queue.
+# If you just want to make sure that all queues (except those with auto-
+# generated names) are mirrored across all nodes, run: "rabbitmqctl set_policy
+# HA '^(?!amq\.).*' '{"ha-mode": "all"}' " (boolean value)
+#rabbit_ha_queues = false
+
+# Use quorum queues in RabbitMQ (x-queue-type: quorum). The quorum queue is a
+# modern queue type for RabbitMQ implementing a durable, replicated FIFO queue
+# based on the Raft consensus algorithm. It is available as of RabbitMQ 3.8.0.
+# If set this option will conflict with the HA queues (``rabbit_ha_queues``)
+# aka mirrored queues, in other words the HA queues should be disabled. Quorum
+# queues are also durable by default so the amqp_durable_queues option is
+# ignored when this option is enabled. (boolean value)
+#rabbit_quorum_queue = true
+
+# Use quorum queues for transients queues in RabbitMQ. Enabling this option
+# will then make sure those queues are also using quorum kind of rabbit queues,
+# which are HA by default. (boolean value)
+#rabbit_transient_quorum_queue = false
+
+# Each time a message is redelivered to a consumer, a counter is incremented.
+# Once the redelivery count exceeds the delivery limit the message gets dropped
+# or dead-lettered (if a DLX exchange has been configured) Used only when
+# rabbit_quorum_queue is enabled, Default 0 which means dont set a limit.
+# (integer value)
+#rabbit_quorum_delivery_limit = 0
+
+# By default all messages are maintained in memory if a quorum queue grows in
+# length it can put memory pressure on a cluster. This option can limit the
+# number of messages in the quorum queue. Used only when rabbit_quorum_queue is
+# enabled, Default 0 which means dont set a limit. (integer value)
+#rabbit_quorum_max_memory_length = 0
+
+# By default all messages are maintained in memory if a quorum queue grows in
+# length it can put memory pressure on a cluster. This option can limit the
+# number of memory bytes used by the quorum queue. Used only when
+# rabbit_quorum_queue is enabled, Default 0 which means dont set a limit.
+# (integer value)
+#rabbit_quorum_max_memory_bytes = 0
+
+# Positive integer representing duration in seconds for queue TTL (x-expires).
+# Queues which are unused for the duration of the TTL are automatically
+# deleted. The parameter affects only reply and fanout queues. Setting 0 as
+# value will disable the x-expires. If doing so, make sure you have a rabbitmq
+# policy to delete the queues or you deployment will create an infinite number
+# of queue over time.In case rabbit_stream_fanout is set to True, this option
+# will control data retention policy (x-max-age) for messages in the fanout
+# queue rather then the queue duration itself. So the oldest data in the stream
+# queue will be discarded from it once reaching TTL Setting to 0 will disable
+# x-max-age for stream which make stream grow indefinitely filling up the
+# diskspace (integer value)
+# Minimum value: 0
+#rabbit_transient_queues_ttl = 1800
+
+# Specifies the number of messages to prefetch. Setting to zero allows
+# unlimited messages. (integer value)
+#rabbit_qos_prefetch_count = 0
+
+# Number of seconds after which the Rabbit broker is considered down if
+# heartbeat's keep-alive fails (0 disables heartbeat). (integer value)
+#heartbeat_timeout_threshold = 60
+
+# How often times during the heartbeat_timeout_threshold we check the
+# heartbeat. (integer value)
+#heartbeat_rate = 3
+
+# DEPRECATED: (DEPRECATED) Enable/Disable the RabbitMQ mandatory flag for
+# direct send. The direct send is used as reply, so the MessageUndeliverable
+# exception is raised in case the client queue does not
+# exist.MessageUndeliverable exception will be used to loop for a timeout to
+# lets a chance to sender to recover.This flag is deprecated and it will not be
+# possible to deactivate this functionality anymore (boolean value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+# Reason: Mandatory flag no longer deactivable.
+#direct_mandatory_flag = true
+
+# Enable x-cancel-on-ha-failover flag so that rabbitmq server will cancel and
+# notify consumerswhen queue is down (boolean value)
+#enable_cancel_on_failover = false
+
+# Should we use consistant queue names or random ones (boolean value)
+#use_queue_manager = false
+
+# Hostname used by queue manager. Defaults to the value returned by
+# socket.gethostname(). (string value)
+#
+# This option has a sample default set, which means that
+# its actual default value may vary from the one documented
+# below.
+#hostname = node1.example.com
+
+# Process name used by queue manager (string value)
+#
+# This option has a sample default set, which means that
+# its actual default value may vary from the one documented
+# below.
+#processname = nova-api
+
+# Use stream queues in RabbitMQ (x-queue-type: stream). Streams are a new
+# persistent and replicated data structure ("queue type") in RabbitMQ which
+# models an append-only log with non-destructive consumer semantics. It is
+# available as of RabbitMQ 3.9.0. If set this option will replace all fanout
+# queues with only one stream queue. (boolean value)
+#rabbit_stream_fanout = false
+
+
+[oslo_middleware]
+
+#
+# From oslo.middleware.http_proxy_to_wsgi
+#
+
+# Whether the application is behind a proxy or not. This determines if the
+# middleware should parse the headers or not. (boolean value)
+#enable_proxy_headers_parsing = false
+
+
+[oslo_policy]
+
+#
+# From oslo.policy
+#
+
+# DEPRECATED: This option controls whether or not to enforce scope when
+# evaluating policies. If ``True``, the scope of the token used in the request
+# is compared to the ``scope_types`` of the policy being enforced. If the
+# scopes do not match, an ``InvalidScope`` exception will be raised. If
+# ``False``, a message will be logged informing operators that policies are
+# being invoked with mismatching scope. (boolean value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+# Reason: This configuration was added temporarily to facilitate a smooth
+# transition to the new RBAC. OpenStack will always enforce scope checks. This
+# configuration option is deprecated and will be removed in the 2025.2 cycle.
+#enforce_scope = true
+
+# This option controls whether or not to use old deprecated defaults when
+# evaluating policies. If ``True``, the old deprecated defaults are not going
+# to be evaluated. This means if any existing token is allowed for old defaults
+# but is disallowed for new defaults, it will be disallowed. It is encouraged
+# to enable this flag along with the ``enforce_scope`` flag so that you can get
+# the benefits of new defaults and ``scope_type`` together. If ``False``, the
+# deprecated policy check string is logically OR'd with the new policy check
+# string, allowing for a graceful upgrade experience between releases with new
+# policies, which is the default behavior. (boolean value)
+#enforce_new_defaults = true
+
+# The relative or absolute path of a file that maps roles to permissions for a
+# given service. Relative paths must be specified in relation to the
+# configuration file setting this option. (string value)
+#policy_file = policy.yaml
+
+# Default rule. Enforced when a requested rule is not found. (string value)
+#policy_default_rule = default
+
+# Directories where policy configuration files are stored. They can be relative
+# to any directory in the search path defined by the config_dir option, or
+# absolute paths. The file defined by policy_file must exist for these
+# directories to be searched.  Missing or empty directories are ignored. (multi
+# valued)
+#policy_dirs = policy.d
+
+# Content Type to send and receive data for REST based policy check (string
+# value)
+# Possible values:
+# application/x-www-form-urlencoded - <No description provided>
+# application/json - <No description provided>
+#remote_content_type = application/x-www-form-urlencoded
+
+# server identity verification for REST based policy check (boolean value)
+#remote_ssl_verify_server_crt = false
+
+# Absolute path to ca cert file for REST based policy check (string value)
+#remote_ssl_ca_crt_file = <None>
+
+# Absolute path to client cert for REST based policy check (string value)
+#remote_ssl_client_crt_file = <None>
+
+# Absolute path client key file REST based policy check (string value)
+#remote_ssl_client_key_file = <None>
+
+# Timeout in seconds for REST based policy check (floating point value)
+# Minimum value: 0
+#remote_timeout = 60
+
+
+[plans]
+
+#
+# From coast
+#
+
+# JSON array of operator plans: name, kind (vm or baremetal), roles (control,
+# worker or build), nullable description and internal Nova flavor name or ID.
+# Flavor is never returned by the API. Empty lists advertise no plans.
+# plans_file is not read by this API. (string value)
+#definitions = []
+
+# Path to the operator plan definitions. (string value)
+#plans_file = /etc/coast/plans.yaml
+
+
+[quotas]
+
+#
+# From coast
+#
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#environments = 1
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#servers = 2
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#baremetal_servers = 0
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#build_servers = 1
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#apps = 10
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#domains = 20
+
+# Default per-project quota; -1 means unlimited. (integer value)
+#volume_gb = 200
+
+# Default per-project quota for customer named storage in GiB; -1 means
+# unlimited. (integer value)
+#storage_gb = 50
+
+
+[secrets]
+
+#
+# From coast
+#
+
+# Maximum UTF-8 bytes per secret payload. Match the Barbican
+# max_allowed_secret_in_bytes setting. (integer value)
+# Minimum value: 1
+#max_secret_bytes = 20000
+
+# Rotate engine API tokens after this many days. Zero disables automatic
+# rotation. (integer value)
+# Minimum value: 0
+#engine_token_rotation_days = 30
+
+# Maximum concurrent engine API token rotations across all conductors,
+# including operator requests. (integer value)
+# Minimum value: 1
+#rotation_max_concurrent = 2
+
+# Secret storage backend. Disabled fails closed. Barbican uses the service_auth
+# credentials and barbican options. (string value)
+# Possible values:
+# disabled - <No description provided>
+# barbican - <No description provided>
+#backend = disabled
+
+
+[service_auth]
+
+#
+# From coast
+#
+
+# Authentication type to load (string value)
+# Deprecated group/name - [service_auth]/auth_plugin
+#auth_type = <None>
+
+# Config Section from which to load plugin specific options (string value)
+#auth_section = <None>
+
+# Authentication URL (string value)
+#auth_url = <None>
+
+# Scope for system operations (string value)
+#system_scope = <None>
+
+# Domain ID to scope to (string value)
+#domain_id = <None>
+
+# Domain name to scope to (string value)
+#domain_name = <None>
+
+# Project ID to scope to (string value)
+# Deprecated group/name - [service_auth]/tenant_id
+#project_id = <None>
+
+# Project name to scope to (string value)
+# Deprecated group/name - [service_auth]/tenant_name
+#project_name = <None>
+
+# Domain ID containing project (string value)
+#project_domain_id = <None>
+
+# Domain name containing project (string value)
+#project_domain_name = <None>
+
+# ID of the trust to use as a trustee use (string value)
+#trust_id = <None>
+
+# Optional domain ID to use with v3 and v2 parameters. It will be used for both
+# the user and project domain in v3 and ignored in v2 authentication. (string
+# value)
+#default_domain_id = <None>
+
+# Optional domain name to use with v3 API and v2 parameters. It will be used
+# for both the user and project domain in v3 and ignored in v2 authentication.
+# (string value)
+#default_domain_name = <None>
+
+# User id (string value)
+#user_id = <None>
+
+# Username (string value)
+# Deprecated group/name - [service_auth]/user_name
+#username = <None>
+
+# User's domain id (string value)
+#user_domain_id = <None>
+
+# User's domain name (string value)
+#user_domain_name = <None>
+
+# User's password (string value)
+#password = <None>
+
+# PEM encoded Certificate Authority to use when verifying HTTPs connections.
+# (string value)
+#cafile = <None>
+
+# PEM encoded client certificate cert file (string value)
+#certfile = <None>
+
+# PEM encoded client certificate key file (string value)
+#keyfile = <None>
+
+# Verify HTTPS connections. (boolean value)
+#insecure = false
+
+# Timeout value for http requests (integer value)
+#timeout = <None>
+
+# Collect per-API call timing information. (boolean value)
+#collect_timing = false
+
+# Log requests to multiple loggers. (boolean value)
+#split_loggers = false
+
+
+[templates]
+
+#
+# From coast
+#
+
+# Raw template catalog cache lifetime in seconds. Zero disables caching. Each
+# API worker keeps its own thread-safe in-memory cache by driver and engine
+# version. Authorization applies on every request. (integer value)
+# Minimum value: 0
+#cache_ttl = 3600
+
+
+[webhooks]
+
+#
+# From coast
+#
+
+# Key that derives each app webhook token. Empty disables webhooks. Changing it
+# invalidates every webhook URL. (string value)
+#secret_key = <None>
+
+# Public base URL of the Coast API used in webhook URLs, for example
+# https://coast.example.com. Defaults to the request host. (string value)
+#public_url = <None>
+
+# Largest accepted webhook body in bytes. (integer value)
+# Minimum value: 1024
+#max_body_size = 1048576

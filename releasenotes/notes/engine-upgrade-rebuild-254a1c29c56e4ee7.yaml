@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Stack members and admins can select a newer published app engine
+    controller image with the upgrade action. Coast snapshots the data,
+    Docker and private registry volumes before replacing the controller VM.
+    It then replaces worker and build VMs one at a time, stopping at the
+    first failure. Replacements retain ports, addresses and volume data.
+    Engine self-update stays disabled. First boot refreshes the engine tag
+    and self-update flag in the retained environment; credentials and
+    identity values are preserved.
+  - |
+    The upgrade_rollback stack action restores the recorded previous
+    controller image and all three pre-upgrade snapshots. The rollback point
+    is durable and remains until the next successful upgrade. Snapshot clones
+    and displaced volumes can consume billable storage; the operator must
+    inspect retained recovery resources before removing them.

@@ -1,0 +1,13 @@
+features:
+  - |
+    Customer changes reach Neutron at the next successful network repair;
+    keep ``[controller_worker] network_repair_interval`` enabled.
+  - |
+    API 1.25 lets project members manage worker ingress rules through Coast.
+    Rules persist across network repair; required Coast rules remain protected.
+    The configurable per-stack customer rule limit defaults to 50.
+security:
+  - |
+    Periodic network repair restores agent management security groups and
+    each stack's control-side peer rules. Management permits only agent
+    HTTPS and heartbeats. The keypair still installs the operator key.

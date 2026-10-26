@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    ``[conductor] deploy_timeout`` defaults to 600 seconds.
+  - |
+    A deployment whose app is running but whose URL keeps returning HTTP
+    502 or 503 fails after ``[conductor] deploy_unreachable_timeout``
+    (default 150 seconds) with "App is running but nothing answered on port
+    N. Check the port setting."

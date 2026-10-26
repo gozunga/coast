@@ -1,0 +1,16 @@
+---
+prelude: >
+  Coast 0.1.0 is the first release. Coast is an OpenStack service for
+  cloud operators who want to offer application hosting to their
+  projects. A project creates a stack (an app engine server plus workers
+  and optional build servers on Nova VMs with Cinder volumes and a
+  per-stack Neutron network) through the API, ``openstack coast`` CLI or
+  the Horizon dashboard. It then deploys apps from git or an image and
+  services from a template catalog, and manages environment variables,
+  domains, DNS, named storage, database backups, logs, metrics, a
+  container terminal and an activity timeline. Projects can add, remove
+  and resize servers, edit worker ingress rules and upgrade the app
+  engine in place with a manual rollback point. Operators deploy Coast
+  with the supplied Kolla images and kolla-ansible role. Guest servers
+  are isolated from the cloud control plane. The API supports
+  microversions 1.0 to 1.28.

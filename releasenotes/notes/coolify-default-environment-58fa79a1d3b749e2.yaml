@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Stack deletion removes empty engine-owned ``production`` environments
+    before deleting application and bootstrap stack projects. Other
+    environments and production environments with resources block deletion.

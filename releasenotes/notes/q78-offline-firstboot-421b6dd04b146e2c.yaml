@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    Controller images carry checksum-pinned engine support files and a
+    digest-locked container archive. First boot installs offline after the
+    config drive, network setup and Cinder mounts, before the guest agent
+    starts. Engine ports bind only to loopback. Unique secrets are
+    generated locally and preserved during guest replacement.
+  - |
+    Controller builds require ``COAST_COOLIFY_IMAGES_LOCK`` with reviewed
+    image digests for the selected release. Offline builds use
+    ``COAST_COOLIFY_CACHE`` and preloaded digest references in build-host
+    Docker. Guests require static management network data in the config
+    drive.
+security:
+  - |
+    First boot disables engine self-updates and registration after
+    successful root creation. It does not access the engine database.
+    Loopback bindings, management security groups and agent mTLS protect
+    engine access.

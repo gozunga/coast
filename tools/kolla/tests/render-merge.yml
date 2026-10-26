@@ -1,0 +1,183 @@
+---
+- name: Create isolated render directory
+  ansible.builtin.tempfile:
+    state: directory
+    prefix: coast-kolla-render-
+  register: render_directory
+
+- name: Check real Kolla config merge and container settings
+  vars:
+    node_custom_config: "{{ render_directory.path }}/custom"
+    role_path: "{{ playbook_dir }}/../ansible/roles/coast"
+    database_enable_tls_internal: false
+    om_enable_rabbitmq_tls: false
+    item:
+      key: coast-conductor
+  block:
+    - name: Create override directories
+      ansible.builtin.file:
+        path: "{{ node_custom_config }}/coast/{{ inventory_hostname }}"
+        state: directory
+        mode: "0700"
+
+    - name: Write overrides at each level
+      ansible.builtin.copy:
+        dest: "{{ node_custom_config }}/{{ override.path }}"
+        content: "{{ override.content }}"
+        mode: "0600"
+      loop:
+        - path: global.conf
+          content: "[DEFAULT]\ndebug = false\n[database]\nmax_pool_size = 42\n"
+        - path: coast.conf
+          content: "[DEFAULT]\ndebug = true\n[dns]\nuse_designate = false\n[secrets]\nbackend = barbican\n[plans]\ndefinitions = []\n"
+        - path: coast/coast-conductor.conf
+          content: "[export]\nretention_hours = 48\n[DEFAULT]\ndebug = false\n"
+        - path: "coast/{{ inventory_hostname }}/coast.conf"
+          content: "[DEFAULT]\ndebug = true\n[export]\nretention_hours = 96\n"
+      loop_control:
+        loop_var: override
+
+    - name: Merge with the role's config source order
+      merge_configs:
+        sources:
+          - "{{ role_path }}/templates/coast.conf.j2"
+          - "{{ node_custom_config }}/global.conf"
+          - "{{ node_custom_config }}/coast.conf"
+          - "{{ node_custom_config }}/coast/{{ item.key }}.conf"
+          - "{{ node_custom_config }}/coast/{{ inventory_hostname }}/coast.conf"
+        dest: "{{ render_directory.path }}/coast.conf"
+        mode: "0600"
+      no_log: true
+
+    - name: Read merged config
+      ansible.builtin.slurp:
+        src: "{{ render_directory.path }}/coast.conf"
+      register: merged_file
+      no_log: true
+
+    - name: Check override order and retained template defaults
+      ansible.builtin.assert:
+        that:
+          - "'debug = true' in merged"
+          - "'debug = false' not in merged"
+          - "'max_pool_size = 42' in merged"
+          - "'use_designate = false' in merged"
+          - "'backend = barbican' in merged"
+          - "'definitions = []' in merged"
+          - "'retention_hours = 96' in merged"
+          - "'retention_hours = 48' not in merged"
+          - "'client_certificate = /etc/coast/certs/coast_client.cert-and-key.pem' in merged"
+          - "'client_key = /etc/coast/certs/coast_client.cert-and-key.pem' in merged"
+          - "'server_ca = /etc/coast/certs/coast_server_ca.cert.pem' in merged"
+          - "'log_dir = /var/log/kolla/coast' in merged"
+          - "'memcached_servers = 192.0.2.20:11211' in merged"
+      vars:
+        merged: "{{ merged_file.content | b64decode }}"
+
+    - name: Check private output mode
+      ansible.builtin.stat:
+        path: "{{ render_directory.path }}/coast.conf"
+      register: merged_stat
+
+    - name: Assert merged config file is private
+      ansible.builtin.assert:
+        that: merged_stat.stat.mode == '0600'
+
+    - name: Remove optional overrides
+      ansible.builtin.file:
+        path: "{{ node_custom_config }}"
+        state: absent
+
+    - name: Merge without override files
+      merge_configs:
+        sources:
+          - "{{ role_path }}/templates/coast.conf.j2"
+          - "{{ node_custom_config }}/global.conf"
+          - "{{ node_custom_config }}/coast.conf"
+          - "{{ node_custom_config }}/coast/{{ item.key }}.conf"
+          - "{{ node_custom_config }}/coast/{{ inventory_hostname }}/coast.conf"
+        dest: "{{ render_directory.path }}/defaults.conf"
+        mode: "0600"
+      no_log: true
+
+    - name: Read default-only config
+      ansible.builtin.slurp:
+        src: "{{ render_directory.path }}/defaults.conf"
+      register: default_file
+      no_log: true
+
+    - name: Check missing overrides keep template defaults
+      ansible.builtin.assert:
+        that:
+          - "'log_dir = /var/log/kolla/coast' in defaults"
+          - "'[export]' in defaults"
+          - "'retention_hours' not in defaults"
+      vars:
+        defaults: "{{ default_file.content | b64decode }}"
+      no_log: true
+
+    - name: Check container log permissions and existing state permissions
+      ansible.builtin.assert:
+        that:
+          - "{'path': '/var/log/kolla/coast', 'owner': 'coast:coast', 'recurse': true} in container_config.permissions"
+          - "service != 'health-manager' or {'path': '/var/lib/coast/health-manager', 'owner': 'coast:coast', 'perm': '0700'} in container_config.permissions"
+      vars:
+        container_config: "{{ lookup('template', role_path ~ '/templates/coast-' ~ service ~ '.json.j2') | from_json }}"
+      loop: [api, conductor, health-manager, console-proxy]
+      loop_control:
+        loop_var: service
+
+    - name: Load role healthcheck defaults
+      ansible.builtin.include_vars: "{{ role_path }}/defaults/main.yml"
+
+    - name: Supply Kolla healthcheck settings
+      ansible.builtin.set_fact:
+        enable_container_healthchecks: true
+        default_container_healthcheck_interval: 30s
+        default_container_healthcheck_retries: 3
+        default_container_healthcheck_start_period: 5s
+        default_container_healthcheck_timeout: 10s
+        kolla_enable_tls_backend: false
+        om_rpc_port: 5672
+
+    - name: Check enabled healthcheck commands and timings
+      vars:
+        coast_hm_udp_check: >-
+          python3 -c 'import sys; p=format(int(5565), "04X"); sys.exit(0 if ":"+p+" " in open("/proc/net/udp").read().upper() else 1)'
+      ansible.builtin.assert:
+        that:
+          - coast_api_healthcheck.test == ['CMD-SHELL', 'healthcheck_curl http://127.0.0.1:9600']
+          - coast_conductor_healthcheck.test == ['CMD-SHELL', 'healthcheck_port coast-conductor 5672']
+          - coast_health_manager_healthcheck.test == ['CMD-SHELL', coast_hm_udp_check]
+          - coast_console_proxy_healthcheck.test == ['CMD-SHELL', 'healthcheck_curl http://127.0.0.1:9610/health']
+          - coast_api_healthcheck.interval == '30s'
+          - coast_conductor_healthcheck.retries | int == 3
+          - coast_health_manager_healthcheck.start_period == '5s'
+          - coast_api_healthcheck.timeout == '10s'
+
+    - name: Disable container healthchecks
+      ansible.builtin.set_fact:
+        enable_container_healthchecks: false
+
+    - name: Check disabled healthchecks
+      ansible.builtin.assert:
+        that:
+          - coast_api_healthcheck.test == 'NONE'
+          - coast_conductor_healthcheck.test == 'NONE'
+          - coast_health_manager_healthcheck.test == 'NONE'
+          - coast_console_proxy_healthcheck.test == 'NONE'
+
+    - name: Enable API backend TLS and healthchecks
+      ansible.builtin.set_fact:
+        enable_container_healthchecks: true
+        kolla_enable_tls_backend: true
+
+    - name: Check TLS healthcheck URL
+      ansible.builtin.assert:
+        that:
+          - coast_api_healthcheck.test == ['CMD-SHELL', 'healthcheck_curl https://127.0.0.1:9600']
+  always:
+    - name: Remove isolated render directory
+      ansible.builtin.file:
+        path: "{{ render_directory.path }}"
+        state: absent

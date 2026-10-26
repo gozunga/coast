@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The Kolla role selects a dedicated Coast management interface
+    with coast_network_interface. Health-manager bind and guest heartbeat
+    addresses use this network; API endpoints stay on the API network.
+    Production VLAN deployments leave coast_hm0_manage disabled. The hm0
+    host port remains available for development without a VLAN.

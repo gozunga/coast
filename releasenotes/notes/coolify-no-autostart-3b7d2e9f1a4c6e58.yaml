@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Controller engine Compose services use ``restart: "no"``. The Coast
+    first-boot service starts the engine on each boot after checking Cinder
+    volume mounts and retained engine state.

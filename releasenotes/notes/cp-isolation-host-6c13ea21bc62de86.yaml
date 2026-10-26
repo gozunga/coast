@@ -1,0 +1,11 @@
+---
+security:
+  - |
+    The health-manager heartbeat listener uses UDP port 5565 on the
+    management address only. DevStack starts the API with uWSGI and the
+    ``coast-wsgi-api`` script on one host address. Kolla does not publish
+    the API on the external VIP unless ``coast_enable_external_api`` is
+    true. Operators drop guest floating-IP, SNAT and management sources
+    to control-plane ports on the hosts. The example rules are in the
+    operations guide. UDP port 5565 from the management network stays
+    open for heartbeats.

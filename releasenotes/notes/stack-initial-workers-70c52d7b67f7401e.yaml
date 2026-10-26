@@ -1,0 +1,10 @@
+features:
+  - |
+    Stack creation provisions initial VM workers and the optional build
+    server after controller bootstrap. It uses the same provisioning and
+    revert tasks as server add. The build server requires exactly one VM
+    plan with the build role in the operator plan catalog.
+  - |
+    Controller, worker, and build VM names, managed Cinder volume names,
+    and management and stack port names use resource_name_prefix.
+    The default prefix is ``coast``.

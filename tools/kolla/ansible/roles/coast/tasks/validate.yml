@@ -1,0 +1,45 @@
+---
+- name: Check required Coast inputs
+  ansible.builtin.assert:
+    that:
+      - coast_network_address_family == 'ipv4'
+      - coast_controller_worker_options.get('mgmt_netns', '') == ''
+      - coast_api_image is defined
+      - coast_conductor_image is defined
+      - coast_console_proxy_image is defined
+      - coast_database_connection | length > 0
+      - "'?' not in coast_database_connection"
+      - coast_database_password | length > 0
+      - coast_keystone_password | length > 0
+      - coast_agent_keystone_password | length > 0
+      - coast_agent_keystone_user | length > 0
+      - coast_agent_keystone_role | length > 0
+      - coast_agent_keystone_user != coast_keystone_user
+      - coast_agent_keystone_role not in ['admin', 'service']
+      - coast_agent_keystone_password != coast_keystone_password
+      - coast_api_paste_source is defined
+      - coast_openstack_ca_source is defined
+      - coast_openstack_cafile is defined
+      - not database_enable_tls_internal | bool or openstack_cacert | length > 0
+      - not om_enable_rabbitmq_tls | bool or om_rabbitmq_cacert | length > 0
+      - not coast_enable_health_manager | bool or coast_health_manager_image is defined
+      - not coast_enable_health_manager | bool or coast_health_manager_bind_ip is defined
+    fail_msg: >-
+      Supply required inputs; management needs IPv4 and an empty mgmt_netns.
+  no_log: true
+
+- name: Check host management inputs
+  ansible.builtin.assert:
+    that:
+      - coast_hm0_cidr is defined
+      - coast_hm0_address is defined
+      - coast_hm0_mtu is defined
+      - coast_hm0_mtu | int >= 1280
+      - coast_hm0_binding_host | length > 0
+      - coast_hm0_bridge | length > 0
+      - coast_hm0_host_firewall_ready | bool
+      - coast_network_interface == 'coast-hm0'
+      - coast_network_interface_address == coast_hm0_address
+      - not coast_enable_health_manager | bool or coast_health_manager_bind_ip == coast_hm0_address
+    fail_msg: Supply host management inputs and verify host firewall isolation.
+  when: coast_hm0_manage | bool

@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Guest images configure systemd-networkd-wait-online with an override
+    that waits for any routable NIC with a 30-second limit. The static
+    management NIC can satisfy this wait. Coast first boot marks the
+    environment DHCP NIC optional and keeps management required. The agent
+    still checks the environment IPv4 lease and default route within its
+    existing bounded egress grace and reports route failures through
+    health.

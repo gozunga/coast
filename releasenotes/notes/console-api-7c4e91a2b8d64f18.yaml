@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    API microversion 1.9 adds POST /v1/apps/{id}/console and
+    POST /v1/services/{id}/console. A project member receives a one-time
+    shell URL. The activity log records open and close without keystrokes
+    or command output.
+  - |
+    Kolla deploys a coast-console-proxy container on port 9610. HAProxy
+    keeps that port when the shared API frontend is enabled. The backend
+    is plain HTTP, checks GET /health, and allows a four-hour session.
+    Without HAProxy the service listens on the API address.

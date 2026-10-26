@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    API microversion 1.4 adds an optional per-app HTTP health check. New
+    apps use ``none`` and can run background workers without exposed ports.
+    Every app must complete its rollout and run continuously for
+    ``[conductor] stable_seconds`` (default 20) before it becomes ACTIVE.
+    Crash-loop failures include a short, sanitized runtime log tail when
+    available.

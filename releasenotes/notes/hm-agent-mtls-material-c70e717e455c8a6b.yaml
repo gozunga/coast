@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The Kolla role supplies the health-manager container with the agent
+    client credential and server CA certificate for agent certificate
+    lifetime checks and rotation. It does not copy the CA key.

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Coast container images are built with ``kolla-build`` and the overlay
+    in ``tools/kolla/images`` (``tools/kolla/images/build.sh``), producing
+    service images including ``coast-api``, ``coast-conductor`` and
+    ``coast-health-manager``. Configure ``coast_*_image`` for each service
+    and ``coast_tag`` for the image tag.

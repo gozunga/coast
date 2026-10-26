@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Coast provides the database schema for all v1 resources
+    and project quotas. Operators can run ``coast-db-manage upgrade``
+    with the configured ``[database] connection`` before starting services.
+    The command also supports ``current`` and ``version``. Database
+    downgrades are not supported.

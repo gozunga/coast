@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Conductor resource revisions compare timezone-normalized UTC
+    timestamps and keep microseconds. A naive ``updated_at`` from
+    ``save()`` and a timezone-aware UTC read of the same instant match.
+    Two updates in the same second stay distinct. Operation receipt ids
+    use the same revision value.
+
+    On MySQL and MariaDB, ``created_at``, ``updated_at``, and
+    ``deleted_at`` are ``DATETIME(6)`` so the database keeps microseconds.
+    SQLite is unchanged. These columns are declared on
+    ``coast.db.base_models`` (``Base`` and ``SoftDeleteMixin``), not on the
+    oslo.db ``TimestampMixin`` and not in ``coast/db/models.py``. The model
+    type uses a MySQL and MariaDB ``DATETIME(fsp=6)`` variant so newly
+    created tables preserve microseconds.

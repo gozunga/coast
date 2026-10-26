@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Failed conductor operations and unhandled API errors write an
+    ERROR log with the exception class and the Coast source location.
+    OpenStack SDK and keystoneauth HTTP errors also include the status
+    code, method, URL without the query string, and request id.
+security:
+  - |
+    These failure logs omit exception messages, HTTP bodies, query
+    strings, and traceback locals. Those values can contain credentials.

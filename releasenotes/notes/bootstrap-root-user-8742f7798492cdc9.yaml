@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Controller token bootstrap creates a missing root user from private
+    container credentials, ensures root-team membership and disables
+    registration. PHP failures exit nonzero without error output.

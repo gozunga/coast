@@ -1,0 +1,72 @@
+---
+- name: Restart coast-api container
+  become: true
+  vars:
+    service: "{{ coast_services['coast-api'] }}"
+  kolla_container:
+    action: recreate_or_restart_container
+    common_options: "{{ docker_common_options }}"
+    name: "{{ service.container_name }}"
+    image: "{{ service.image }}"
+    volumes: "{{ service.volumes }}"
+    dimensions: "{{ service.dimensions }}"
+    healthcheck: "{{ service.healthcheck }}"
+  when:
+    - kolla_action != "config"
+    - service.enabled | bool
+    - inventory_hostname in groups[service.group]
+  no_log: true
+
+- name: Restart coast-conductor container
+  become: true
+  vars:
+    service: "{{ coast_services['coast-conductor'] }}"
+  kolla_container:
+    action: recreate_or_restart_container
+    common_options: "{{ docker_common_options }}"
+    name: "{{ service.container_name }}"
+    image: "{{ service.image }}"
+    volumes: "{{ service.volumes }}"
+    dimensions: "{{ service.dimensions }}"
+    healthcheck: "{{ service.healthcheck }}"
+  when:
+    - kolla_action != "config"
+    - service.enabled | bool
+    - inventory_hostname in groups[service.group]
+  no_log: true
+
+- name: Restart coast-console-proxy container
+  become: true
+  vars:
+    service: "{{ coast_services['coast-console-proxy'] }}"
+  kolla_container:
+    action: recreate_or_restart_container
+    common_options: "{{ docker_common_options }}"
+    name: "{{ service.container_name }}"
+    image: "{{ service.image }}"
+    volumes: "{{ service.volumes }}"
+    dimensions: "{{ service.dimensions }}"
+    healthcheck: "{{ service.healthcheck }}"
+  when:
+    - kolla_action != "config"
+    - service.enabled | bool
+    - inventory_hostname in groups[service.group]
+  no_log: true
+
+- name: Restart coast-health-manager container
+  become: true
+  vars:
+    service: "{{ coast_services['coast-health-manager'] }}"
+  kolla_container:
+    action: recreate_or_restart_container
+    common_options: "{{ docker_common_options }}"
+    name: "{{ service.container_name }}"
+    image: "{{ service.image }}"
+    volumes: "{{ service.volumes }}"
+    dimensions: "{{ service.dimensions }}"
+    healthcheck: "{{ service.healthcheck }}"
+  when:
+    - kolla_action != "config"
+    - service.enabled | bool
+    - inventory_hostname in groups[service.group]
+  no_log: true

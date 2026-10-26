@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Certificate rotation writes one ERROR line to the
+    coast-conductor log when an attempt fails. The line names the
+    exception class, the Coast location, the server id, the stack id,
+    and whether the failure was before or after the start receipt.
+    It omits exception text, private keys, and certificate data.

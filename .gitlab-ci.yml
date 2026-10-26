@@ -1,0 +1,415 @@
+# GitLab CI for Coast.
+#
+# Python checks use tox and can run locally (`tox -e <env>`).
+# The secret scan uses a pinned standalone gitleaks image.
+#
+# Fast lanes (merge requests only):
+#   * pep8 and gitleaks always run.
+#   * Heavy jobs run only when files they exercise changed (see the
+#     .changes_* anchors). A docs-, release-note- or README-only MR runs
+#     pep8 + docs + reno in a few minutes.
+# Full lanes: pipelines on main, schedules (nightly) and web-triggered
+# pipelines run every job regardless of what changed, so nothing escapes.
+
+default:
+  image: python:3.12
+  interruptible: true
+  before_script:
+    - pip install "tox>=4"
+  cache:
+    key:
+      prefix: "$CI_JOB_NAME"
+      files:
+        - requirements.txt
+        - test-requirements.txt
+    paths:
+      - .cache/pip
+      - .tox
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  # pbr needs some history/tags for versioning; 50 is plenty
+  GIT_DEPTH: 50
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+stages:
+  - lint
+  - test
+  - docs
+  - contract
+  - images
+  - publish
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web"
+    # Release tags: created tags, and pipelines run for a tag via the API.
+    - if: $CI_COMMIT_TAG && $CI_PIPELINE_SOURCE =~ /^(push|api)$/
+
+# Rule helpers. On non-MR pipelines (main, schedule, web, tags) every job runs.
+.full_on_main: &full_on_main
+  if: $CI_PIPELINE_SOURCE != "merge_request_event"
+
+.code_rules: &code_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - coast/**/*
+        - etc/**/*
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.functional_rules: &functional_rules
+  rules:
+    - *full_on_main
+    # Unit-test-only edits cannot change functional results; any other
+    # change under coast/ can.
+    - changes:
+        - coast/[a-su-z]*/**/*
+        - coast/*.py
+        - coast/tests/functional/**/*
+        - coast/tests/*.py
+        - etc/**/*
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.docs_rules: &docs_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - doc/**/*
+        - api-ref/**/*
+        - tools/check_doc_publication.py
+        - tools/tests/test_doc_publication.py
+        - "**/*.md"
+        - "**/*.rst"
+        - etc/**/*
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.api_ref_rules: &api_ref_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - api-ref/**/*
+        - coast/api/**/*
+        - doc/requirements.txt
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.template_catalog_rules: &template_catalog_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - tools/gen-template-catalog.py
+        - tools/template-catalog-source.json
+        - coast/**/catalog*.json
+        - coast/**/volumes*.json
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.kolla_rules: &kolla_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - tools/kolla/**/*
+        - setup.cfg
+        - setup.py
+        - requirements.txt
+        - test-requirements.txt
+        - tox.ini
+        - .stestr.conf
+        - .gitlab-ci.yml
+
+.image_plan_rules: &image_plan_rules
+  rules:
+    - *full_on_main
+    - changes:
+        - tools/build-images/**/*
+        - .gitlab-ci.yml
+
+pep8:
+  needs: []  # always runs, even for docs-only changes
+  stage: lint
+  script:
+    - tox -e pep8
+
+# Scan the complete checkout on every pipeline allowed by workflow.
+# History is unchanged; scan files rather than old commits.
+# Configuration: https://github.com/gitleaks/gitleaks/tree/v8.30.0
+gitleaks:
+  needs: []
+  stage: lint
+  image:
+    name: zricethezav/gitleaks:v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9
+    entrypoint: [""]
+  before_script: []
+  cache: []
+  script:
+    - gitleaks dir --config .gitleaks.toml --redact --exit-code 1 .
+
+reno:
+  needs: []
+  stage: lint
+  # reno walks the whole history; a shallow clone misses older notes.
+  variables:
+    GIT_DEPTH: 0
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "merge_request_event"
+    - changes:
+        - releasenotes/**/*
+        - .gitlab-ci.yml
+  script:
+    - pip install reno
+    - reno lint
+
+# Unit suite. Measured on a shared runner (4 concurrent jobs on one
+# host), 3 shards via tools/ci-shard.sh took 130-162s each vs 122-147s for
+# one job, so the suite runs as one job; stestr already uses every CPU.
+# tools/ci-shard.sh stays for runners with more parallel capacity.
+py3:
+  needs: []
+  stage: test
+  <<: *code_rules
+  script:
+    - tox -e py3
+
+template-catalog:
+  needs: []
+  stage: test
+  <<: *template_catalog_rules
+  script:
+    - tox -e template-catalog
+
+kolla-role:
+  needs: []
+  stage: test
+  <<: *kolla_rules
+  variables:
+    ANSIBLE_BECOME_METHOD: su
+  script:
+    - tox -e kolla-role
+
+kolla-images:
+  needs: []
+  stage: test
+  <<: *kolla_rules
+  script:
+    - tox -e kolla-images
+
+functional:
+  needs: []
+  stage: test
+  allow_failure: false
+  <<: *functional_rules
+  script:
+    - tox -e functional
+
+
+docs:
+  needs: []
+  stage: docs
+  <<: *docs_rules
+  script:
+    - tox -e docs
+  artifacts:
+    paths:
+      - doc/build/html
+    expire_in: 1 week
+
+api-ref:
+  needs: []
+  stage: docs
+  <<: *api_ref_rules
+  script:
+    - tox -e api-ref
+  artifacts:
+    paths:
+      - api-ref/build/html
+    expire_in: 1 week
+
+# Configuration and policy generation are blocking.
+genconfig:
+  needs: []
+  stage: docs
+  <<: *code_rules
+  allow_failure: false
+  script:
+    - tox -e genconfig
+  artifacts:
+    paths:
+      - etc/coast/coast.conf.sample
+    expire_in: 1 week
+
+genpolicy:
+  needs: []
+  stage: docs
+  <<: *code_rules
+  allow_failure: false
+  script:
+    - tox -e genpolicy
+  artifacts:
+    paths:
+      - etc/coast/policy.yaml.sample
+    expire_in: 1 week
+
+# Print both image plans. Do not install diskimage-builder and do not
+# build qcow2 files. coast.tests.unit.test_image_create already runs in py3.
+image-plan:
+  needs: []
+  stage: test
+  <<: *image_plan_rules
+  before_script:
+    - "true"
+  script:
+    - |
+      plan_sha=0000000000000000000000000000000000000000000000000000000000000000
+      env -u COAST_COOLIFY_INSTALLER_SHA256 \
+        tools/build-images/coast-image-create.sh \
+        --role controller \
+        --print-command \
+        --coolify-installer-sha256 "${plan_sha}"
+      env -u COAST_COOLIFY_INSTALLER_SHA256 \
+        tools/build-images/coast-image-create.sh \
+        --role worker \
+        --print-command
+
+# Build controller and worker qcow2 images. Manual on the default branch
+# and on a web pipeline. Automatic on a pipeline schedule. Not on merge
+# requests. COAST_COOLIFY_INSTALLER_SHA256 is an input. Fail when it is
+# unset. Do not compute it here. Do not upload to Glance. Do not sign.
+build-images:
+  needs: []  # start with the other jobs; do not wait for tox
+  stage: images
+  interruptible: false
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends ca-certificates curl debootstrap dosfstools gdisk git kpartx procps qemu-utils squashfs-tools sudo zstd
+    - python3 -m venv ${CI_PROJECT_DIR}/.dib-venv
+    - ${CI_PROJECT_DIR}/.dib-venv/bin/pip install diskimage-builder
+  script:
+    - |
+      export COOLIFY_VERSION=$(python3 -c "from coast.common.engine_versions import DEFAULT; print(DEFAULT)")
+      export COAST_COOLIFY_INSTALLER_SHA256=${COAST_COOLIFY_INSTALLER_SHA256:-$(python3 -c "from coast.common.engine_versions import DEFAULT, RELEASES; print(RELEASES[DEFAULT][0])")}
+      if [ -z "${COAST_COOLIFY_INSTALLER_SHA256:-}" ]; then
+        echo "build-images: COAST_COOLIFY_INSTALLER_SHA256 is unset" >&2
+        exit 1
+      fi
+      if ! printf '%s\n' "${COAST_COOLIFY_INSTALLER_SHA256}" \
+          | grep -Eq '^[0-9a-fA-F]{64}$'; then
+        echo "build-images: COAST_COOLIFY_INSTALLER_SHA256 must be 64 hex characters" >&2
+        exit 1
+      fi
+      export PATH="${CI_PROJECT_DIR}/.dib-venv/bin:${PATH}"
+      if ! command -v disk-image-create >/dev/null; then
+        echo "build-images: disk-image-create is not installed" >&2
+        exit 1
+      fi
+      mkdir -p images
+      tools/build-images/coast-image-create.sh \
+        --role controller \
+        --coolify-version ${COOLIFY_VERSION} \
+        --output "${CI_PROJECT_DIR}/images/coast-coolify-controller-${COOLIFY_VERSION}.qcow2"
+      env -u COAST_COOLIFY_INSTALLER_SHA256 \
+        tools/build-images/coast-image-create.sh \
+        --role worker \
+        --coolify-version ${COOLIFY_VERSION} \
+        --output "${CI_PROJECT_DIR}/images/coast-worker-${COOLIFY_VERSION}.qcow2"
+      (
+        cd images
+        sha256sum \
+          coast-coolify-controller-${COOLIFY_VERSION}.qcow2 \
+          coast-worker-${COOLIFY_VERSION}.qcow2 \
+          > SHA256SUMS
+      )
+  artifacts:
+    paths:
+      - images/
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+    - when: never
+
+# Driver contract tests against a live, pinned Coolify. Manual only.
+# Requires COAST_CONTRACT_COOLIFY_URL, WORKER_UUIDS and PRIVATE_KEY_UUID
+# with that prefix, plus protected file-type COAST_CONTRACT_COOLIFY_TOKEN_FILE.
+# Mask the token variable; never echo it or enable CI debug tracing.
+contract-coolify:
+  stage: contract
+  when: manual
+  allow_failure: true
+  variables:
+    COAST_CONTRACT_COOLIFY_TIMEOUT: "900"
+  script:
+    - tox -e contract-coolify
+
+# Publish a release snapshot to the public GitHub repo. Manual, and only in
+# a tag pipeline: the one started by creating the tag, or one run for the
+# tag from the web UI or the API. tools/publish-snapshot.sh drops the
+# .publish-exclude paths, runs gitleaks and pushes one commit plus the tag
+# without force. It waits
+# for the validation jobs below.
+# GITHUB_PUBLISH_TOKEN must be a masked, protected variable, so the tag
+# must be protected too.
+publish-github:
+  # Publish only what passed every validation job in this pipeline.
+  needs:
+    - pep8
+    - gitleaks
+    - reno
+    - py3
+    - template-catalog
+    - kolla-role
+    - kolla-images
+    - functional
+    - docs
+    - api-ref
+    - genconfig
+    - genpolicy
+    - image-plan
+  stage: publish
+  interruptible: false
+  before_script: []
+  cache: []
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_PIPELINE_SOURCE =~ /^(push|api|web)$/
+      when: manual
+    - when: never
+  script:
+    - tools/publish-snapshot.sh "$CI_COMMIT_TAG"

@@ -1,0 +1,5 @@
+other:
+  - |
+    Documented the Databases dashboard paths alongside CLI commands in the
+    quickstart, database support article and portal guide, including catalog
+    creation, credentials, public access, backups and logs (issue #129).

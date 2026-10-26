@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Nova block device mappings include the image as the local boot device
+    before Cinder data volumes. Data volumes are retained on server deletion.

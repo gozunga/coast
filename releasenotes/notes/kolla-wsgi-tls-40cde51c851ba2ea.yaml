@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Kolla requires ``coast_database_password`` and
+    ``coast_keystone_password`` in ``passwords.yml``. Use the supplied
+    Coast play beside Kolla ``site.yml`` to configure loadbalancers before
+    database bootstrap. Backend TLS uses Kolla leaf certificates.
+  - |
+    The Coast Kolla role runs the API with uWSGI and the coast-wsgi-api
+    entry point on the API interface. It supports Kolla backend TLS,
+    internal and external HAProxy VIP listeners, ProxySQL user routing,
+    database bootstrap and shared Kolla RabbitMQ messaging.

@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    The Coolify client logs one sanitized line when the engine returns
+    HTTP 4xx. The line contains the method, the path template, the
+    status, the JSON message, and validation error key names. It does
+    not contain tokens, private keys, or the raw response body.

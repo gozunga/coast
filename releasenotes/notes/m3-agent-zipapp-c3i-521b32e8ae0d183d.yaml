@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Operators can build a single-file ``coast-agent`` payload with
+    ``tools/build-images/build-agent-pyz.sh``. The payload targets Python
+    3.12 on Ubuntu Noble and prints its SHA256 checksum for the image build.
+    Both golden images install the Python 3 runtime.

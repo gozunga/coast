@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Health-manager and conductor logs use a stable ``Failover:`` prefix with
+    stack and server identifiers for heartbeat timeout, dispatch and refusal
+    decisions. Refusal warnings are limited to once per reason per unhealthy
+    episode. Conductor start and end records include the outcome, duration
+    in seconds and old and new compute identifiers for worker, build and
+    controller replacements.
+fixes:
+  - |
+    Refusal warnings cover controller claim conflicts and early controller
+    and worker admission exits. Claim-conflict warnings are persisted after
+    rollback so later retries retain episode deduplication.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Guest images leave ``docker.socket`` unmasked. Docker service and
+    socket startup require Cinder volume mounts. Config-drive bootcmd
+    leaves Docker service startup to the guest service ordering.

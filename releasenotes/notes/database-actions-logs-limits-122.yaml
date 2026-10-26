@@ -1,0 +1,5 @@
+features:
+  - |
+    Databases support start, stop, restart and runtime logs at microversion
+    1.29. Resource limit updates report that a restart is required and take
+    effect on the next start or restart without interrupting running databases.

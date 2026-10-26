@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Template service env PUT and PATCH accept runtime environment variables
+    and reject ``build_time=true`` with an error describing that restriction.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Remove a worker or build server when its stack is ``ACTIVE`` or
+    ``DEGRADED``. Failed and unhealthy servers support removal. The server delete API accepts ``ERROR``, ``UNHEALTHY``, and
+    ``DELETING``. A ``DELETING`` server can start cleanup again. Other
+    stack statuses stay refused. After a successful removal, the stack
+    health rollup runs again. The stack returns to ``ACTIVE`` when every
+    remaining server is ``ACTIVE`` and the stack fault is the heartbeat
+    timeout.

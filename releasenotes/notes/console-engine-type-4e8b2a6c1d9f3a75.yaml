@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Console access supports services created from container images. The
+    console proxy selects the engine resource type from the service's
+    template association.

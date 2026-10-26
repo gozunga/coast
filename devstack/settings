@@ -1,0 +1,21 @@
+# DevStack settings for the Coast API and the limited agent user.
+# Enable the plugin with:
+#   enable_plugin coast <coast git url>
+# Operator must set COAST_AGENT_PASSWORD. Do not copy SERVICE_PASSWORD.
+
+enable_service coast-api
+
+COAST_AGENT_USER=${COAST_AGENT_USER:-coast-agent}
+COAST_AGENT_ROLE=${COAST_AGENT_ROLE:-coast_agent}
+COAST_AGENT_PASSWORD=${COAST_AGENT_PASSWORD:-}
+
+COAST_DIR=${COAST_DIR:-$DEST/coast}
+COAST_CONF_DIR=${COAST_CONF_DIR:-/etc/coast}
+COAST_CONF=${COAST_CONF:-$COAST_CONF_DIR/coast.conf}
+COAST_UWSGI_CONF=${COAST_UWSGI_CONF:-$COAST_CONF_DIR/coast-api-uwsgi.ini}
+COAST_API_PASTE=${COAST_API_PASTE:-$COAST_DIR/etc/coast/api-paste.ini}
+COAST_SERVICE_PORT=${COAST_SERVICE_PORT:-9600}
+# DevStack's SERVICE_LISTEN_ADDRESS defaults to 0.0.0.0.
+# Coast listens on one host address.
+COAST_SERVICE_LISTEN_ADDRESS=${COAST_SERVICE_LISTEN_ADDRESS:-$HOST_IP}
+COAST_SERVICE_HOST=${COAST_SERVICE_HOST:-$COAST_SERVICE_LISTEN_ADDRESS}

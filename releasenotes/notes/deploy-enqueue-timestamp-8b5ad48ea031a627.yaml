@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Deployment enqueue checkpoints record their start time with
+    whole-second timestamps.

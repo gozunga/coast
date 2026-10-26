@@ -1,0 +1,23 @@
+---
+features:
+  - |
+    The health manager requests automatic replacement of worker and build
+    VMs that remain UNHEALTHY beyond ``failover_grace``. Replacement retains
+    the recorded image and flavor, data and Docker volumes, ports, fixed
+    addresses, floating IP and Coolify server registration. Running
+    application containers are verified; missing workloads are redeployed
+    from their current deployment.
+  - |
+    Existing task locks limit replacement to one per stack. The
+    ``[health_manager] failover_max_concurrent`` option defaults to two
+    claimed replacements across all conductors. Set ``enable_failover`` to
+    false to disable automatic replacement. Failed or interrupted work
+    retains cloud resources and reports ERROR for operator recovery.
+issues:
+  - |
+    Workers with any live template service stay UNHEALTHY and receive one
+    operator-action event per unhealthy episode. Later sweeps do not repeat
+    the event. Automatic replacement supports at most 100 live services per
+    stack and 100 attached volumes per server. Uncertain deployments are not
+    enqueued again; unsupported image-digest pinning and unknown engine
+    observations fail closed.

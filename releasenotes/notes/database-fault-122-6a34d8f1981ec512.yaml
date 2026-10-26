@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Database list and show responses at microversion 1.29 now include a
+    read-only fault with a customer-safe reason when an asynchronous task
+    fails. Faults clear on a new action or recovery to ACTIVE or STOPPED.
+    Related to issue #122 in the databases epic #131.

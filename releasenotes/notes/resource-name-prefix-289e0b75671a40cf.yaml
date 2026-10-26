@@ -1,0 +1,9 @@
+features:
+  - |
+    Operators can set ``[DEFAULT] resource_name_prefix`` before creation to
+    name Coast-managed cloud resources. The default is ``coast``.
+    Environment network, subnet, router and security group names use the
+    common safe-name helper; worker floating IP checks use the same names.
+    Names contain only ASCII letters, digits and hyphens, with a maximum
+    length of 255 characters. Keep the configured prefix until resource
+    cleanup completes so name-based lookup and validation work.

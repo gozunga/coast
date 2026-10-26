@@ -1,0 +1,243 @@
+---
+- name: Check config serialization with TLS on and off
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    coast_secrets_backend: "{{ coast_role_defaults.coast_secrets_backend }}"
+    coast_max_secret_bytes: "{{ coast_role_defaults.coast_max_secret_bytes }}"
+    rpc_transport_url: "{{ kolla_messaging.rpc_transport_url }}"
+    notify_transport_url: "{{ kolla_messaging.notify_transport_url }}"
+    om_rpc_transport: "{{ kolla_messaging.om_rpc_transport }}"
+    om_rpc_user: "{{ kolla_messaging.om_rpc_user }}"
+    om_rpc_password: "{{ kolla_messaging.om_rpc_password }}"
+    om_rpc_port: "{{ kolla_messaging.om_rpc_port }}"
+    om_rpc_group: "{{ kolla_messaging.om_rpc_group }}"
+    om_rpc_vhost: "{{ kolla_messaging.om_rpc_vhost }}"
+    om_notify_transport: "{{ kolla_messaging.om_notify_transport }}"
+    om_notify_user: "{{ kolla_messaging.om_notify_user }}"
+    om_notify_password: "{{ kolla_messaging.om_notify_password }}"
+    om_notify_port: "{{ kolla_messaging.om_notify_port }}"
+    om_notify_group: "{{ kolla_messaging.om_notify_group }}"
+    om_notify_vhost: "{{ kolla_messaging.om_notify_vhost }}"
+    rabbitmq_user: "{{ kolla_rabbitmq.rabbitmq_user }}"
+    rabbitmq_port: "{{ kolla_rabbitmq.rabbitmq_port }}"
+    openstack_region_name: test-region
+    rabbitmq_password: test-only-rpc-password
+    rabbitmq_enable_tls: false
+    enable_ceilometer: false
+    coast_enabled_notification_topics: "{{ [{'name': 'notifications'}] if tls_enabled | default(false) else [] }}"
+    om_enable_rabbitmq_stream_fanout: true
+    om_rabbitmq_qos_prefetch_count: 50
+    memcache_security_strategy: ENCRYPT
+    memcache_secret_key: test-only-cache-key
+    memcached_port: 11211
+    coast_openstack_ca_source: /test/cloud-ca.pem
+    api_interface_address: 127.0.0.1
+    coast_enable_tls_backend: false
+    coast_api_listen_port: 9600
+    coast_public_endpoint: https://example.com:9600
+    coast_database_connection: mysql+pymysql://coast:test@example.com/coast
+    openstack_cacert: /etc/coast/database-ca.pem
+    om_rabbitmq_cacert: /etc/coast/rabbit-ca.pem
+    coast_keystone_user: coast
+    coast_keystone_password: test
+    coast_agent_keystone_user: coast-agent
+    coast_agent_keystone_password: agent-test-password
+    coast_agent_keystone_role: coast_agent
+    coast_service_auth_project: service
+    coast_service_auth_domain: Default
+    coast_openstack_cafile: /etc/coast/cloud-ca.pem
+    keystone_internal_url: https://example.com/identity
+    keystone_public_url: https://example.com/identity
+    coast_driver: coolify_v4
+    coast_enabled_drivers: [coolify_v4]
+    coast_controller_worker_options: {}
+    coast_admin_ssh_key_name: ""
+    coast_coolify_build_registry_image_template: ""
+    coast_health_manager_ips: [192.0.2.20, 192.0.2.21]
+    coast_health_manager_bind_ip: 192.0.2.20
+    # The template lookup does not load role defaults.
+    coast_health_manager_port: 5565
+    coast_health_manager_key_lookup: coast.health_manager.keys.StackKeyLookup
+    coast_cloud_region: test-region
+    coast_cloud_interface: internal
+    item:
+      key: coast-health-manager
+  tasks:
+    - name: Load Coast role defaults
+      ansible.builtin.include_vars:
+        file: ../ansible/roles/coast/defaults/main.yml
+        name: coast_role_defaults
+
+    - name: Load pinned Kolla messaging group variables
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'ANSIBLE_ROLES_PATH').split(':')[1] }}/../group_vars/all/common.yml"
+        name: kolla_messaging
+
+    - name: Load pinned Kolla RabbitMQ group variables
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'ANSIBLE_ROLES_PATH').split(':')[1] }}/../group_vars/all/rabbitmq.yml"
+        name: kolla_rabbitmq
+
+    - name: Load Coast network group variables into hostvars
+      ansible.builtin.include_vars: ../ansible/group_vars/all/coast.yml
+
+    - name: Supply distinct API and management interface facts
+      ansible.builtin.set_fact:
+        network_interface: test-mgmt
+        ansible_facts:
+          test_mgmt:
+            ipv4:
+              address: 192.0.2.20
+
+    - name: Check management address selection with the Kolla filter
+      ansible.builtin.assert:
+        that:
+          - coast_network_interface == 'test-mgmt'
+          - coast_network_interface_address == '192.0.2.20'
+
+    - name: Add the local host to the memcached inventory
+      ansible.builtin.add_host:
+        name: localhost
+        groups: memcached
+        api_interface: test-mgmt
+        api_address_family: ipv4
+
+    - name: Add three RabbitMQ controllers with API interface facts
+      ansible.builtin.add_host:
+        name: "controller-{{ controller_number }}.example.com"
+        groups: rabbitmq
+        api_interface: test-api
+        api_address_family: ipv4
+      loop: [1, 2, 3]
+      loop_control:
+        loop_var: controller_number
+
+    - name: Supply RabbitMQ controller facts
+      ansible.builtin.set_fact:
+        ansible_facts:
+          test_api:
+            ipv4:
+              address: "192.0.2.{{ controller_number }}"
+      delegate_to: "controller-{{ controller_number }}.example.com"
+      delegate_facts: true
+      loop: [1, 2, 3]
+      loop_control:
+        loop_var: controller_number
+
+    - name: Check each TLS and management mode
+      ansible.builtin.include_tasks: render-case.yml
+      loop: [true, false]
+      loop_control:
+        loop_var: tls_enabled
+
+    - name: Check rendered management script shell syntax
+      ansible.builtin.command:
+        argv: [/bin/sh, -n]
+        stdin: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast-hm0-setup.sh.j2') }}"
+      changed_when: false
+      vars:
+        kolla_container_engine: docker
+        coast_hm0_bridge: br-int
+        coast_hm0_mtu: 1400
+        coast_hm0_port:
+          port_id: 11111111-1111-1111-1111-111111111111
+          mac_address: "02:00:00:00:00:01"
+          address: 192.0.2.2/24
+
+    - name: Check config overrides and container settings
+      ansible.builtin.include_tasks: render-merge.yml
+
+- name: Check role management defaults and advertised peer addresses
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Load role defaults
+      ansible.builtin.include_vars: ../ansible/roles/coast/defaults/main.yml
+
+    - name: Check default service roles
+      ansible.builtin.assert:
+        that:
+          - coast_keystone_user_roles == ['admin']
+
+    - name: Select reduced service roles for render test
+      ansible.builtin.set_fact:
+        coast_keystone_user_roles: [member, swiftoperator, ResellerAdmin]
+
+    - name: Check configured service role grants and separate agent grant
+      ansible.builtin.assert:
+        that:
+          - coast_ks_users | length == 4
+          - "(coast_ks_users[:-1] | map(attribute='role') | list) == coast_keystone_user_roles"
+          - "(coast_ks_users[:-1] | map(attribute='user') | unique | list) == ['coast']"
+          - coast_ks_users[-1].user == 'coast-agent'
+          - coast_ks_users[-1].role == 'coast_agent'
+      vars:
+        coast_keystone_password: test-only-service-password
+        coast_agent_keystone_password: test-only-agent-password
+      no_log: true
+
+    - name: Check Octavia notification enablement defaults
+      ansible.builtin.assert:
+        that:
+          - "(coast_enabled_notification_topics | map(attribute='name') | list) == (['notifications'] if notification_enabled else [])"
+      vars:
+        enable_ceilometer: "{{ notification_enabled }}"
+      loop: [true, false]
+      loop_control:
+        loop_var: notification_enabled
+
+    - name: Load network group variables
+      ansible.builtin.include_vars: ../ansible/group_vars/all/coast.yml
+
+    - name: Supply management facts and enable health-manager
+      ansible.builtin.set_fact:
+        coast_enable_health_manager: true
+        network_interface: test-mgmt
+        ansible_facts:
+          test_mgmt:
+            ipv4:
+              address: 192.0.2.20
+
+    - name: Add health-manager peers with inventory address overrides
+      ansible.builtin.add_host:
+        name: "{{ item.name }}"
+        groups: coast-health-manager
+        coast_network_interface_address: "{{ item.address }}"
+      loop:
+        - {name: hm-one, address: 192.0.2.20}
+        - {name: hm-two, address: 192.0.2.21}
+
+    - name: Check local bind and all guest heartbeat destinations
+      ansible.builtin.assert:
+        that:
+          - coast_health_manager_bind_ip == '192.0.2.20'
+          - coast_health_manager_ips == ['192.0.2.20', '192.0.2.21']
+          - coast_health_manager_port | int == 5565
+          - coast_health_manager_key_lookup == 'coast.health_manager.keys.StackKeyLookup'
+          - not coast_enable_external_api | bool
+
+    - name: Select hm0 before its interface facts exist
+      ansible.builtin.set_fact:
+        coast_network_interface: coast-hm0
+        coast_network_interface_address: 192.0.2.22
+        ansible_facts: {}
+
+    - name: Check first-deploy hm0 bind override
+      ansible.builtin.assert:
+        that:
+          - coast_health_manager_bind_ip == '192.0.2.22'
+
+    - name: Disable health-manager
+      ansible.builtin.set_fact:
+        coast_enable_health_manager: false
+
+    - name: Check disabled heartbeat destinations
+      ansible.builtin.assert:
+        that:
+          - coast_health_manager_ips == []
+
+- name: Check service images and config-only role execution
+  ansible.builtin.import_playbook: render-config.yml

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A failed deployment sets its service to ERROR unless a previous
+    release is verified running. Crash loops always produce ERROR. Runtime
+    checks run outside the database write transaction. Deployment history
+    and the previous release pointer are preserved.

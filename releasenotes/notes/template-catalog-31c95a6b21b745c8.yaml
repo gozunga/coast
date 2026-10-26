@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Project-scoped template list and detail endpoints use packaged metadata
+    from a digest-locked upstream source. The template-catalog tox and CI
+    check detects drift without reading controller internals. Template
+    sources support workload creation through the conductor.

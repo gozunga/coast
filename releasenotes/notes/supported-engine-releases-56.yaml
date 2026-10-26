@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Coast supports mixed fleets of app engine releases and upgrades with
+    snapshot-backed rollback. ``coast/common/engine_versions.py`` selects
+    the default for new stacks and supplies agent, image build and CI
+    inputs.
+  - |
+    Golden image builds require ``COAST_COOLIFY_IMAGES_LOCK`` with reviewed
+    stock image digests for the selected release. Installer and offline
+    artifact checksums come from the central release registry.

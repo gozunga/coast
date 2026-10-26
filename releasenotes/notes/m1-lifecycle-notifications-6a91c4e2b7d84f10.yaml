@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Coast emits oslo.messaging notifications for create, update, and
+    delete of environments, servers, volumes, apps, domains, deployments,
+    and environment variables. Publishers are ``coast-api.<host>`` and
+    ``coast-conductor.<host>``. Event types are
+    ``coast.<resource>.<action>.start|end|error``. Set the driver in
+    ``[oslo_messaging_notifications]``. The default driver is
+    ``messagingv2`` and the default retry is 0. Payloads contain
+    identifiers and status only.

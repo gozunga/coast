@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    API 1.23 lets cloud users choose a primary custom domain for a service
+    and disable its default address. Service responses expose primary_url
+    and default_domain_enabled; domains expose primary. Disabling requires
+    a primary custom domain, whose removal is blocked until another main
+    domain is chosen or the default address is enabled again. Reconciliation
+    removes the disabled default route and its DNS records. Managed custom
+    CNAMEs use direct address records until the default address is re-enabled.

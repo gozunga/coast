@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Stacks name servers per role (``build-1``, ``worker-1``, ``worker-2``).
+    ``POST /v1/stacks/{id}/servers`` may omit ``name``; Coast then picks
+    the next free ``<role>-N``.
+  - |
+    Duplicate-name conflicts return a friendly 409 message, for example
+    "A stack named X already exists in this project."

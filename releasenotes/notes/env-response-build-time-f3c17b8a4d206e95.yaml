@@ -1,0 +1,5 @@
+features:
+  - |
+    Service env GET, PUT and PATCH responses include the stored
+    ``build_time`` flag for each variable. This lets clients correctly
+    show runtime-only variables, including secret variables.

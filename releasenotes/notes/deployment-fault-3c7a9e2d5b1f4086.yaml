@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Deployment responses include ``fault``, a short Coast-written reason for
+    a failed deployment (for example the port hint).

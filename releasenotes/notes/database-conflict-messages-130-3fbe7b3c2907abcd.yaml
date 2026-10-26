@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Database conflict (409) responses now explain when to retry or which
+    action to take, without exposing internal operation names. This includes
+    operations during startup, creation, deletion and other ongoing work.
+    Duplicate names on database creation or rename now explain that apps and
+    databases share names within a stack and ask users to choose another name.

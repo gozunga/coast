@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The health-manager detects stale server heartbeats and recovers servers
+    on fresh recorded heartbeats. Stale servers become UNHEALTHY; stacks
+    become DEGRADED, including when the controller is stale. Checks are
+    bounded, skip active tasks and transitional resources, and emit status
+    update notifications.
+  - |
+    The built-in Barbican heartbeat key lookup is the default for
+    health_manager.key_lookup. Operators can override it. HMAC validation
+    and replay protection protect heartbeats.

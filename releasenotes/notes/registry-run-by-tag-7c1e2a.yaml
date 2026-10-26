@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The controller registry runs from the locally loaded image tag. The
+    image archive is verified against ``SHA256SUMS``; startup requires no
+    image pull.

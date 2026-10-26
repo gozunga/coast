@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Workload kind is stored on the service. API versions 1.11 through 1.27
+    default image workloads to ``service``; clients can request
+    ``kind=app``. Git sources use ``app`` and templates use ``service`` at
+    these versions. API 1.28 defaults image and Git sources to ``app`` and
+    honors explicit kind selections. Earlier API versions classify images
+    as apps.

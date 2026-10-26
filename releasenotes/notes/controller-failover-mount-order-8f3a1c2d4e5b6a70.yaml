@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Controller failover keeps the existing Coolify database and API
+    token. The guest image orders ``docker.socket`` and dockerd after
+    the Cinder volume mount wait. Cloud-init boot commands do not stop
+    ``docker.service`` or mask ``docker.socket``. First boot does not
+    create a new ``.env`` when engine directories already exist.
+    Failover does not bootstrap again.

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The offline build tool, ``tools/gen-template-catalog.py``, generates a
+    deterministic one-click template catalog from the pinned Coolify
+    template source after a required SHA256 check. The catalog contains
+    metadata and environment key names only, not compose content or
+    environment values. The catalog is packaged for the template API.

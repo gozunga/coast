@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Guest management network setup supports a network namespace without
+    an IPv4 main routing table. The management NIC address flush removes
+    connected routes before setup restores the configured address.
+    Repeat setup is supported.

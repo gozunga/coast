@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Stack deletion clears service current deployment references before
+    deleting deployment history.

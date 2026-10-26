@@ -1,0 +1,16 @@
+fixes:
+  - |
+    Apps, environments and app groups can be deleted normally on an idle
+    DEGRADED stack. Exclusive stack operations and live child resources
+    prevent conflicting deletion. When the engine is unreachable, deletion
+    cleans up the Coast records.
+  - |
+    Controller failover keeps a healthy replacement controller even when
+    tenant workers are failed or unreachable. Workload recovery is best
+    effort, and missing template containers are not redeployed. Unhealthy
+    servers keep the stack DEGRADED so tenants can recover or delete their
+    workloads.
+  - |
+    App deletion responses are rendered before cleanup is dispatched, so an
+    accepted deletion always returns its response and keeps deployment
+    history until cleanup runs.

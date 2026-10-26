@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    API 1.12 adds project-member GET and PUT
+    ``/v1/services/{service_id}/compose``. Coast stores desired YAML in
+    Barbican and snapshots its reference for the existing deployment
+    action. The app engine driver supports template services through the
+    public API. Git-backed compose applications return 409 because the
+    pinned engine has no documented application compose-content update
+    field.
+security:
+  - |
+    Compose supports dedicated-worker host paths and privileged workloads.
+    File imports and unsupported Compose features fail closed. Both read
+    and write require project member access because YAML can contain
+    secrets. New named volumes use existing storage quota accounting;
+    removed volume data retains its charge.
+other:
+  - |
+    The editor accepts at most ``[api] max_compose_bytes`` UTF-8 bytes
+    (default 10000). Save returns 200 without deployment; call the existing
+    service deployments endpoint after saving to redeploy (202).

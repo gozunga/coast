@@ -1,0 +1,12 @@
+fixes:
+  - |
+    Template deployment logs read service container output through the
+    documented app engine service logs endpoint. Coast selects one
+    unambiguous sub-service and applies the same secret masking as
+    application logs. Template log snapshots are complete even while
+    deployment is pending. Missing engine log resources return empty,
+    complete output without capture retries. HTTP 403 on the template
+    service logs route also returns empty, complete output without
+    retries. HTTP 401, metadata and env authorization errors, and
+    connection failures retain their existing error responses. The HTTP
+    client does not retry 404 responses.

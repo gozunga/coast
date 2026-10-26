@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Guests use static management IPv4 and configured heartbeat host routes
+    in the main namespace. Management has no default gateway. Neutron DHCP
+    on the environment NIC supplies the stack-router default route.
+    Controller and build security groups permit UDP destination port 67 so
+    ML2/OVN can deliver DHCP leases.
+security:
+  - |
+    Management isolation uses management security groups and the operator
+    provider router/firewall.

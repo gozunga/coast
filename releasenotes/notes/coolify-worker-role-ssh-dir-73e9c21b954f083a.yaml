@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Workers use the engine's ``both`` role without a usable dedicated build
+    server and the ``deployment`` role when one exists. Dedicated build
+    servers use the ``build`` role. The controller engine SSH directory
+    and its children use UID 9999, GID 0 and mode 0700.

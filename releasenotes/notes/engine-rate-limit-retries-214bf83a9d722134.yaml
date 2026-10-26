@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Engine HTTP 429 rejections retry, including create and deploy POSTs,
+    using Retry-After or bounded exponential backoff with jitter. Operators
+    can tune the eight-attempt and 60-second retry budgets with
+    ``[coolify] rate_limit_attempts`` and ``rate_limit_timeout``. Exhaustion
+    reports a rate-limit fault. Image creation skips build-server discovery when unnecessary.
+    Rate limiting during readiness sampling keeps the deployment pending
+    until its timeout, then reports a rate-limit fault with one operator log
+    entry.

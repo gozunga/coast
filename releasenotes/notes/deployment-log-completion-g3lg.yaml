@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Live deployment logs return complete=false while the deployment
+    status is BUILDING, as they do for PENDING and DEPLOYING. Portals can
+    continue to poll logs until the build and deployment finish.

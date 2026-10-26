@@ -1,0 +1,13 @@
+{
+    "log": {
+        "deployment_id": "d001d001-d001-d001-d001-d001d001d001",
+        "complete": false,
+        "lines": [
+            {
+                "ts": "2026-10-09T14:06:01Z",
+                "stream": "build",
+                "line": "Build step in progress."
+            }
+        ]
+    }
+}

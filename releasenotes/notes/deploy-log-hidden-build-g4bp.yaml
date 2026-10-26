@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Deployment logs include Coolify build output that the engine
+    marks hidden. The same secret mask applies. The response has no
+    new fields. A hidden build entry with no output becomes one
+    progress line for that step.

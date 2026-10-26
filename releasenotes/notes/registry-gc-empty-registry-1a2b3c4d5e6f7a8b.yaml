@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Registry garbage collection supports an empty per-stack registry,
+    including absent repositories and blobs directories.

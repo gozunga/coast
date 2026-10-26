@@ -1,0 +1,25 @@
+{
+    "events": [
+        {
+            "id": "f4f4f4f4-f4f4-f4f4-f4f4-f4f4f4f4f4f4",
+            "project_id": "11111111-1111-1111-1111-111111111111",
+            "stack_id": "6f0f5d0e-2a1b-4c8f-9a51-0b9f1f2d7c11",
+            "resource_type": "environment",
+            "resource_id": "6f0f5d0e-2a1b-4c8f-9a51-0b9f1f2d7c11",
+            "action": "create",
+            "outcome": "start",
+            "message": null,
+            "request_id": "req-example-0001",
+            "created_at": "2026-10-09T14:06:00Z",
+            "updated_at": null,
+            "links": [
+                {
+                    "rel": "self",
+                    "href": "https://cloud.example.com:9600/v1/events?id=f4f4f4f4-f4f4-f4f4-f4f4-f4f4f4f4f4f4"
+                }
+            ],
+            "environment_id": null
+        }
+    ],
+    "links": []
+}

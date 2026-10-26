@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+element=$(dirname "$(dirname "$(readlink -f "$0")")")
+if declare -F get_image_element_array >/dev/null; then
+    eval "declare -A image_elements=($(get_image_element_array))"
+    element=${image_elements[coast-agent]}
+fi
+sudo install -D -m 0755 "$element/../../../../coast/agent/firstboot.py" \
+    "${TARGET_ROOT}/usr/local/sbin/coast-firstboot"
+
+repo=$element/../../../..
+package=${TARGET_ROOT}/usr/local/lib/python3.12/dist-packages/coast
+sudo mkdir -p "$package/common"
+sudo touch "$package/__init__.py" "$package/common/__init__.py"
+sudo install -m 0644 "$repo/coast/common/engine_versions.py" "$package/common/"
+version=${COAST_COOLIFY_VERSION:-${DIB_COAST_COOLIFY_VERSION:-}}
+PYTHONPATH="$repo" python3 -c 'import sys; from coast.common.engine_versions import RELEASES; sys.exit(sys.argv[1] not in RELEASES)' "$version"
+sudo mkdir -p "${TARGET_ROOT}/usr/lib/coast"
+printf '%s\n' "$version" | sudo tee "${TARGET_ROOT}/usr/lib/coast/engine-version" > /dev/null

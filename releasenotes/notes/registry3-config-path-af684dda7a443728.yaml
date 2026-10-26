@@ -1,0 +1,5 @@
+---
+security:
+  - |
+    The per-stack registry mounts its configuration at
+    ``/etc/distribution/config.yml`` and requires TLS and authentication.

@@ -1,0 +1,9 @@
+features:
+  - |
+    The conductor reconciles supported environment variables and domains
+    for ACTIVE services on idle ACTIVE stacks. It takes the existing service
+    task lock, repairs only known drift, and records running-state mismatch
+    without automatically restarting workloads. The conductor option
+    ``service_reconcile_interval`` defaults to 600 seconds between bounded scan
+    rounds. Unknown observations and unsupported settings produce sanitized
+    activity errors.

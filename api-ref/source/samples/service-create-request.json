@@ -1,0 +1,23 @@
+{
+    "service": {
+        "name": "web",
+        "environment_id": "55555555-5555-5555-5555-555555555555",
+        "server_id": "43828f3a-dd3f-5308-b8eb-51f304689211",
+        "source": {
+            "type": "git",
+            "repo_url": "https://github.com/example/web.git",
+            "branch": "main",
+            "build_pack": "nixpacks"
+        },
+        "ports": "3000",
+        "memory_limit_mb": 1024,
+        "healthcheck_path": "/healthz",
+        "env": {
+            "NODE_ENV": {
+                "value": "production"
+            }
+        },
+        "deploy": true,
+        "appgroup_id": "44444444-4444-4444-4444-444444444444"
+    }
+}

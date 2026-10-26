@@ -1,0 +1,6 @@
+---
+issues:
+  - |
+    Database backups require a Swift-compatible object-storage endpoint
+    in the cloud. They are not verified end to
+    end; verification is planned for 0.1.1.

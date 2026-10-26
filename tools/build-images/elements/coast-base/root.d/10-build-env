@@ -1,0 +1,36 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+umask 022
+
+role=${COAST_ROLE:-${DIB_COAST_ROLE:?COAST_ROLE is required}}
+distro=${COAST_DISTRO:-ubuntu}
+release=${COAST_RELEASE:-noble}
+version=${COAST_COOLIFY_VERSION:-${DIB_COAST_COOLIFY_VERSION:?}}
+offline=${COAST_OFFLINE:-${DIB_COAST_OFFLINE:-0}}
+agent_source=${COAST_AGENT_SOURCE:-${DIB_COAST_AGENT_SOURCE:-}}
+agent_sha=${COAST_AGENT_SHA256:-${DIB_COAST_AGENT_SHA256:-}}
+coolify_sha=${COAST_COOLIFY_INSTALLER_SHA256:-${DIB_COAST_COOLIFY_INSTALLER_SHA256:-}}
+agent_url=""
+case "$agent_source" in
+    http://*|https://*)
+        agent_url=$agent_source
+        ;;
+esac
+
+dest="${TARGET_ROOT}/etc/coast"
+sudo mkdir -p "$dest"
+{
+    printf 'COAST_ROLE=%q\n' "$role"
+    printf 'COAST_DISTRO=%q\n' "$distro"
+    printf 'COAST_RELEASE=%q\n' "$release"
+    printf 'COAST_COOLIFY_VERSION=%q\n' "$version"
+    printf 'COAST_OFFLINE=%q\n' "$offline"
+    printf 'COAST_AGENT_URL=%q\n' "$agent_url"
+    printf 'COAST_AGENT_SHA256=%q\n' "$agent_sha"
+    printf 'COAST_COOLIFY_INSTALLER_SHA256=%q\n' "$coolify_sha"
+} | sudo tee "${dest}/build.env" > /dev/null
+sudo chmod 0644 "${dest}/build.env"

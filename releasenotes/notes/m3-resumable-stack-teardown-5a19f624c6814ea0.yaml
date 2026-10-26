@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Stack deletion retries skip engine calls after engine cleanup completes
+    or Nova confirms the controller is absent. The engine token reference
+    is retained until secret cleanup. An unreachable engine is recorded
+    and cloud teardown continues.

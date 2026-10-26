@@ -1,0 +1,299 @@
+---
+# Images are built with the Coast kolla-build overlay.
+enable_coast: true
+coast_api_port: 9600
+coast_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | default(false) | bool else coast_api_port }}"
+coast_api_listen_port: "{{ coast_api_port }}"
+coast_enable_tls_backend: "{{ kolla_enable_tls_backend }}"
+coast_api_workers: "{{ openstack_service_workers }}"
+coast_internal_fqdn: "{{ kolla_internal_fqdn }}"
+coast_external_fqdn: "{{ kolla_external_fqdn }}"
+coast_internal_endpoint: "{{ internal_protocol }}://{{ coast_internal_fqdn | put_address_in_context('url') }}:{{ coast_api_port }}"
+# The external VIP is the internet-facing address. Leave this false so the
+# API stays on the internal API network. Set true to publish it.
+coast_enable_external_api: false
+coast_public_endpoint: "{{ (public_protocol ~ '://' ~ (coast_external_fqdn | put_address_in_context('url')) ~ ':' ~ coast_api_public_port) if coast_enable_external_api | bool else coast_internal_endpoint }}"
+coast_admin_endpoint: "{{ coast_internal_endpoint }}"
+coast_database_name: coast
+coast_database_user: "{{ database_user if use_preconfigured_databases | bool and use_common_mariadb_user | bool else 'coast' }}"
+coast_database_address: "{{ database_address | put_address_in_context('url') }}:{{ database_port }}"
+coast_database_connection: "mysql+pymysql://{{ coast_database_user }}:{{ coast_database_password | urlencode }}@{{ coast_database_address }}/{{ coast_database_name }}"
+# Network variables live in group_vars/all/coast.yml, as in Octavia.
+coast_health_manager_bind_ip: "{{ coast_network_interface_address }}"
+coast_health_manager_port: 5565
+coast_health_manager_key_lookup: "coast.health_manager.keys.StackKeyLookup"
+coast_health_manager_ips: "{{ groups['coast-health-manager'] | map('extract', hostvars, 'coast_network_interface_address') | list if coast_enable_health_manager | bool else [] }}"
+coast_hm0_manage: false
+coast_hm0_bridge: "{{ neutron_bridge_name }}"
+coast_hm0_binding_host: "{{ ansible_facts.nodename }}"
+coast_hm0_python: /opt/coast/bin/python
+coast_hm0_script: /usr/local/libexec/coast-hm0.py
+# CIDR, address and MTU are required operator inputs.
+coast_hm0_host_firewall_ready: false
+coast_keystone_service_type: app-hosting
+coast_keystone_service_name: coast
+coast_keystone_user: coast
+# Designate sudo still requires admin; see service-permissions.md.
+coast_keystone_user_roles: [admin]
+coast_service_auth_project: service
+coast_service_auth_domain: Default
+# Limited user for agent-facing control-plane checks. Not the admin
+# service user. The password has no default; set it in passwords.yml.
+coast_agent_keystone_user: coast-agent
+coast_agent_keystone_role: coast_agent
+coast_enable_health_manager: false
+coast_config_dir: "{{ node_config_directory }}/coast"
+coast_certificates_dir: "{{ node_custom_config }}/coast/certs"
+coast_driver: coolify_v4
+coast_enabled_drivers: [coolify_v4]
+coast_admin_ssh_key_name: ""
+# Optional [coolify] build_registry_image_template for dedicated git builds.
+# Unset by default; must contain {environment_id} and {app_id}.
+coast_coolify_build_registry_image_template: ""
+coast_controller_worker_options: {}
+coast_cloud_region: "{{ openstack_region_name }}"
+coast_cloud_interface: internal
+# Optional migration override, run after Kolla copies coast.conf.
+coast_bootstrap_command: ""
+# Keep existing tagged/digest image overrides intact. Untagged names use tags.
+coast_tag: "{{ openstack_tag }}"
+
+coast_api_image: "{{ docker_image_url }}coast-api"
+coast_api_tag: "{{ coast_tag }}"
+coast_api_image_full: >-
+  {{ coast_api_image if '@' in coast_api_image or
+     ':' in (coast_api_image | basename) else
+     coast_api_image ~ ':' ~ coast_api_tag }}
+
+coast_conductor_image: "{{ docker_image_url }}coast-conductor"
+coast_conductor_tag: "{{ coast_tag }}"
+coast_conductor_image_full: >-
+  {{ coast_conductor_image if '@' in coast_conductor_image or
+     ':' in (coast_conductor_image | basename) else
+     coast_conductor_image ~ ':' ~ coast_conductor_tag }}
+
+coast_health_manager_image: "{{ docker_image_url }}coast-health-manager"
+coast_health_manager_tag: "{{ coast_tag }}"
+coast_health_manager_image_full: >-
+  {{ coast_health_manager_image if '@' in coast_health_manager_image or
+     ':' in (coast_health_manager_image | basename) else
+     coast_health_manager_image ~ ':' ~ coast_health_manager_tag }}
+
+coast_console_port: 9610
+coast_console_listen_port: "{{ coast_console_port }}"
+coast_console_token_ttl: 60
+# wss only when HAProxy terminates external TLS. The port stays 9610.
+coast_console_tls: "{{ 'true' if (enable_haproxy | default(false) | bool and kolla_enable_tls_external | default(false) | bool) else 'false' }}"
+coast_console_public_host: "{{ coast_external_fqdn if enable_haproxy | default(false) | bool else api_interface_address }}"
+coast_console_public_port: "{{ coast_console_port if enable_haproxy | default(false) | bool else coast_console_listen_port }}"
+coast_console_public_endpoint: "{{ coast_console_public_host | put_address_in_context('url') }}:{{ coast_console_public_port }}"
+
+coast_console_proxy_image: "{{ docker_image_url }}coast-console-proxy"
+coast_console_proxy_tag: "{{ coast_tag }}"
+coast_console_proxy_image_full: >-
+  {{ coast_console_proxy_image if '@' in coast_console_proxy_image or
+     ':' in (coast_console_proxy_image | basename) else
+     coast_console_proxy_image ~ ':' ~ coast_console_proxy_tag }}
+
+coast_services:
+  coast-api:
+    container_name: coast_api
+    group: coast-api
+    enabled: "{{ enable_coast | bool }}"
+    image: "{{ coast_api_image_full }}"
+    healthcheck: "{{ coast_api_healthcheck }}"
+    volumes:
+      - "{{ coast_config_dir }}/coast-api/:/var/lib/kolla/config_files/:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "kolla_logs:/var/log/kolla/"
+    dimensions: "{{ default_container_dimensions }}"
+    haproxy:
+      coast_api:
+        enabled: "{{ enable_coast | bool }}"
+        mode: http
+        external: false
+        port: "{{ coast_api_port }}"
+        listen_port: "{{ coast_api_listen_port }}"
+        tls_backend: "{{ coast_enable_tls_backend }}"
+      coast_api_external:
+        enabled: "{{ enable_coast | bool and coast_enable_external_api | bool }}"
+        mode: http
+        external: true
+        external_fqdn: "{{ coast_external_fqdn }}"
+        port: "{{ coast_api_public_port }}"
+        listen_port: "{{ coast_api_listen_port }}"
+        tls_backend: "{{ coast_enable_tls_backend }}"
+  coast-conductor:
+    container_name: coast_conductor
+    group: coast-conductor
+    enabled: "{{ enable_coast | bool }}"
+    image: "{{ coast_conductor_image_full }}"
+    healthcheck: "{{ coast_conductor_healthcheck }}"
+    volumes:
+      - "{{ coast_config_dir }}/coast-conductor/:/var/lib/kolla/config_files/:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "kolla_logs:/var/log/kolla/"
+    dimensions: "{{ default_container_dimensions }}"
+  coast-health-manager:
+    container_name: coast_health_manager
+    group: coast-health-manager
+    enabled: "{{ coast_enable_health_manager | bool }}"
+    image: "{{ coast_health_manager_image_full }}"
+    healthcheck: "{{ coast_health_manager_healthcheck }}"
+    volumes:
+      - "{{ coast_config_dir }}/coast-health-manager/:/var/lib/kolla/config_files/:ro"
+      - "coast_health_manager:/var/lib/coast/health-manager"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "kolla_logs:/var/log/kolla/"
+    dimensions: "{{ default_container_dimensions }}"
+  coast-console-proxy:
+    container_name: coast_console_proxy
+    group: coast-console-proxy
+    enabled: "{{ enable_coast | bool }}"
+    image: "{{ coast_console_proxy_image_full }}"
+    healthcheck: "{{ coast_console_proxy_healthcheck }}"
+    volumes:
+      - "{{ coast_config_dir }}/coast-console-proxy/:/var/lib/kolla/config_files/:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "kolla_logs:/var/log/kolla/"
+    dimensions: "{{ default_container_dimensions }}"
+    haproxy:
+      coast_console:
+        enabled: "{{ enable_coast | bool }}"
+        mode: http
+        external: false
+        port: "{{ coast_console_port }}"
+        listen_port: "{{ coast_console_listen_port }}"
+        tls_backend: false
+        frontend_http_extra:
+          - "timeout client 4h"
+        backend_http_extra:
+          - "timeout server 4h"
+          - "timeout tunnel 4h"
+          - "option httpchk GET /health"
+      coast_console_external:
+        enabled: "{{ enable_coast | bool }}"
+        mode: http
+        external: true
+        external_fqdn: "{{ coast_external_fqdn }}"
+        port: "{{ coast_console_port }}"
+        listen_port: "{{ coast_console_listen_port }}"
+        tls_backend: false
+        # Keep this port off the shared API frontend and its host map.
+        with_frontend: "{{ not (haproxy_single_external_frontend | default(false) | bool) }}"
+        frontend_http_extra:
+          - "timeout client 4h"
+        backend_http_extra:
+          - "timeout server 4h"
+          - "timeout tunnel 4h"
+          - "option httpchk GET /health"
+coast_ks_services:
+  - name: "{{ coast_keystone_service_name }}"
+    type: "{{ coast_keystone_service_type }}"
+    description: Coast App Hosting
+    endpoints:
+      - interface: public
+        url: "{{ coast_public_endpoint }}"
+      - interface: internal
+        url: "{{ coast_internal_endpoint }}"
+      - interface: admin
+        url: "{{ coast_admin_endpoint }}"
+coast_ks_users: >-
+  {%- set users = [] -%}
+  {%- for role in coast_keystone_user_roles -%}
+  {%- set _ = users.append({'project': coast_service_auth_project,
+                          'user': coast_keystone_user,
+                          'password': coast_keystone_password,
+                          'role': role}) -%}
+  {%- endfor -%}
+  {{ users + [{'project': coast_service_auth_project,
+               'user': coast_agent_keystone_user,
+               'password': coast_agent_keystone_password,
+               'role': coast_agent_keystone_role}] }}
+
+coast_api_enable_healthchecks: "{{ enable_container_healthchecks }}"
+coast_api_healthcheck_interval: "{{ default_container_healthcheck_interval }}"
+coast_api_healthcheck_retries: "{{ default_container_healthcheck_retries }}"
+coast_api_healthcheck_start_period: "{{ default_container_healthcheck_start_period }}"
+coast_api_healthcheck_test:
+  - "CMD-SHELL"
+  - >-
+    healthcheck_curl {{ 'https' if coast_enable_tls_backend | bool else 'http' }}://{{
+    api_interface_address | put_address_in_context('url') }}:{{ coast_api_listen_port }}
+coast_api_healthcheck_timeout: "{{ default_container_healthcheck_timeout }}"
+coast_api_healthcheck:
+  interval: "{{ coast_api_healthcheck_interval }}"
+  retries: "{{ coast_api_healthcheck_retries }}"
+  start_period: "{{ coast_api_healthcheck_start_period }}"
+  test: "{% if coast_api_enable_healthchecks | bool %}{{ coast_api_healthcheck_test }}{% else %}NONE{% endif %}"
+  timeout: "{{ coast_api_healthcheck_timeout }}"
+
+coast_conductor_enable_healthchecks: "{{ enable_container_healthchecks }}"
+coast_conductor_healthcheck_interval: "{{ default_container_healthcheck_interval }}"
+coast_conductor_healthcheck_retries: "{{ default_container_healthcheck_retries }}"
+coast_conductor_healthcheck_start_period: "{{ default_container_healthcheck_start_period }}"
+coast_conductor_healthcheck_test: ["CMD-SHELL", "healthcheck_port coast-conductor {{ om_rpc_port }}"]
+coast_conductor_healthcheck_timeout: "{{ default_container_healthcheck_timeout }}"
+coast_conductor_healthcheck:
+  interval: "{{ coast_conductor_healthcheck_interval }}"
+  retries: "{{ coast_conductor_healthcheck_retries }}"
+  start_period: "{{ coast_conductor_healthcheck_start_period }}"
+  test: "{% if coast_conductor_enable_healthchecks | bool %}{{ coast_conductor_healthcheck_test }}{% else %}NONE{% endif %}"
+  timeout: "{{ coast_conductor_healthcheck_timeout }}"
+
+coast_health_manager_enable_healthchecks: "{{ enable_container_healthchecks }}"
+coast_health_manager_healthcheck_interval: "{{ default_container_healthcheck_interval }}"
+coast_health_manager_healthcheck_retries: "{{ default_container_healthcheck_retries }}"
+coast_health_manager_healthcheck_start_period: "{{ default_container_healthcheck_start_period }}"
+# The Coast image does not install iproute2. Read the kernel UDP table.
+coast_health_manager_healthcheck_test:
+  - CMD-SHELL
+  - >-
+    python3 -c 'import sys; p=format(int({{ coast_health_manager_port }}), "04X"); sys.exit(0 if ":"+p+" " in open("/proc/net/udp").read().upper() else 1)'
+coast_health_manager_healthcheck_timeout: "{{ default_container_healthcheck_timeout }}"
+coast_health_manager_healthcheck:
+  interval: "{{ coast_health_manager_healthcheck_interval }}"
+  retries: "{{ coast_health_manager_healthcheck_retries }}"
+  start_period: "{{ coast_health_manager_healthcheck_start_period }}"
+  test: "{% if coast_health_manager_enable_healthchecks | bool %}{{ coast_health_manager_healthcheck_test }}{% else %}NONE{% endif %}"
+  timeout: "{{ coast_health_manager_healthcheck_timeout }}"
+
+coast_console_proxy_enable_healthchecks: "{{ enable_container_healthchecks }}"
+coast_console_proxy_healthcheck_interval: "{{ default_container_healthcheck_interval }}"
+coast_console_proxy_healthcheck_retries: "{{ default_container_healthcheck_retries }}"
+coast_console_proxy_healthcheck_start_period: "{{ default_container_healthcheck_start_period }}"
+coast_console_proxy_healthcheck_test:
+  - "CMD-SHELL"
+  - >-
+    healthcheck_curl http://{{ api_interface_address | put_address_in_context('url') }}:{{ coast_console_listen_port }}/health
+coast_console_proxy_healthcheck_timeout: "{{ default_container_healthcheck_timeout }}"
+coast_console_proxy_healthcheck:
+  interval: "{{ coast_console_proxy_healthcheck_interval }}"
+  retries: "{{ coast_console_proxy_healthcheck_retries }}"
+  start_period: "{{ coast_console_proxy_healthcheck_start_period }}"
+  test: "{% if coast_console_proxy_enable_healthchecks | bool %}{{ coast_console_proxy_healthcheck_test }}{% else %}NONE{% endif %}"
+  timeout: "{{ coast_console_proxy_healthcheck_timeout }}"
+
+# Match Magnum database routing through ProxySQL.
+coast_database_shard_id: "{{ mariadb_default_database_shard_id | int }}"
+coast_database_shard_root_user: "{{ 'root_shard_' ~ coast_database_shard_id if enable_proxysql | bool else database_user }}"
+coast_database_shard:
+  users:
+    - user: "{{ coast_database_user }}"
+      password: "{{ coast_database_password }}"
+      shard_id: "{{ coast_database_shard_id }}"
+  rules:
+    - schema: "{{ coast_database_name }}"
+      shard_id: "{{ coast_database_shard_id }}"
+    - user: "{{ coast_database_user }}"
+      shard_id: "{{ coast_database_shard_id }}"
+
+# Follow Octavia's notification topic enablement.
+coast_notification_topics:
+  - name: notifications
+    enabled: "{{ enable_ceilometer | bool }}"
+coast_enabled_notification_topics: "{{ coast_notification_topics | selectattr('enabled', 'equalto', true) | list }}"
+
+# Barbican is required for durable secret storage.
+coast_secrets_backend: "{{ 'barbican' if enable_barbican | default(false) | bool else 'disabled' }}"
+coast_max_secret_bytes: 20000

@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Worker registration skips the per-stack registry login when the
+    stack has no Coolify build server. The registry port stays closed
+    until a build server exists, so that login cannot succeed. The
+    first usable build server logs existing workers in before it
+    switches them to dedicated builds.

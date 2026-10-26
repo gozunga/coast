@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Kolla accepts a ``coast_keystone_user_roles`` list, defaulting to
+    ``[admin]`` because upstream Designate sudo requires it. The service
+    permission inventory documents minimum roles and Swift reseller
+    requirements. A read-only permission checker reports sanitized
+    PASS/FAIL results without creating resources or reading secret payloads.
+  - |
+    With upstream default policies the service user requires admin for
+    Designate sudo and conditional infrastructure access. Tenant Swift
+    backup accounts require reseller rights. Removing a role from Kolla
+    configuration does not revoke an existing grant.

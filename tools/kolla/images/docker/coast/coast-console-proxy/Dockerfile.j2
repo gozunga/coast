@@ -1,0 +1,17 @@
+{#- Copyright 2026 Gozunga and Coast contributors
+    SPDX-License-Identifier: Apache-2.0 -#}
+FROM {{ namespace }}/{{ image_prefix }}coast-base:{{ tag }}
+{% block labels %}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+{% endblock %}
+
+{% block coast_console_proxy_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{{ macros.kolla_patch_sources() }}
+
+{% block coast_console_proxy_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER coast

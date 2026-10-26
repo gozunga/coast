@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Deleting a stack whose creation fails at health releases the controller
+    data, Docker and registry ``volume_gb`` charge once, including when
+    volume rows are absent or Cinder volumes have been deleted. A different
+    recorded charge is preserved. Repeated deletion does not release twice.

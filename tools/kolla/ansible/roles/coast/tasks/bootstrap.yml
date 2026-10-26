@@ -1,0 +1,65 @@
+---
+- name: Creating Coast database
+  become: true
+  kolla_toolbox:
+    container_engine: "{{ kolla_container_engine }}"
+    module_name: mysql_db
+    module_args:
+      ca_cert: "{{ openstack_cacert if database_enable_tls_internal | bool else omit }}"
+      login_host: "{{ database_address }}"
+      login_port: "{{ database_port }}"
+      login_user: "{{ coast_database_shard_root_user }}"
+      login_password: "{{ database_password }}"
+      name: "{{ coast_database_name }}"
+  no_log: true
+  run_once: true
+  delegate_to: "{{ groups['coast-api'][0] }}"
+  when:
+    - not use_preconfigured_databases | bool
+
+- name: Creating Coast database user and setting permissions
+  become: true
+  kolla_toolbox:
+    container_engine: "{{ kolla_container_engine }}"
+    module_name: mysql_user
+    module_args:
+      ca_cert: "{{ openstack_cacert if database_enable_tls_internal | bool else omit }}"
+      login_host: "{{ database_address }}"
+      login_port: "{{ database_port }}"
+      login_user: "{{ coast_database_shard_root_user }}"
+      login_password: "{{ database_password }}"
+      name: "{{ coast_database_user }}"
+      password: "{{ coast_database_password }}"
+      host: "%"
+      priv: "{{ coast_database_name }}.*:ALL"
+      append_privs: "yes"
+  no_log: true
+  run_once: true
+  delegate_to: "{{ groups['coast-api'][0] }}"
+  when:
+    - not use_preconfigured_databases | bool
+
+- name: Run Coast database migration container
+  become: true
+  kolla_container:
+    action: start_container
+    common_options: "{{ docker_common_options }}"
+    name: bootstrap_coast
+    image: "{{ coast_conductor_image_full }}"
+    # Conductor volumes mount kolla_logs at /var/log/kolla.
+    # coast-db-manage.log remains after this container is removed.
+    volumes: "{{ coast_services['coast-conductor'].volumes }}"
+    environment:
+      KOLLA_BOOTSTRAP: ""
+      KOLLA_CONFIG_STRATEGY: "{{ config_strategy }}"
+      COAST_BOOTSTRAP_COMMAND: "{{ coast_bootstrap_command }}"
+    restart_policy: oneshot
+    detach: false
+  register: coast_bootstrap_result
+  # Reject missing rc from older modules instead of reporting success.
+  failed_when: >-
+    coast_bootstrap_result is failed or
+    (coast_bootstrap_result.rc | default(1) | int) != 0
+  run_once: true
+  delegate_to: "{{ groups['coast-conductor'][0] }}"
+  no_log: true

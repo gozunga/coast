@@ -1,0 +1,9 @@
+features:
+  - |
+    Operators can set ``[controller_worker] mgmt_netns`` to an empty
+    string to use a management interface in the host network namespace,
+    such as an Octavia-style OVS internal port bound to a Neutron port.
+    Control-side agent, Coolify and health-manager traffic then uses the
+    host namespace without setns. The default remains ``coast-mgmt``.
+    Guest namespace configuration is unchanged. Host mode requires host
+    firewall rules to preserve management isolation.

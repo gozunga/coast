@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Git and image service create uses the appgroup engine reference as the
+    app engine project and the environment engine reference as the app
+    engine environment. A missing reference fails before any engine call.
+    The conductor sets both references for every service that belongs to an
+    environment.

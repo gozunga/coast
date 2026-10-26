@@ -1,0 +1,7 @@
+features:
+  - |
+    App groups and environments in ACTIVE or ERROR can be deleted when their
+    stack is ACTIVE, DEGRADED or ERROR and its task state is NONE or
+    RECONCILING. Live child resources prevent deletion with 409. The
+    conductor removes the engine object, stores DELETED, then soft-deletes
+    the row.

@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    ``POST /v1/stacks/{stack_id}/exports/{export_id}/action`` with
+    ``renew_url`` returns HTTP 503 when the engine is unreachable or
+    the engine rejects the Coast credential. ``faultstring`` is
+    ``Service Unavailable``. The response does not include the engine
+    error text. Export list and show use the same signing call and the
+    same status. Another fault still returns HTTP 500.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The worker agent can dump PostgreSQL, MySQL, MariaDB and MongoDB service
+    containers and restore their dumps into a selected running container.
+    Dumps are compressed and encrypted with chunked AES-256-GCM, then sent
+    through temporary HTTPS links in retryable segments without disk files.
+    Restore verifies authentication and refuses older major server versions.
+    Database credentials stay inside the customer container; workers receive
+    no object storage credentials.

@@ -1,0 +1,37 @@
+---
+- name: Manage Coast certificates on the Ansible control host
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    coast_ca_script: "{{ playbook_dir }}/../../gen-ca.sh"
+    coast_certificates_dir: /etc/kolla/config/coast/certs
+    coast_certificate_validity_days: 730
+    coast_certificate_subject_prefix: /O=Coast
+    # Only the optional registry leaf CN can be set through gen-ca.sh.
+    coast_certificate_cn: ""
+    coast_check_expiry_days: -1
+  tasks:
+    - name: Generate Coast CA material or check expiry
+      ansible.builtin.command:
+        argv: "{{ [coast_ca_script, '--output-dir', coast_certificates_dir]
+          + (['--check-expiry', coast_check_expiry_days | string]
+             if coast_check_expiry_days | int >= 0
+             else ['--days', coast_certificate_validity_days | string,
+                   '--subject-prefix', coast_certificate_subject_prefix]
+                  + (['--registry-host', coast_certificate_cn]
+                     if coast_certificate_cn | length > 0 else [])) }}"
+      register: coast_certificate_result
+      changed_when:
+        - coast_check_expiry_days | int < 0
+        - "'wrote ' in coast_certificate_result.stdout"
+      failed_when: coast_certificate_result.rc != 0
+      check_mode: false
+      when: not ansible_check_mode or coast_check_expiry_days | int >= 0
+
+    - name: Show public certificate expiry results
+      ansible.builtin.debug:
+        var: coast_certificate_result.stdout_lines
+      when:
+        - coast_check_expiry_days | int >= 0
+        - coast_certificate_result is not skipped

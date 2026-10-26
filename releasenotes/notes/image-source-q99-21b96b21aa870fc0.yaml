@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Services can use an image source with separate image name and required
+    tag fields. Before API microversion 1.14, image source updates can
+    change only the tag; from 1.14 they can also change the image name.
+    Deployment source_ref overrides the tag. Digest references, supplied
+    registry credentials and Git-only source fields return 400.

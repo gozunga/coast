@@ -1,0 +1,8 @@
+features:
+  - |
+    Kolla selects Barbican secret storage when Barbican is enabled.
+    Operators can override ``coast_secrets_backend`` and configure
+    ``coast_max_secret_bytes`` (default 20000). API file mount, compose and
+    environment variable writes reject oversized UTF-8 payloads with HTTP
+    400 naming the limit before writing secrets. Match the Coast limit to
+    the Barbican payload limit.

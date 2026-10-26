@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Domain additions and removals apply routing on running workloads
+    through a short restart using the existing image, without rebuilding.
+    This includes stack default domains and automatic DNS domains.
+    Unchanged domain lists do not restart workloads; stopped workloads
+    remain stopped.

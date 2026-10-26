@@ -1,0 +1,28 @@
+---
+- name: Configure Coast HAProxy listeners and ProxySQL users
+  ansible.builtin.import_role:
+    name: loadbalancer-config
+  vars:
+    project_services: "{{ coast_services }}"
+  no_log: true
+
+- name: Remove the extra console frontend
+  become: true
+  ansible.builtin.file:
+    path: "{{ node_config_directory }}/haproxy/services.d/coast-console-frontend.cfg"
+    state: absent
+  when: >-
+    not (enable_haproxy | default(false) | bool and
+         haproxy_single_external_frontend | default(false) | bool and
+         haproxy_enable_external_vip | default(false) | bool)
+
+- name: Keep a dedicated console frontend on port 9610
+  become: true
+  ansible.builtin.template:
+    src: coast-console-frontend.cfg.j2
+    dest: "{{ node_config_directory }}/haproxy/services.d/coast-console-frontend.cfg"
+    mode: "0660"
+  when:
+    - enable_haproxy | bool
+    - haproxy_single_external_frontend | bool
+    - haproxy_enable_external_vip | bool

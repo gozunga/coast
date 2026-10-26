@@ -1,0 +1,41 @@
+{
+    "command": "coast-health-manager --config-file /etc/coast/coast.conf",
+    "config_files": [
+        {
+            "source": "/var/lib/kolla/config_files/coast.conf",
+            "dest": "/etc/coast/coast.conf",
+            "owner": "coast",
+            "perm": "0600"
+        },
+        {
+            "source": "{{ coast_openstack_ca_source }}",
+            "dest": "{{ coast_openstack_cafile }}",
+            "owner": "coast",
+            "perm": "0644"
+        },
+        {
+            "source": "/var/lib/kolla/config_files/coast_server_ca.cert.pem",
+            "dest": "/etc/coast/certs/coast_server_ca.cert.pem",
+            "owner": "coast",
+            "perm": "0600"
+        },
+        {
+            "source": "/var/lib/kolla/config_files/coast_client.cert-and-key.pem",
+            "dest": "/etc/coast/certs/coast_client.cert-and-key.pem",
+            "owner": "coast",
+            "perm": "0600"
+        }
+    ],
+    "permissions": [
+        {
+            "path": "/var/log/kolla/coast",
+            "owner": "coast:coast",
+            "recurse": true
+        },
+        {
+            "path": "/var/lib/coast/health-manager",
+            "owner": "coast:coast",
+            "perm": "0700"
+        }
+    ]
+}

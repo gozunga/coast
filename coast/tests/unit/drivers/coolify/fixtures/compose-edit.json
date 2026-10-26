@@ -1,0 +1,5 @@
+{
+  "uuid": "svc-uuid",
+  "docker_compose_raw": "services:\n  web:\n    image: nginx:stable\n",
+  "status": "running:healthy"
+}

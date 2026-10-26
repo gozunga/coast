@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Stack deletion skips engine cleanup when creation stops before token
+    bootstrap, and removes servers, volumes, the network and secrets.
+    Requested export before deletion still runs. Stacks with an engine
+    token perform engine cleanup.

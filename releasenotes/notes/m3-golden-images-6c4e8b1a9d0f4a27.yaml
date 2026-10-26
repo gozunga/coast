@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Operators can build Coast golden images with
+    ``tools/build-images/coast-image-create.sh``. Controller images stage
+    the engine installer, support files and container archive for offline
+    first boot. Worker images provide the guest agent and container runtime.
+    Upload private images to Glance in the service project with the
+    configured image tags and owner.

@@ -1,0 +1,8 @@
+features:
+  - |
+    Coolify server registration waits until the server is reachable and
+    usable before it configures and restarts a worker proxy or lets Coast
+    mark the server ACTIVE. The wait uses the existing controller_worker
+    build_timeout and build_poll_interval options. A timeout fails registration
+    and runs the existing cleanup path. This prevents early proxy restart
+    and first-deployment failures while Coolify validation is still pending.

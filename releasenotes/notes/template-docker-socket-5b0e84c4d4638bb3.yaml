@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Templates can mount the Docker socket on their dedicated stack worker.
+    API 1.16 displays observed socket mounts as
+    ``Docker socket (from template)`` with ``source=template`` and
+    read-only controls. Customer Compose supports socket mounts and
+    host networking on dedicated workers.

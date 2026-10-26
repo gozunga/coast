@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The coast-agent guest service provides an mTLS listener on the guest
+    management address, a bounded loopback Coolify API proxy, durable
+    one-shot token bootstrap, explicit token rotation and signed UDP
+    heartbeats. Configure the server certificate, Coast client CA, guest
+    identity and private per-stack HMAC key in the agent configuration
+    group.
+issues:
+  - |
+    Bootstrap precondition failures return HTTP 412; uncertain bootstrap or
+    rotation operations require operator recovery.

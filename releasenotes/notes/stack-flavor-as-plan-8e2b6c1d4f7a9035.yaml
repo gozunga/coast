@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Stack create accepts a Nova flavor name or ID wherever
+    it takes a plan (``plan``, ``workers[].plan``, ``build_server_plan``).
+    The API maps it to the single VM plan for that role that uses the
+    flavor. Plan names are also accepted, and stored stacks keep plan names.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The guest agent accepts an mTLS websocket at ``/v1/exec`` and starts
+    a process only in one running container that carries the app engine
+    labels for that resource. A request for another project, a host
+    shell, or a container without those labels is refused. Controller
+    first boot does not publish the built-in terminal port. Stack create
+    and service reconcile keep ``is_terminal_enabled`` false on every
+    app engine server.

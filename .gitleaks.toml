@@ -1,0 +1,43 @@
+title = "Coast secret scan"
+
+[extend]
+useDefault = true
+
+# These log-redaction fixtures contain literal fake PEM bodies, not keys.
+# Require both the exact test path and a fake body; never exempt whole tests.
+[[allowlists]]
+description = "Fake PEM text in certificate rotation failure fixtures"
+condition = "AND"
+targetRules = ["private-key"]
+paths = ['''(^|/)coast/tests/unit/test_certificate_rotation_flow\.py$''']
+regexes = ['''^-----BEGIN PRIVATE KEY----- (secret-key-material|inner-secret-key)''']
+
+[[allowlists]]
+description = "Fake PEM text in HTTP fault redaction fixture"
+condition = "AND"
+targetRules = ["private-key"]
+paths = ['''(^|/)coast/tests/unit/test_safe_log\.py$''']
+regexes = ['''^-----BEGIN OPENSSH PRIVATE KEY-----\\nsecret''']
+
+# oslo.versionedobjects compatibility fingerprints are not API credentials.
+[[allowlists]]
+description = "Expected Secret object schema fingerprints"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)coast/tests/unit/test_objects\.py$''']
+regexes = ['''^1\.0-(f0b273037b5ab10de6d21b40777ce327|9f1c4d988694411e28105fd5d4f6090f)$''']
+
+# Upstream one-click template compose documents, copied byte-for-byte from the
+# digest-locked source in tools/template-catalog-source.json and checked by
+# `tox -e template-catalog`. Matches are upstream example values and
+# placeholders, not Coast credentials. Only these rules and this generated path.
+[[allowlists]]
+description = "Pinned upstream template compose asset"
+targetRules = ["generic-api-key", "curl-auth-user"]
+paths = ['''(^|/)coast/drivers/coolify/templates/compose-[0-9]+\.[0-9]+\.[0-9]+\.json$''']
+
+# Generated exclusively for offline parsing tests; never used for authentication.
+[[allowlists]]
+description = "Fixed test-only 8192-bit RSA deploy key"
+targetRules = ["private-key"]
+paths = ['''(^|/)coast/tests/unit/fixtures/deploy-key-rsa-8192\.pem$''']

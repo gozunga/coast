@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Failed database creation now retains pending firewall cleanup when the
+    network API is unavailable. Cleanup retries survive conductor restarts
+    and run even when periodic network repair is disabled. Database failure
+    status, quota settlement and task release are preserved.

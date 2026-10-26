@@ -1,0 +1,24 @@
+---
+- name: Check deployment inputs and ports
+  ansible.builtin.import_tasks: precheck.yml
+
+- name: Render configuration
+  ansible.builtin.import_tasks: config.yml
+
+- name: Register Keystone resources
+  ansible.builtin.import_tasks: register.yml
+
+- name: Manage the host management interface
+  ansible.builtin.include_tasks: hm-interface.yml
+  when:
+    - coast_hm0_manage | bool
+    - inventory_hostname in groups['coast-conductor'] or (coast_enable_health_manager | bool and inventory_hostname in groups['coast-health-manager'])
+
+- name: Apply database migrations
+  ansible.builtin.import_tasks: bootstrap.yml
+
+- name: Compare containers
+  ansible.builtin.import_tasks: check-containers.yml
+
+- name: Apply pending container changes
+  ansible.builtin.meta: flush_handlers

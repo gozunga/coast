@@ -1,0 +1,8 @@
+features:
+  - |
+    Application environment variables support per-variable build-time
+    exposure through the existing public engine API. Runtime exposure stays
+    enabled. Microversion 1.6 defaults new application variables to
+    build_time=true; versions 1.0 to 1.5 keep the false default. PATCH
+    preserves omitted flags. Template services default false and reject
+    true with HTTP 400.

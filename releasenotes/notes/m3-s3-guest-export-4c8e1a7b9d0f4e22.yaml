@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The S3 export backend signs guest upload and download URLs with
+    botocore SigV4. Set [export] backend to s3 and point
+    s3_credentials_ref at a Barbican text secret. The payload is JSON
+    with access_key_id and secret_access_key only. Coast does not use
+    environment or instance credentials. The conductor deletes retained
+    objects after retention_hours. Conductor-relay upload remains
+    unavailable.

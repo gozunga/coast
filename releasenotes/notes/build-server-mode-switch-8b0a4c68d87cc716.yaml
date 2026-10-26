@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Adding the first usable build server moves existing non-Compose Git
+    builds off workers. Removing the last build server restores worker
+    builds. Git Compose builds stay on their assigned worker. Existing
+    image-source and template services are unchanged. Non-Compose Git
+    services require the configured per-stack registry image template when
+    they do not already have a registry image name. Failed engine patches
+    retain the guest and report ERROR status and failure events. Coast
+    restores previous settings where the public engine API permits it;
+    uncertain compensation requires operator inspection.

@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    Runtime reconcile confirmation survives conductor worker changes and
+    restarts using stored UTC observation timestamps. A newer failed
+    crash-loop deployment confirms an unhealthy runtime without another
+    timeout window.
+  - |
+    Stored runtime logs retain engine line timestamps and streams. Untimed
+    lines share one capture timestamp per block; consecutive identical
+    lines are collapsed with a repeat count.

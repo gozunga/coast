@@ -1,0 +1,18 @@
+{
+    "environment": {
+        "name": "production",
+        "description": null,
+        "id": "55555555-5555-5555-5555-555555555555",
+        "project_id": "11111111-1111-1111-1111-111111111111",
+        "appgroup_id": "44444444-4444-4444-4444-444444444444",
+        "created_at": "2026-10-09T14:07:00Z",
+        "updated_at": null,
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/environments/55555555-5555-5555-5555-555555555555"
+            }
+        ],
+        "status": "PENDING"
+    }
+}

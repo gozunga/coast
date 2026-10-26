@@ -1,0 +1,19 @@
+{
+    "stack": {
+        "id": "6f0f5d0e-2a1b-4c8f-9a51-0b9f1f2d7c11",
+        "project_id": "11111111-1111-1111-1111-111111111111",
+        "name": "acme-prod",
+        "description": "Acme marketing sites",
+        "plan": "standard-2",
+        "engine_version": "<engine version>",
+        "status": "PENDING",
+        "created_at": "2026-10-09T14:05:00Z",
+        "updated_at": null,
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/stacks/6f0f5d0e-2a1b-4c8f-9a51-0b9f1f2d7c11"
+            }
+        ]
+    }
+}

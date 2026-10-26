@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Drive a custom domain to ACTIVE after a verify request. The
+    conductor poll checks the TXT challenge, publishes the name, then
+    checks routing and TLS. The status path is PENDING_VERIFICATION,
+    VERIFIED, PENDING_DNS, then ACTIVE. A timeout sets ERROR. Verify
+    from ERROR starts the checks again.

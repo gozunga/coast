@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    API 1.30 supports private SSH Git repositories with a generated ed25519
+    deploy key or an uploaded unencrypted ed25519, ECDSA or RSA deploy key.
+    Private keys stay in Barbican; responses contain the public key and
+    SHA256 fingerprint. Generated keys skip the first deploy by default,
+    allowing the user to authorize the key first. Deletion cleans up engine
+    and Barbican credentials.
+    PATCH replaces deploy-key material in place while retaining the engine
+    key UUID. Failed updates restore the old material and credentials;
+    obsolete-secret cleanup is durably retried after a successful update.

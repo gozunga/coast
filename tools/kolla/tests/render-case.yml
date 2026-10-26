@@ -1,0 +1,61 @@
+---
+- name: Render the real config template
+  ansible.builtin.set_fact:
+    rendered_config: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast.conf.j2') }}"
+  vars:
+    database_enable_tls_internal: "{{ tls_enabled }}"
+    om_enable_rabbitmq_tls: "{{ tls_enabled }}"
+    rabbitmq_enable_tls: "{{ tls_enabled }}"
+    coast_hm0_manage: "{{ tls_enabled }}"
+
+- name: Check TLS and namespace serialization
+  ansible.builtin.assert:
+    that:
+      - "('ssl_ca=/etc/coast/database-ca.pem' in rendered_config) == tls_enabled"
+      - "('ssl_ca_file = /etc/coast/rabbit-ca.pem' in rendered_config) == tls_enabled"
+      - "('ssl = true' in rendered_config) == tls_enabled"
+      - "('ssl = false' in rendered_config) == (not tls_enabled)"
+      - "rendered_config is search('(?m)^mgmt_netns = $')"
+      - "'health_manager_ips = 192.0.2.20,192.0.2.21' in rendered_config"
+      - "'bind_ip = 192.0.2.20' in rendered_config"
+      - "'bind_ip = 127.0.0.1' not in rendered_config"
+      - "'bind_port = 5565' in rendered_config"
+      - "'key_lookup = coast.health_manager.keys.StackKeyLookup' in rendered_config"
+      - "'bind_host = 127.0.0.1' in rendered_config"
+      - "'bind_port = 9600' in rendered_config"
+      - "'log_dir = /var/log/kolla/coast' in rendered_config"
+      - "'use_stderr' not in rendered_config"
+      - "'memcached_servers = 192.0.2.20:11211' in rendered_config"
+      - "'memcache_security_strategy = ENCRYPT' in rendered_config"
+      - "'memcache_secret_key = test-only-cache-key' in rendered_config"
+      - "'region_name = test-region' in rendered_config"
+      - "'interface = internal' in rendered_config"
+      - "rendered_config is search('(?s)\\[service_auth\\]\\nauth_type = password\\nauth_url = https://example.com/identity\\nusername = coast\\npassword = test\\n')"
+      - "rendered_config is search('(?s)\\[agent_auth\\]\\nauth_type = password\\nauth_url = https://example.com/identity\\nusername = coast-agent\\npassword = agent-test-password\\n')"
+      - "'password = test' in rendered_config"
+      - "'password = agent-test-password' in rendered_config"
+      - "'[export]' not in rendered_config"
+      - "'build_registry_image_template' not in rendered_config"
+
+- name: Render the conductor config
+  ansible.builtin.set_fact:
+    conductor_config: "{{ lookup('ansible.builtin.template', '../ansible/roles/coast/templates/coast.conf.j2') }}"
+  vars:
+    item:
+      key: coast-conductor
+    database_enable_tls_internal: "{{ tls_enabled }}"
+    om_enable_rabbitmq_tls: "{{ tls_enabled }}"
+    rabbitmq_enable_tls: "{{ tls_enabled }}"
+    coast_hm0_manage: "{{ tls_enabled }}"
+
+- name: Check the conductor binds agent certificate connections
+  ansible.builtin.assert:
+    that:
+      - "conductor_config is search('(?m)^\\[health_manager\\]\\nbind_ip = 192.0.2.20$')"
+      - "'key_lookup' not in conductor_config"
+
+- name: Check messaging for every controller service
+  ansible.builtin.include_tasks: render-messaging.yml
+  loop: [coast-api, coast-conductor, coast-health-manager, coast-console-proxy]
+  loop_control:
+    loop_var: messaging_service

@@ -1,0 +1,5 @@
+features:
+  - |
+    Added standalone database guides for creation, app connections, public
+    access, credentials, backups and deletion. Added a support article
+    for review before publication.

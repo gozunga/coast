@@ -1,0 +1,160 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+umask 022
+
+# shellcheck disable=SC1091
+. /etc/coast/build.env
+
+# TODO(coast-agent): console script coast-agent is coast.cmd.agent:main.
+# There is no guest-only package yet. Do not install the full Coast
+# service here. Install only the file given by --agent-source.
+match_sha256() {
+    file=$1
+    expected=$2
+    if [ -z "$expected" ]; then
+        echo "coast-agent: COAST_AGENT_SHA256 is missing" >&2
+        return 1
+    fi
+    if ! printf '%s\n' "$expected" | grep -Eq '^[0-9a-fA-F]{64}$'; then
+        echo "coast-agent: checksum is not 64 hex characters" >&2
+        return 1
+    fi
+    actual=$(sha256sum "$file" | awk 'NR==1 { print $1 }')
+    actual=$(printf '%s' "$actual" | tr '[:upper:]' '[:lower:]')
+    expected=$(printf '%s' "$expected" | tr '[:upper:]' '[:lower:]')
+    if [ "$actual" != "$expected" ]; then
+        echo "coast-agent: sha256 mismatch" >&2
+        rm -f "$file"
+        return 1
+    fi
+}
+
+payload=""
+if [ -d /tmp/coast-agent-payload ]; then
+    for candidate in /tmp/coast-agent-payload/*; do
+        if [ -f "$candidate" ]; then
+            payload=$candidate
+            break
+        fi
+    done
+fi
+
+agent_sha=${COAST_AGENT_SHA256:-}
+if [ -n "$payload" ]; then
+    if ! match_sha256 "$payload" "$agent_sha"; then
+        rm -rf /tmp/coast-agent-payload
+        exit 1
+    fi
+    case "$payload" in
+        *.deb)
+            dpkg -i "$payload"
+            ;;
+        *)
+            install -m 0755 "$payload" /usr/local/bin/coast-agent
+            ;;
+    esac
+    rm -rf /tmp/coast-agent-payload
+elif [ -n "${COAST_AGENT_URL:-}" ]; then
+    if [ "${COAST_OFFLINE:-0}" = "1" ]; then
+        echo "coast-agent: refusing network fetch" >&2
+        exit 1
+    fi
+    if [ -z "$agent_sha" ]; then
+        echo "coast-agent: COAST_AGENT_SHA256 is missing" >&2
+        exit 1
+    fi
+    if ! printf '%s\n' "$agent_sha" | grep -Eq '^[0-9a-fA-F]{64}$'; then
+        echo "coast-agent: checksum is not 64 hex characters" >&2
+        exit 1
+    fi
+    tmp=$(mktemp)
+    if ! curl -fsSL "$COAST_AGENT_URL" -o "$tmp"; then
+        rm -f "$tmp"
+        exit 1
+    fi
+    if ! match_sha256 "$tmp" "$agent_sha"; then
+        rm -f "$tmp"
+        exit 1
+    fi
+    case "$COAST_AGENT_URL" in
+        *.deb)
+            dpkg -i "$tmp"
+            ;;
+        *)
+            install -m 0755 "$tmp" /usr/local/bin/coast-agent
+            ;;
+    esac
+    rm -f "$tmp"
+fi
+
+mkdir -p /usr/local/sbin /etc/systemd/system \
+    /etc/systemd/system/cloud-init.target.wants
+
+cat > /usr/local/sbin/coast-agent-start <<'EOF'
+#!/bin/bash
+set -euo pipefail
+if [ -x /usr/local/bin/coast-agent ]; then
+    exec /usr/local/bin/coast-agent
+fi
+if [ -x /usr/bin/coast-agent ]; then
+    exec /usr/bin/coast-agent
+fi
+echo "coast-agent binary is not installed" >&2
+exit 1
+EOF
+chmod 0755 /usr/local/sbin/coast-agent-start
+
+cat > /etc/systemd/system/coast-guest-routes.service <<'EOF'
+[Unit]
+Description=Coast guest management host routes and environment DHCP
+Requires=cloud-final.service
+After=cloud-final.service network-online.target
+Wants=network-online.target
+Before=coast-agent.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/coast-firstboot network
+TimeoutStartSec=300
+
+[Install]
+WantedBy=cloud-init.target
+EOF
+chmod 0644 /etc/systemd/system/coast-guest-routes.service
+
+cat > /etc/systemd/system/coast-agent.service <<'EOF'
+[Unit]
+Description=Coast guest agent
+After=network-online.target coast-guest-routes.service
+Wants=network-online.target
+Requires=coast-guest-routes.service
+ConditionPathExists=|/usr/local/bin/coast-agent
+ConditionPathExists=|/usr/bin/coast-agent
+
+[Service]
+Type=simple
+# Bind management sockets to the management IP in the main namespace.
+ExecStart=/usr/local/sbin/coast-agent-start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=cloud-init.target
+EOF
+chmod 0644 /etc/systemd/system/coast-agent.service
+
+rm -f /etc/systemd/system/coast-mgmt-netns.service \
+    /etc/systemd/system/cloud-init.target.wants/coast-mgmt-netns.service \
+    /etc/systemd/system/multi-user.target.wants/coast-mgmt-netns.service \
+    /etc/systemd/system/multi-user.target.wants/coast-guest-routes.service \
+    /etc/systemd/system/multi-user.target.wants/coast-agent.service
+wants=/etc/systemd/system/cloud-init.target.wants
+ln -sfn /etc/systemd/system/coast-guest-routes.service \
+    "${wants}/coast-guest-routes.service"
+ln -sfn /etc/systemd/system/coast-agent.service \
+    "${wants}/coast-agent.service"

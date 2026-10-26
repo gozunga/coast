@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Operators can run ``coast-manage janitor-report`` to report candidate
+    orphan resources in the configured OpenStack service project. The
+    command compares Coast markers and live DB references, protects retained
+    volumes and snapshots, and returns JSON resource types and IDs. It never
+    deletes resources or reads secret payloads. Exit status distinguishes a
+    clean report (0), candidates (1), and an incomplete report (2).

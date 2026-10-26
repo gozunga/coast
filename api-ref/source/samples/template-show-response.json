@@ -1,0 +1,17 @@
+{
+    "template": {
+        "id": "example-template",
+        "name": "Example service",
+        "description": "Example catalog entry",
+        "logo": "svgs/example.svg",
+        "category": "utilities",
+        "tags": [],
+        "required_env": [
+            "EXAMPLE_SETTING"
+        ],
+        "ports": [
+            8080
+        ],
+        "http_port": 8080
+    }
+}

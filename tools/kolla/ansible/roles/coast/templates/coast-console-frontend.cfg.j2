@@ -1,0 +1,19 @@
+#jinja2: lstrip_blocks: True
+{# Dedicated public listener. The shared API frontend must not own this port. #}
+{% set bind = namespace(tls='') %}
+{% if kolla_enable_tls_external | bool %}
+{%   set bind.tls = 'ssl crt /etc/haproxy/certificates/haproxy.pem' %}
+{%   if haproxy_enable_http2 | bool %}
+{%     set bind.tls = bind.tls ~ ' ' ~ haproxy_http2_protocol %}
+{%   endif %}
+{% endif %}
+frontend coast_console_external_front
+    mode http
+    http-request deny if { path -i -m beg /server-status }
+    http-request del-header X-Forwarded-Proto
+    timeout client 4h
+{% if kolla_enable_tls_external | bool %}
+    http-request set-header X-Forwarded-Proto https if { ssl_fc }
+{% endif %}
+    {{ "bind %s:%s %s" | format(kolla_external_vip_address, coast_console_port, bind.tls) | trim }}
+    default_backend coast_console_external_back

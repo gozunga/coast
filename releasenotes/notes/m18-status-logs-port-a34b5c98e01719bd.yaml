@@ -1,0 +1,14 @@
+features:
+  - |
+    API 1.5 adds deployment runtime_log and service reconcile_fault fields.
+    Sanitized failure output is stored with deployment history, up to 64 KB,
+    and log endpoints return it when live output is empty or unavailable.
+  - |
+    Service reconcile records observed engine failures, stopped
+    containers, and confirmed restart loops. Reconcile-owned errors recover
+    after stable running observations. Busy and user-stopped services are
+    skipped.
+  - |
+    Service ports accept null and blank values. HTTP health checks and
+    custom domains still require a port. Services without ports do not
+    expose a default port or domain route.

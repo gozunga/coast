@@ -1,0 +1,5 @@
+fixes:
+  - |
+    Inline Dockerfile apps now use the stack build server and registry image
+    when a dedicated build server is present. This allows their first deploy
+    to succeed on workers configured for deployment only.

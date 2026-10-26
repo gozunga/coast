@@ -1,0 +1,12 @@
+features:
+  - |
+    Provision worker and build VMs through ordered conductor tasks with
+    golden-image selection, two managed Cinder volumes, config drive,
+    mTLS agent health and engine registration. Workers receive an owned
+    floating IP; build servers use their dedicated security group without
+    public ingress.
+  - |
+    Remove empty VM servers with engine deregistration and confirmed cloud
+    cleanup. Retain data volumes and their quota; delete managed Docker
+    volumes. Servers with placed services or mounted volumes cannot be
+    removed. Bare-metal provisioning remains unavailable in these flows.

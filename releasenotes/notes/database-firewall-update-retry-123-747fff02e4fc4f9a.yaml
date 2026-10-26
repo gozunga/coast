@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Failed database public-access updates now retain durable firewall
+    cleanup work. If removing an old source rule fails, the conductor
+    retries independently of optional network repair, including after a
+    restart, while preserving the database failure status and task release.

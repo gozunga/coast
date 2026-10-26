@@ -1,0 +1,9 @@
+features:
+  - |
+    Controller, worker and build agents support durable, idempotent export
+    quiesce/resume leases over mTLS. Worker and build agents do not
+    bootstrap or proxy. The default automatic resume deadline is 15 minutes.
+    The export flow quiesces every server that owns a selected volume before
+    it creates Cinder snapshots. It attempts resume for every owner during
+    every revert, including uncertain outcomes and a resume failure on one
+    owner.

@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Controller failover reclaims expired app task claims and deployment
+    records after a runner stops. Live workload operations and backup jobs
+    still block failover. App status is re-read and abandoned deployments
+    are failed only after the replacement controller is healthy. App errors
+    do not undo controller recovery or degrade a stack whose servers are
+    healthy. Refused conductor admission logs a warning with the stack,
+    server and reason.

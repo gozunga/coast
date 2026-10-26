@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Agent certificate rotation claims the server task and leaves the stack
+    task unchanged, allowing renewal during deployments. The health-manager
+    sweep checks the nearest certificate expiry first. It skips busy servers,
+    stack deletion and failover of the same server.

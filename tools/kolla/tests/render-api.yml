@@ -1,0 +1,248 @@
+---
+- name: Set API TLS test mode
+  ansible.builtin.set_fact:
+    kolla_enable_tls_backend: "{{ tls_mode }}"
+    kolla_enable_tls_internal: "{{ tls_mode }}"
+    kolla_enable_tls_external: "{{ not tls_mode }}"
+    kolla_certificates_dir: "{{ config_directory.path }}/backend-certs"
+    kolla_tls_backend_cert: "{{ config_directory.path }}/backend-cert.pem"
+    kolla_tls_backend_key: "{{ config_directory.path }}/backend-key.pem"
+
+- name: Write backend leaf fixtures
+  ansible.builtin.copy:
+    dest: "{{ fixture_path }}"
+    content: "Backend TLS test fixture, not a credential.\n"
+    mode: "0600"
+  loop:
+    - "{{ kolla_tls_backend_cert }}"
+    - "{{ kolla_tls_backend_key }}"
+  loop_control:
+    loop_var: fixture_path
+
+- name: Remove stale API backend leaf files
+  become: true
+  ansible.builtin.file:
+    path: "{{ coast_config_dir }}/coast-api/coast-{{ item }}.pem"
+    state: absent
+  loop: [cert, key]
+
+- name: Run real API config tasks with TLS mode
+  ansible.builtin.include_role:
+    name: coast
+    tasks_from: config
+
+- name: Read API server configuration
+  ansible.builtin.slurp:
+    src: "{{ coast_config_dir }}/coast-api/coast-api-uwsgi.ini"
+  register: api_uwsgi
+
+- name: Read API Kolla configuration
+  ansible.builtin.slurp:
+    src: "{{ coast_config_dir }}/coast-api/config.json"
+  register: api_json
+
+- name: Check TLS serialization and production entry point
+  vars:
+    uwsgi: "{{ api_uwsgi.content | b64decode }}"
+    config: "{{ api_json.content | b64decode | from_json }}"
+    destinations: "{{ config.config_files | map(attribute='dest') | list }}"
+  ansible.builtin.assert:
+    that:
+      - config.command == 'uwsgi /etc/coast/coast-api-uwsgi.ini'
+      - "'wsgi-file = /var/lib/kolla/venv/bin/coast-wsgi-api' in uwsgi"
+      - "('https = 127.0.0.1:9600,/etc/coast/certs/coast-cert.pem,/etc/coast/certs/coast-key.pem' in uwsgi) == tls_mode"
+      - "('http = 127.0.0.1:9600' in uwsgi) == (not tls_mode)"
+      - "('/etc/coast/certs/coast-key.pem' in destinations) == tls_mode"
+      - "'/etc/coast/certs/coast_server_ca.key.pem' not in destinations"
+
+- name: Read copied API backend leaf files
+  become: true
+  ansible.builtin.stat:
+    path: "{{ coast_config_dir }}/coast-api/coast-{{ item }}.pem"
+  loop: [cert, key]
+  register: api_leaf_files
+
+- name: Check backend leaf files match TLS mode
+  ansible.builtin.assert:
+    that:
+      - item.stat.exists == (tls_mode | bool)
+      - (not tls_mode | bool) or item.stat.mode == ('0644' if item.item == 'cert' else '0600')
+  loop: "{{ api_leaf_files.results }}"
+
+- name: Create standard loadbalancer config directories
+  ansible.builtin.file:
+    path: "{{ node_config_directory }}/{{ subdir }}"
+    state: directory
+    mode: "0700"
+  loop: [haproxy/services.d, proxysql/users, proxysql/rules]
+  loop_control:
+    loop_var: subdir
+
+- name: Render real Kolla HAProxy and ProxySQL service configuration
+  ansible.builtin.include_role:
+    name: coast
+    tasks_from: loadbalancer
+  vars:
+    enable_haproxy: true
+    enable_proxysql: true
+    haproxy_config_install: true
+    haproxy_enable_external_vip: true
+    haproxy_single_external_frontend: false
+    haproxy_enable_http2: false
+    enable_external_api_firewalld: false
+    kolla_internal_vip_address: 192.0.2.100
+    kolla_external_vip_address: 192.0.2.101
+    kolla_verify_tls_backend: true
+    haproxy_backend_cacert: /etc/haproxy/ca.pem
+    mariadb_default_database_shard_id: 1
+
+- name: Read HAProxy service config
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/services.d/coast-api.cfg"
+  register: api_haproxy
+
+- name: Read ProxySQL account config
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/proxysql/users/coast.yaml"
+  register: api_proxysql
+  no_log: true
+
+- name: Verify VIP listeners, frontend TLS and backend CA verification
+  vars:
+    haproxy: "{{ api_haproxy.content | b64decode }}"
+    users: "{{ (api_proxysql.content | b64decode | from_yaml).mysql_users }}"
+  ansible.builtin.assert:
+    that:
+      - "'frontend coast_api_front' in haproxy"
+      - "'frontend coast_api_external_front' not in haproxy"
+      - "'bind 192.0.2.100:9600' in haproxy"
+      - "'bind 192.0.2.101:9600' not in haproxy"
+      - "('ssl crt /etc/haproxy/certificates/haproxy-internal.pem' in haproxy) == tls_mode"
+      - "'ssl crt /etc/haproxy/certificates/haproxy.pem' not in haproxy"
+      - "('ssl verify required ca-file /etc/haproxy/ca.pem' in haproxy) == tls_mode"
+      - "'server test-host 192.0.2.20:9600' in haproxy"
+      - users[0].username == 'coast'
+      - users[0].default_hostgroup | int == 10
+  no_log: true
+
+- name: Read console HAProxy service config
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/services.d/coast-console-proxy.cfg"
+  register: console_haproxy
+
+- name: Verify the console listener keeps port 9610 and plain backends
+  vars:
+    console: "{{ console_haproxy.content | b64decode }}"
+  ansible.builtin.assert:
+    that:
+      - "'frontend coast_console_front' in console"
+      - "'frontend coast_console_external_front' in console"
+      - "'bind 192.0.2.100:9610' in console"
+      - "'bind 192.0.2.101:9610' in console"
+      - "'timeout client 4h' in console"
+      - "'timeout server 4h' in console"
+      - "'timeout tunnel 4h' in console"
+      - "'option httpchk GET /health' in console"
+      - "'server test-host 192.0.2.20:9610' in console"
+      - "'ssl verify' not in console"
+      - "('ssl crt /etc/haproxy/certificates/haproxy-internal.pem' in console) == (tls_mode | bool)"
+      - "('ssl crt /etc/haproxy/certificates/haproxy.pem' in console) == (not tls_mode | bool)"
+
+- name: Check the extra console frontend file is absent
+  ansible.builtin.stat:
+    path: "{{ node_config_directory }}/haproxy/services.d/coast-console-frontend.cfg"
+  register: extra_console_frontend
+
+- name: Confirm the stock template owns both console frontends
+  ansible.builtin.assert:
+    that:
+      - not extra_console_frontend.stat.exists
+
+- name: Render the console frontend when the shared API frontend is enabled
+  ansible.builtin.include_role:
+    name: coast
+    tasks_from: loadbalancer
+  vars:
+    enable_haproxy: true
+    enable_proxysql: true
+    haproxy_config_install: true
+    haproxy_enable_external_vip: true
+    haproxy_single_external_frontend: true
+    haproxy_single_external_frontend_public_port: "443"
+    haproxy_enable_http2: false
+    enable_external_api_firewalld: false
+    kolla_internal_vip_address: 192.0.2.100
+    kolla_external_vip_address: 192.0.2.101
+    kolla_verify_tls_backend: true
+    haproxy_backend_cacert: /etc/haproxy/ca.pem
+    mariadb_default_database_shard_id: 1
+
+- name: Read the dedicated console frontend
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/services.d/coast-console-frontend.cfg"
+  register: console_frontend
+
+- name: Read the console service config after the shared frontend
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/services.d/coast-console-proxy.cfg"
+  register: console_shared
+
+- name: Read the shared frontend host map
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/external-frontend-map"
+  register: console_map
+
+- name: Verify port 9610 stays off the shared API frontend
+  vars:
+    frontend: "{{ console_frontend.content | b64decode }}"
+    service: "{{ console_shared.content | b64decode }}"
+    host_map: "{{ console_map.content | b64decode }}"
+  ansible.builtin.assert:
+    that:
+      - "'frontend coast_console_external_front' in frontend"
+      - "'bind 192.0.2.101:9610' in frontend"
+      - "'timeout client 4h' in frontend"
+      - "'default_backend coast_console_external_back' in frontend"
+      - "'frontend coast_console_external_front' not in service"
+      - "'backend coast_console_external_back' in service"
+      - "'frontend coast_console_front' in service"
+      - "'bind 192.0.2.100:9610' in service"
+      - "'coast_console' not in host_map"
+      - "'coast_api_external' not in host_map"
+      - "('ssl crt /etc/haproxy/certificates/haproxy.pem' in frontend) == (not tls_mode | bool)"
+
+- name: Render the API external listener when the operator enables it
+  ansible.builtin.include_role:
+    name: coast
+    tasks_from: loadbalancer
+  vars:
+    enable_haproxy: true
+    enable_proxysql: true
+    haproxy_config_install: true
+    haproxy_enable_external_vip: true
+    haproxy_single_external_frontend: false
+    haproxy_enable_http2: false
+    enable_external_api_firewalld: false
+    coast_enable_external_api: true
+    kolla_internal_vip_address: 192.0.2.100
+    kolla_external_vip_address: 192.0.2.101
+    kolla_verify_tls_backend: true
+    haproxy_backend_cacert: /etc/haproxy/ca.pem
+    mariadb_default_database_shard_id: 1
+
+- name: Read the API listener after the external opt-in
+  ansible.builtin.slurp:
+    src: "{{ node_config_directory }}/haproxy/services.d/coast-api.cfg"
+  register: api_haproxy_external
+
+- name: Verify the external API listener is opt-in
+  vars:
+    haproxy: "{{ api_haproxy_external.content | b64decode }}"
+  ansible.builtin.assert:
+    that:
+      - "'frontend coast_api_front' in haproxy"
+      - "'frontend coast_api_external_front' in haproxy"
+      - "'bind 192.0.2.100:9600' in haproxy"
+      - "'bind 192.0.2.101:9600' in haproxy"
+      - "('ssl crt /etc/haproxy/certificates/haproxy-internal.pem' in haproxy) == tls_mode"
+      - "('ssl crt /etc/haproxy/certificates/haproxy.pem' in haproxy) == (not tls_mode)"

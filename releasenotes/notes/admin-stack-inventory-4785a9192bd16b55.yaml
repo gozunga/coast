@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    API 1.18 adds admin stack inventory under the existing admin-only stack
+    detail policy: subnet, router, ingress and management security group
+    IDs, service project ID when different from the owner, and live server
+    and workload counts. Counts use two grouped queries per page. Admins can
+    use all_projects=true for stack show and nested server, volume and event
+    reads. Service and flat event lists support cross-project reads.
+  - |
+    Server create and delete event detail records the Nova compute ID. App
+    engine server upgrade and rollback events record the old and new Nova
+    IDs, including interrupted operations. Failover events keep both IDs.

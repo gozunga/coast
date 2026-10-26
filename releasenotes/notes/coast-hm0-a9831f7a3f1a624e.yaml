@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Operators can prepare the shared Coast management network and attach
+    coast-hm0 inside a dedicated controller-side namespace with the
+    tools/coast-hm0.py helper. The health-manager validates signed
+    UDP heartbeats, persists replay sequence checkpoints and batches
+    updates to the existing server last-heartbeat field.

@@ -1,0 +1,22 @@
+---
+- name: Validate service user role list
+  ansible.builtin.assert:
+    that:
+      - coast_keystone_user_roles is sequence
+      - coast_keystone_user_roles is not string
+      - coast_keystone_user_roles | length > 0
+      - coast_keystone_user_roles | select('string') | list == coast_keystone_user_roles
+      - "'' not in coast_keystone_user_roles"
+    fail_msg: coast_keystone_user_roles must be a nonempty list of role names
+
+- name: Register Coast service endpoints and service users
+  # coast_ks_users has the configured service user and the limited
+  # coast-agent user. service-ks-register creates each user, role
+  # and grant.
+  ansible.builtin.import_role:
+    name: service-ks-register
+  vars:
+    service_ks_register_auth: "{{ openstack_auth }}"
+    service_ks_register_services: "{{ coast_ks_services }}"
+    service_ks_register_users: "{{ coast_ks_users }}"
+  no_log: true

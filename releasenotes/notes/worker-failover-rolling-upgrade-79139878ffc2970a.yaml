@@ -1,0 +1,15 @@
+---
+fixes:
+  - |
+    Admin failover of worker and build VMs accepts the API's FAILING_OVER
+    claim and runs the real replacement flow without a health grace wait. It
+    preserves storage, ports and engine references.
+  - |
+    Stack upgrade accepts a newer published App engine server image with the
+    same engine version. For the same version, the image UUID must differ
+    and its Glance creation time must be later. Upgrade replaces the
+    controller, then each worker and build VM, one at a time, and stops on
+    the first failure. Workers and build servers use the configured
+    published worker image for the target engine version. A partial rollout
+    requires operator review; snapshot rollback restores the controller only
+    and does not undo completed worker replacements.

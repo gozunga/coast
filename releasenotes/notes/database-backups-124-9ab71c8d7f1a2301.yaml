@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Database resources now support encrypted manual and scheduled backups
+    for engines marked as backup capable in the engine catalog. Cloud users
+    can download a compressed dump, restore into a new database with fresh
+    credentials, or overwrite a database after confirming its name and
+    creating a safety backup. These routes require API microversion 1.29.

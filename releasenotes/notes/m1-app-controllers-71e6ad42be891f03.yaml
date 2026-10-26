@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Add project-scoped v1 app, deployment, domain, env var and event-list
+    endpoints with policy checks, strict validation, pagination and CAS task
+    locks. Private git credentials are not supported; source URLs must be
+    public HTTPS.
+security:
+  - |
+    Env values use an injectable secret store and only opaque references are
+    stored in Coast. Secret values are never returned, including to admins.
+    The default ``[secrets] backend = disabled`` fails closed; set
+    ``barbican`` to store values. The in-memory implementation is used only
+    in tests.

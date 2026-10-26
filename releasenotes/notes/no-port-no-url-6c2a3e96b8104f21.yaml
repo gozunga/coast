@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Non-template services without ports have a null ``default_url`` and no
+    default routing DNS records, including when a default hostname is stored.
+    The conductor also ignores supplied default hostnames for these services.
+    Template routes are unchanged.

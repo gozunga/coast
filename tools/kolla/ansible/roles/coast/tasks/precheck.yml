@@ -1,0 +1,50 @@
+---
+- name: Validate Coast inputs
+  ansible.builtin.import_tasks: validate.yml
+
+- name: Get Coast container facts
+  become: true
+  kolla_container_facts:
+    action: get_containers
+    container_engine: "{{ kolla_container_engine }}"
+    name:
+      - coast_api
+      - coast_health_manager
+      - coast_console_proxy
+  register: container_facts
+  check_mode: false
+
+- name: Check free API backend port on first deployment
+  ansible.builtin.wait_for:
+    host: "{{ api_interface_address }}"
+    port: "{{ coast_api_listen_port }}"
+    connect_timeout: 1
+    timeout: 1
+    state: stopped
+  when:
+    - inventory_hostname in groups['coast-api']
+    - container_facts.containers['coast_api'] is not defined
+
+- name: Check free shell listener port on first deployment
+  ansible.builtin.wait_for:
+    host: "{{ api_interface_address }}"
+    port: "{{ coast_console_listen_port }}"
+    connect_timeout: 1
+    timeout: 1
+    state: stopped
+  when:
+    - inventory_hostname in groups['coast-console-proxy']
+    - container_facts.containers['coast_console_proxy'] is not defined
+
+- name: Check free heartbeat UDP port in host mode
+  become: true
+  ansible.builtin.command:
+    argv: [ss, -H, -lun, "sport = :{{ coast_health_manager_port }}"]
+  register: coast_heartbeat_listener
+  changed_when: false
+  failed_when: coast_heartbeat_listener.stdout | length > 0
+  when:
+    - coast_hm0_manage | bool
+    - coast_enable_health_manager | bool
+    - inventory_hostname in groups['coast-health-manager']
+    - container_facts.containers['coast_health_manager'] is not defined

@@ -1,0 +1,20 @@
+{
+  "metrics": {
+    "service_id": "c04a392c-838f-4cd6-9dc9-90f76e9d7af2",
+    "range": "1h",
+    "step_seconds": 30,
+    "containers": [
+      {
+        "name": "web",
+        "points": [
+          {
+            "timestamp": "2026-10-19T05:00:00Z",
+            "cpu_percent": 12.5,
+            "memory_bytes": 104857600,
+            "memory_limit_bytes": 536870912
+          }
+        ]
+      }
+    ]
+  }
+}

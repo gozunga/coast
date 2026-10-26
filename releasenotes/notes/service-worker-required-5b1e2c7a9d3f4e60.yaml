@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    ``POST /v1/services`` requires ``server_id`` to name a worker server. A
+    null or missing value returns ``400 Bad Request`` with ``server_id is
+    required`` before quota, secret or database writes. Coast requires
+    explicit worker placement.

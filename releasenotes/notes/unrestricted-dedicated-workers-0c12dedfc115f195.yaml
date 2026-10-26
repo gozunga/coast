@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    Dedicated stack workers accept unrestricted workloads. Templates and
+    customer Compose can use host paths, Docker sockets, privileged
+    containers, host namespaces, devices and added capabilities. Compose
+    build packs are accepted. Beszel and Beszel Agent are selectable and
+    creatable. Image workload file mounts can use worker system paths. This
+    support applies on all microversions.
+security:
+  - |
+    Customers control their dedicated worker VMs. Control-plane protection
+    remains enforced through Neutron security groups and address groups,
+    the operator firewall, agent mTLS and least-privilege credentials.
+    Guests receive no Keystone service password. Project and stack
+    ownership checks, secret storage and audit events remain enforced.

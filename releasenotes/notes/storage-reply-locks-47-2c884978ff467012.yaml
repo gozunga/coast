@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Kolla configures and creates the private external lock directory for
+    synchronous RPC reply queues. Failed storage reads log a sanitized
+    cause and request identifiers and return HTTP 503.

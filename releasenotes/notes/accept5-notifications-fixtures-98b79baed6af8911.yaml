@@ -1,0 +1,10 @@
+features:
+  - |
+    Isolate conductor notification buffering and deduplication between
+    concurrent RPC operations so one operation cannot discard another's
+    events or fail while flushing its notifications.
+  - |
+    Environment-name conflicts identify the existing environment ID and
+    status and explain how to resolve the conflict.
+    Existing stacks continue to use their recorded engine release when
+    creating environments, independent of the operator's new-stack pin.

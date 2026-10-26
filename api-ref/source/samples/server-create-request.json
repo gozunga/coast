@@ -1,0 +1,8 @@
+{
+    "server": {
+        "name": "worker-2",
+        "kind": "vm",
+        "role": "worker",
+        "plan": "worker-4-8"
+    }
+}

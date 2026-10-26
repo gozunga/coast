@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Coast applies runtime env variables and verified domains to Coolify
+    template services through the public service API. Env changes use
+    Barbican references and require a new deployment. Template defaults and
+    generated values are preserved unless explicitly overridden. Coast only
+    removes variables that it marked as managed. Domain updates require a
+    unique sub-application target. Template volume mounts remain unchanged.

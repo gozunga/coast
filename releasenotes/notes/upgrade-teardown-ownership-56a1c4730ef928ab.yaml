@@ -1,0 +1,10 @@
+features:
+  - |
+    Engine upgrade and rollback replacements preserve the Coast server
+    ownership tag. Stack deletion removes verified stack-owned upgrade
+    snapshots and displaced rollback volumes, preventing blocked deletion
+    and leaked recovery disks. Explicit delete-retention snapshots retain
+    their existing policy.
+  - |
+    Periodic registry collection logs an unreachable engine at warning level
+    and retries on the next sweep. Other registry failures remain errors.

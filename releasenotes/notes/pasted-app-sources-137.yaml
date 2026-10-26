@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    API 1.31 supports repository-free Dockerfile and Compose sources with
+    protected content storage. Dockerfile GET/PUT and the compose editor
+    save without deploying. Deploy and rollback use frozen content.

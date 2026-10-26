@@ -1,0 +1,6 @@
+---
+# Copy into Kolla group_vars/all so kolla_address can see these in hostvars.
+coast_network_interface: "{{ network_interface }}"
+# Coast guest management currently supports IPv4 only.
+coast_network_address_family: ipv4
+coast_network_interface_address: "{{ 'coast_network' | kolla_address }}"

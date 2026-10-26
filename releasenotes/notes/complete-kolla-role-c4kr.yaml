@@ -1,0 +1,8 @@
+features:
+  - |
+    The Coast Kolla role provides HAProxy service entries, Kolla database
+    and RabbitMQ TLS settings, guarded persistent host management-port
+    setup, and precheck, reconfigure, upgrade and stop actions. It follows
+    the Kolla Ansible Octavia role structure. Backend API TLS is set
+    through the uWSGI configuration when ``coast_enable_tls_backend`` is
+    enabled.

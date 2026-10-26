@@ -1,0 +1,3 @@
+---
+- name: Reconfigure Coast
+  ansible.builtin.import_tasks: deploy.yml

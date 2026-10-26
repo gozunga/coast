@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Operators can run coast-api for isolated development or deploy the
+    coast-wsgi-api application with a production WSGI server. The API app
+    provides public version discovery, healthcheck, Keystone authentication
+    for versioned routes, request contexts and IDs, safe JSON errors, and
+    microversion negotiation. The noauth strategy is for isolated tests and
+    development only.

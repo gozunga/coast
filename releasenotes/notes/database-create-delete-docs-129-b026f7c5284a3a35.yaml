@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    Database guides now explain Name and delete confirmation, Initial
+    database and Username under Connection settings, and secure generated
+    passwords. Password reveal examples use ``--show-password`` and explain
+    masked output and project member access (issue #129).

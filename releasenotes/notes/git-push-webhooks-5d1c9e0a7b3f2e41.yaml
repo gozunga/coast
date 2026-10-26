@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Webhooks are off until ``[webhooks] secret_key`` is set. Set
+    ``[webhooks] public_url`` when the API is behind a proxy. Changing the
+    key changes every webhook URL.
+  - |
+    Apps can deploy on Git push. ``POST /v1/hooks/<service-id>/<token>``
+    accepts GitHub, Gitea, GitLab and Bitbucket push webhooks without a
+    Keystone token. Coast checks the per-app token, an optional
+    ``X-Hub-Signature-256``/``X-Gitea-Signature`` HMAC (the token is the
+    secret) or ``X-Gitlab-Token``, ignores pushes to other branches and
+    tags, and starts a normal deployment with trigger ``webhook``.

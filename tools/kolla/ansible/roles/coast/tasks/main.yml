@@ -1,0 +1,11 @@
+---
+- name: Validate Coast action
+  ansible.builtin.assert:
+    that:
+      - kolla_action in ['config', 'register', 'bootstrap', 'deploy',
+                        'check-containers', 'certificates', 'precheck',
+                        'reconfigure', 'upgrade', 'stop', 'loadbalancer']
+    fail_msg: This role supports only the listed actions.
+
+- name: Include Coast action
+  ansible.builtin.include_tasks: "{{ kolla_action }}.yml"

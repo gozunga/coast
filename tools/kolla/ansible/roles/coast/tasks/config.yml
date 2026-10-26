@@ -1,0 +1,110 @@
+---
+- name: Validate configuration inputs
+  ansible.builtin.import_tasks: validate.yml
+
+- name: Create private service config directories
+  become: true
+  ansible.builtin.file:
+    path: "{{ coast_config_dir }}/{{ item.key }}"
+    state: directory
+    mode: "0700"
+  loop: "{{ coast_services | dict2items }}"
+  when:
+    - item.value.enabled | bool
+    - inventory_hostname in groups[item.value.group]
+
+- name: Render Coast configuration
+  become: true
+  merge_configs:
+    sources:
+      - "{{ role_path }}/templates/coast.conf.j2"
+      - "{{ node_custom_config }}/global.conf"
+      - "{{ node_custom_config }}/coast.conf"
+      - "{{ node_custom_config }}/coast/{{ item.key }}.conf"
+      - "{{ node_custom_config }}/coast/{{ inventory_hostname }}/coast.conf"
+    dest: "{{ coast_config_dir }}/{{ item.key }}/coast.conf"
+    mode: "0600"
+  loop: "{{ coast_services | dict2items }}"
+  when:
+    - item.value.enabled | bool
+    - inventory_hostname in groups[item.value.group]
+  no_log: true
+  notify: "Restart {{ item.key }} container"
+
+- name: Render Kolla container configuration
+  become: true
+  ansible.builtin.template:
+    src: "{{ item.key }}.json.j2"
+    dest: "{{ coast_config_dir }}/{{ item.key }}/config.json"
+    mode: "0600"
+  loop: "{{ coast_services | dict2items }}"
+  when:
+    - item.value.enabled | bool
+    - inventory_hostname in groups[item.value.group]
+  notify: "Restart {{ item.key }} container"
+
+- name: Copy runtime certificates
+  ansible.builtin.import_tasks: certificates.yml
+
+- name: Copy operator supplied API paste configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ coast_api_paste_source }}"
+    dest: "{{ coast_config_dir }}/coast-api/api-paste.ini"
+    mode: "0600"
+  when: inventory_hostname in groups['coast-api']
+  no_log: true
+  notify: Restart coast-api container
+
+- name: Configure uWSGI for Coast
+  ansible.builtin.include_role:
+    name: service-uwsgi-config
+  vars:
+    service_name: coast-api
+    service_uwsgi_config_file: "{{ coast_config_dir }}/coast-api/coast-api-uwsgi.ini"
+    service_uwsgi_config_http_port: "{{ coast_api_listen_port }}"
+    service_uwsgi_config_wsgi_file: /var/lib/kolla/venv/bin/coast-wsgi-api
+    service_uwsgi_config_tls_backend: "{{ coast_enable_tls_backend | bool }}"
+    service_uwsgi_config_tls_cert: /etc/coast/certs/coast-cert.pem
+    service_uwsgi_config_tls_key: /etc/coast/certs/coast-key.pem
+    service_uwsgi_config_workers: "{{ coast_api_workers }}"
+    service_uwsgi_config_uid: coast
+    service_uwsgi_config_log_dir: coast
+    service_uwsgi_config_log_file_chmod: "644"
+  when: inventory_hostname in groups['coast-api']
+
+- name: Copy API backend TLS certificate
+  vars:
+    certs:
+      - "{{ kolla_certificates_dir }}/{{ inventory_hostname }}/coast-cert.pem"
+      - "{{ kolla_certificates_dir }}/{{ inventory_hostname }}-cert.pem"
+      - "{{ kolla_certificates_dir }}/coast-cert.pem"
+      - "{{ kolla_tls_backend_cert }}"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ lookup('first_found', certs) }}"
+    dest: "{{ coast_config_dir }}/coast-api/coast-cert.pem"
+    mode: "0644"
+  when:
+    - coast_enable_tls_backend | bool
+    - inventory_hostname in groups['coast-api']
+  no_log: true
+  notify: Restart coast-api container
+
+- name: Copy API backend TLS key
+  vars:
+    keys:
+      - "{{ kolla_certificates_dir }}/{{ inventory_hostname }}/coast-key.pem"
+      - "{{ kolla_certificates_dir }}/{{ inventory_hostname }}-key.pem"
+      - "{{ kolla_certificates_dir }}/coast-key.pem"
+      - "{{ kolla_tls_backend_key }}"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ lookup('first_found', keys) }}"
+    dest: "{{ coast_config_dir }}/coast-api/coast-key.pem"
+    mode: "0600"
+  when:
+    - coast_enable_tls_backend | bool
+    - inventory_hostname in groups['coast-api']
+  no_log: true
+  notify: Restart coast-api container

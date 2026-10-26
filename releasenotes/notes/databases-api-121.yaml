@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    API microversion 1.29 adds a database engine catalog and standalone
+    database creation, listing, details, settings and deletion. Databases
+    use the service quota and run on a selected stack worker. Coast generates
+    and protects credentials; project members can retrieve them through a
+    dedicated response that disables caching. Public access remains disabled.
+    Changes to CPU or memory limits recreate a running database container
+    to apply the limits; stopped databases keep their stopped state.

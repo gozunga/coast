@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The conductor publishes current-resource usage snapshots for
+    environments, servers, volumes and apps as coast.<resource>.exists.
+    Configure the sweep interval and UTC hour, day or month audit period
+    in the notifications group. Payloads contain only allowed identifiers,
+    status and stored sizing fields, never names or secret references.
+other:
+  - |
+    Usage snapshots are best-effort and do not provide deleted-resource
+    history or historical sizes. Consumers must deduplicate repeated
+    resource and audit-period events after restart or across conductors.

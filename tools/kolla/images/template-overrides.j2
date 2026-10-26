@@ -1,0 +1,9 @@
+{#- Copyright 2026 Gozunga and Coast contributors
+    SPDX-License-Identifier: Apache-2.0
+    Default kolla-build template override for Coast images. Operators can
+    pass their own overlay files after this one (build.sh -o FILE); later
+    files are merged by kolla-build. Blocks: coast_base_header/footer,
+    coast_api_*, coast_conductor_*, coast_health_manager_*,
+    coast_console_proxy_*, and the
+    customizable list coast_base_pip_packages. -#}
+{% extends parent_template %}

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    API microversion 1.16 lists service named volumes observed through the
+    engine public storage API, including volumes from templates and Compose.
+    Storage responses include ``source=coast`` or ``source=template``.
+    Template volumes are read-only. Observations do not change quota or
+    desired state. Volumes without a Coast account have null ``size_gb``.

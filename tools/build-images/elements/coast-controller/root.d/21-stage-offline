@@ -1,0 +1,60 @@
+#!/bin/bash
+# Copyright 2026 Gozunga and Coast contributors
+# Licensed under the Apache License, Version 2.0.
+set -euo pipefail
+umask 022
+version=${COAST_COOLIFY_VERSION:-${DIB_COAST_COOLIFY_VERSION:-}}
+element=$(dirname "$(dirname "$(readlink -f "$0")")")
+if declare -F get_image_element_array >/dev/null; then
+    eval "declare -A image_elements=($(get_image_element_array))"
+    element=${image_elements[coast-controller]}
+    registry_element=${image_elements[coast-agent]}
+fi
+repo=${registry_element:-$element}/../../../..
+export PYTHONPATH="$repo${PYTHONPATH:+:$PYTHONPATH}"
+allowed=$(python3 -c 'import sys; from coast.common.engine_versions import images; print("\n".join(sorted(images(sys.argv[1]))))' "$version")
+stage=${TARGET_ROOT}/usr/lib/coast/coolify
+sudo mkdir -p "$stage"
+manifest=$(mktemp)
+trap 'rm -f "$manifest"' EXIT
+python3 -c 'import sys; from coast.common.engine_versions import manifest; print(manifest(sys.argv[1]), end="")' "$version" > "$manifest"
+# mktemp and operator cache/lock inputs may be private (0600).
+# The build user verifies these staged files after sudo installs them.
+sudo install -m 0644 "$manifest" "$stage/SHA256SUMS"
+# A cache permits offline DIB builds. The same committed checksums apply.
+while read -r checksum name; do
+    if [ -n "${COAST_COOLIFY_CACHE:-}" ]; then
+        sudo install -m 0644 "${COAST_COOLIFY_CACHE}/$name" "$stage/$name"
+    else
+        [ "${COAST_OFFLINE:-0}" != 1 ] || exit 1
+        upstream=$name
+        case "$name" in upgrade*.sh) upstream=scripts/$name ;; esac
+        curl -fsSL "https://raw.githubusercontent.com/coollabsio/coolify/v${version}/$upstream" | sudo tee "$stage/$name" > /dev/null
+    fi
+    printf '%s  %s\n' "$checksum" "$stage/$name" | sha256sum -c -
+done < "$stage/SHA256SUMS"
+# Require operator-reviewed immutable references, not moving dependency tags.
+lock=${COAST_COOLIFY_IMAGES_LOCK:-}
+if [ -z "$lock" ]; then
+    echo 'COAST_COOLIFY_IMAGES_LOCK requires reviewed digest references' >&2
+    exit 1
+fi
+sudo install -m 0644 "$lock" "$stage/images.lock"
+images=()
+while read -r tag digest; do
+    if ! printf '%s\n' "$allowed" | grep -Fxq -- "$tag"; then
+        echo 'Unexpected image in lock' >&2; exit 1
+    fi
+    [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]] || exit 1
+    ref="${tag%:*}@$digest"
+    if [ "${COAST_OFFLINE:-0}" != 1 ]; then
+        docker pull --platform linux/amd64 "$ref"
+    fi
+    docker tag "$ref" "$tag"
+    images+=("$tag")
+done < "$stage/images.lock"
+expected_count=$(printf '%s\n' "$allowed" | wc -l)
+[ "${#images[@]}" = "$expected_count" ] || exit 1
+[ "$(printf '%s\n' "${images[@]}" | sort -u | wc -l)" = "$expected_count" ] || exit 1
+docker save "${images[@]}" | sudo tee "$stage/images.tar" > /dev/null
+(cd "$stage"; sha256sum images.lock images.tar | sudo tee -a SHA256SUMS > /dev/null)

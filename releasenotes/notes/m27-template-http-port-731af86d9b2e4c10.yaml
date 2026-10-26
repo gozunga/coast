@@ -1,0 +1,11 @@
+features:
+  - |
+    API 1.7 adds read-only ``http_port`` to template list and show responses.
+    The pinned catalog derives this port from the first compose URL magic
+    variable with a port suffix. Bare URL variables use the first metadata
+    port; templates without URL variables have no HTTP port.
+    Template creates at API 1.7 default omitted ports to this HTTP port,
+    falling back to the first catalog port. If the client omits
+    ``health_check`` and an HTTP port exists, Coast defaults to HTTP health
+    checks on that port with path ``/``. Explicit settings take precedence.
+    Earlier API versions retain their previous fields and defaults.

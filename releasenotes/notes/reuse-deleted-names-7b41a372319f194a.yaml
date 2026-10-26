@@ -1,0 +1,5 @@
+fixes:
+  - |
+    App group and environment names can be reused after deletion completes.
+    Names remain reserved while deletion is in progress; conflicts explain
+    that deletion must finish before retrying.

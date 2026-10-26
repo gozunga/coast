@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Coolify compose domain writes and reconciliation use the pinned
+    engine's ``docker_compose_domains`` field on the existing application
+    routes. Non-empty domains require one known, unambiguous target. Empty
+    desired domains clear known targets. Missing or malformed observations
+    fail closed. A running workload is restarted after its domains change
+    so routing picks up the new domains, without a new build.

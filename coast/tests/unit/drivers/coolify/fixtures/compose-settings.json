@@ -1,0 +1,6 @@
+{
+  "build_pack": "dockercompose",
+  "fqdn": null,
+  "docker_compose_domains": "{\"web\": {\"domain\": \"https://OLD.example.com\", \"redirect\": \"both\"}, \"helper\": {\"domain\": null}}",
+  "status": "running:healthy"
+}

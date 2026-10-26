@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    App engine application and deployment log endpoints return live,
+    driver-masked log lines through bounded conductor RPC calls. Noop
+    environments return empty logs.
+  - |
+    Applications whose creation failed before an engine reference was saved
+    can be deleted. The driver performs idempotent cleanup by the
+    deterministic application name before Coast removes its records.

@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    The Coast Kolla role uses Kolla's shared RPC and notification transport
+    URLs and RabbitMQ credentials. It follows Octavia's queue manager,
+    quorum queue, stream fanout, prefetch and TLS settings. Notifications
+    use messagingv2 when enabled, otherwise noop. Messaging config stays on
+    Kolla controllers; guest VMs receive no RabbitMQ addresses or
+    credentials.

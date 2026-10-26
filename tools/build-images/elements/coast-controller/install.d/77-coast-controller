@@ -1,0 +1,120 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+umask 022
+
+# shellcheck disable=SC1091
+. /etc/coast/build.env
+
+match_sha256() {
+    file=$1
+    expected=$2
+    if [ -z "$expected" ]; then
+        echo "coast-controller: COAST_COOLIFY_INSTALLER_SHA256 is missing" >&2
+        return 1
+    fi
+    if ! printf '%s\n' "$expected" | grep -Eq '^[0-9a-fA-F]{64}$'; then
+        echo "coast-controller: checksum is not 64 hex characters" >&2
+        return 1
+    fi
+    actual=$(sha256sum "$file" | awk 'NR==1 { print $1 }')
+    actual=$(printf '%s' "$actual" | tr '[:upper:]' '[:lower:]')
+    expected=$(printf '%s' "$expected" | tr '[:upper:]' '[:lower:]')
+    if [ "$actual" != "$expected" ]; then
+        echo "coast-controller: installer sha256 mismatch" >&2
+        rm -f "$file"
+        return 1
+    fi
+}
+
+version=${COAST_COOLIFY_VERSION:?}
+offline=${COAST_OFFLINE:-0}
+checksum=${COAST_COOLIFY_INSTALLER_SHA256:-}
+install_dir=/usr/lib/coast/coolify
+staged="${install_dir}/install.sh"
+mkdir -p "$install_dir" /etc/coast /data
+
+if [ ! -f "$staged" ]; then
+    if [ "$offline" = "1" ]; then
+        echo "coast-controller: offline build has no installer" >&2
+        exit 1
+    fi
+    if [ -z "$checksum" ]; then
+        echo "coast-controller: COAST_COOLIFY_INSTALLER_SHA256 is missing" >&2
+        exit 1
+    fi
+    if ! printf '%s\n' "$checksum" | grep -Eq '^[0-9a-fA-F]{64}$'; then
+        echo "coast-controller: checksum is not 64 hex characters" >&2
+        exit 1
+    fi
+    url="https://raw.githubusercontent.com/coollabsio/coolify/v${version}/scripts/install.sh"
+    tmp=$(mktemp)
+    if ! curl -fsSL "$url" -o "$tmp"; then
+        rm -f "$tmp"
+        exit 1
+    fi
+    if ! match_sha256 "$tmp" "$checksum"; then
+        rm -f "$tmp"
+        exit 1
+    fi
+    install -m 0750 "$tmp" "$staged"
+    rm -f "$tmp"
+else
+    if ! match_sha256 "$staged" "$checksum"; then
+        exit 1
+    fi
+    chmod 0750 "$staged"
+fi
+
+# The stock installer is retained for provenance only.
+cat > /etc/systemd/system/coast-coolify-firstboot.service <<'EOF'
+[Unit]
+Description=Coast offline Coolify first boot
+Requires=cloud-final.service docker.service coast-guest-routes.service coast-volume-mounts.service
+After=cloud-final.service docker.service coast-guest-routes.service coast-volume-mounts.service
+RequiresMountsFor=/data /var/lib/docker /var/lib/registry
+Before=coast-agent.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/coast-firstboot engine
+TimeoutStartSec=900
+UMask=0077
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=cloud-init.target
+EOF
+mkdir -p /etc/systemd/system/coast-agent.service.d
+cat > /etc/systemd/system/coast-agent.service.d/firstboot.conf <<'EOF'
+[Unit]
+Requires=coast-coolify-firstboot.service
+After=coast-coolify-firstboot.service
+EOF
+mkdir -p /etc/systemd/system/cloud-init.target.wants
+rm -f /etc/systemd/system/multi-user.target.wants/coast-coolify-firstboot.service
+ln -sfn /etc/systemd/system/coast-coolify-firstboot.service \
+    /etc/systemd/system/cloud-init.target.wants/coast-coolify-firstboot.service
+
+mkdir -p /etc/coast
+if ! grep -qx /var/lib/registry /etc/coast/volume-mounts 2>/dev/null; then
+    printf '%s\n' /var/lib/registry >> /etc/coast/volume-mounts
+fi
+
+printf '%s\n' controller > /etc/coast/role
+chmod 0644 /etc/coast/role
+
+cat > /etc/coast/image-release <<EOF
+role=controller
+distro=${COAST_DISTRO:-ubuntu}
+release=${COAST_RELEASE:-noble}
+coolify_version=${version}
+install=first-boot
+autoupdate=false
+EOF
+chmod 0644 /etc/coast/image-release

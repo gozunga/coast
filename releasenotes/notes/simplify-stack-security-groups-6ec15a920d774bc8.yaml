@@ -1,0 +1,6 @@
+---
+security:
+  - |
+    The provider network used by stacks must block access to OpenStack
+    control-plane and management networks at the router or firewall.
+    Configure this isolation before provisioning stacks.

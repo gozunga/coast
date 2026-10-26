@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Controller, worker and build config drives link
+    ``/dev/disk/by-id/coast-<volume id>`` to the virtio-blk or virtio-scsi
+    by-id path and mount that link. A udev rule recreates it on later boots.

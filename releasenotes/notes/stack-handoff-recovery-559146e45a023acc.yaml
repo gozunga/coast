@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Unclaimed stack handoff failures mark the stack ``ERROR`` and release
+    the accepted quota reservation. DELETE can cancel an unclaimed
+    ``PENDING`` stack. Conductor-owned operations retain their locks.

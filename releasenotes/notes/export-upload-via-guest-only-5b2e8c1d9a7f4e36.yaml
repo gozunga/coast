@@ -1,0 +1,7 @@
+---
+other:
+  - |
+    Export uploads run from the guest: the guest agent uploads each volume
+    image to a pre-signed Swift or S3 URL, so guests must reach the object
+    store endpoint. ``[export] upload_via`` accepts only ``guest``.
+    Conductor relay upload is planned in gozunga/coast#87.

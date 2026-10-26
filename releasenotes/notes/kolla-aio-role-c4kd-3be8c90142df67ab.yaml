@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The Coast Kolla role merges operator config overrides,
+    configures conductor export certificate paths, writes to the shared
+    Kolla log volume, and supplies container health checks and Keystone
+    token cache settings.
+fixes:
+  - |
+    Config-only runs render configuration without restarting containers.
+    The role provides Kolla image/tag defaults so a disabled health-manager needs
+    no image override. The supplied Coast play imports Kolla host fact
+    gathering and runs beside Kolla site.yml and gather-facts.yml. Service
+    configuration uses inventory group membership and query-free database
+    URLs.

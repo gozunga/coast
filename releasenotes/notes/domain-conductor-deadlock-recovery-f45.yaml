@@ -1,0 +1,23 @@
+---
+features:
+  - |
+    Domain operations retry complete conductor transactions after database
+    deadlocks and release application tasks after failed operations. Domain
+    casts use the same service, stack and domain lock order as API claims and
+    periodic writes. Automatic DNS observation saves propagate deadlocks to
+    the complete transaction retry. The settle sweep releases abandoned service
+    tasks for every task owner after five minutes, allowing domain deletion
+    to be retried
+    without a database edit. Unstarted pending deployments older than five
+    minutes fail and release their original claim, fencing delayed delivery.
+    Running deployments and backup jobs retain their existing recovery paths. Queued domain
+    mutations are fenced to their
+    accepted claim, so delayed delivery cannot take over a newer operation.
+    Service failure cleanup releases the original claim even when stack or
+    operation-lock setup fails persistently. API microversions and task
+    metadata are unchanged. Mutation receipts identify the accepted task claim,
+    so repeated failed attempts against an unchanged domain revision cannot
+    suppress a newly accepted delete or leave its application task locked.
+    Real-driver deployment handoffs also retry their complete checkpoint
+    transaction and release only the accepted application claim after failure,
+    without repeating an engine enqueue.

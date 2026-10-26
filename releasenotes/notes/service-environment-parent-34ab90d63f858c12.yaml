@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Service create requires the appgroup_id and environment_id parents,
+    validates their project, hierarchy and engine readiness before writes,
+    and persists the environment parent for Git and template placement.
+    Missing or foreign parents return 404, hierarchy mismatches return 400,
+    and inactive or unmapped parents return 409. Responses expose
+    appgroup_id, environment_id and read-only template_id. The appgroup
+    selects the stack; stack_id is not a create body field.

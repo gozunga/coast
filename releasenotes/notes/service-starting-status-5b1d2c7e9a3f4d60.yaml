@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Service start and restart report ``STARTING`` until the engine
+    reports the service running, then ``ACTIVE``. The conductor's
+    deployment poll checks this without holding the project lock; after
+    ``[conductor] start_timeout`` (default 180 seconds) the service becomes
+    ``ERROR``. A service shows ``DEPLOYING`` while a user deployment runs.
+    Start, stop and restart are enabled for Git and image apps on the
+    Coolify driver.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Microversion 1.10 adds project-scoped named storage for apps and
+    services. Create, list, show, attach, detach, and delete use
+    ``/v1/stacks/{stack_id}/storages``. The bytes stay on the worker Docker
+    disk. Before microversion 1.19, a host path or bind returns 400 and
+    deleting attached storage returns 409. From 1.19, service-owned binds
+    and deletion of attached user mounts are supported. ``storage_gb`` is
+    the project quota.

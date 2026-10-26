@@ -1,0 +1,42 @@
+#!/bin/bash
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# docker.io is published in Ubuntu universe.
+add_universe() {
+    file=$1
+    mode=$2
+    [ -f "$file" ] || return 0
+    tmp=$(mktemp)
+    if [ "$mode" = "deb822" ]; then
+        awk '
+            /^Components:/ && $0 !~ /(^|[[:space:]])universe([[:space:]]|$)/ {
+                print $0 " universe"
+                next
+            }
+            { print }
+        ' "$file" > "$tmp"
+    else
+        awk '
+            /^deb / && $0 !~ /(^|[[:space:]])universe([[:space:]]|$)/ {
+                print $0 " universe"
+                next
+            }
+            { print }
+        ' "$file" > "$tmp"
+    fi
+    cat "$tmp" > "$file"
+    rm -f "$tmp"
+}
+
+for file in /etc/apt/sources.list.d/*.sources; do
+    [ -f "$file" ] || continue
+    add_universe "$file" deb822
+done
+for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list; do
+    [ -f "$file" ] || continue
+    add_universe "$file" deb
+done

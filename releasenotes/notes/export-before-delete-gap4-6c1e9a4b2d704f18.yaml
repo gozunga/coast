@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Stack delete accepts ``export_before_delete``. Real teardown runs
+    the export to completion before it deletes cloud resources. The
+    export and its Swift objects remain after the stack is deleted.
+    An export failure sets the stack to ERROR and deletes nothing.
+    ``snapshot_volumes`` can be set with this flag.

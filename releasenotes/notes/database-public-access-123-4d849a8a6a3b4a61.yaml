@@ -1,0 +1,10 @@
+features:
+  - |
+    Databases can optionally publish a worker port with an IPv4 source
+    restriction. Coast allocates a port when omitted and manages the stack
+    firewall rule, including quota checks and cleanup. Responses include
+    public and private worker addresses and password-free connection URLs.
+    Firewall changes and cleanup apply during conductor operations even
+    when periodic network repair is disabled. Failed deletion and action
+    cleanup is retried durably, and retries from an error state restore
+    the intended firewall access.

@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    Service engine writes revalidate ownership and hold the single app's
+    database row lock through writes. This includes deployment enqueue and
+    rollback, cancellation, background settings and domain sync, and
+    database backup/restore requests. Controller failover waits for a paused
+    writer even after claim expiry. Enqueue holds no project or stack row
+    lock across engine requests. Admission locks app rows before
+    infrastructure rows to avoid deadlocks with writer completion. Status
+    polling and readiness waits stay outside these transactions.

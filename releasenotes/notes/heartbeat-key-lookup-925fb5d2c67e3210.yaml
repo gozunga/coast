@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The health-manager uses the in-tree heartbeat key lookup
+    ``coast.health_manager.keys.StackKeyLookup`` by default
+    (``[health_manager] key_lookup`` can name another class). It needs the
+    database, Barbican backend and service credentials configured.
+    The lookup reads the live stack reference and decodes the 32-byte key.
+    A bounded memory cache reduces Barbican requests. When Barbican is
+    unavailable, the last good key stays usable for up to
+    ``[health_manager] key_cache_max_stale`` seconds after the cache
+    expires; other lookup failures reject packets without logging secrets.

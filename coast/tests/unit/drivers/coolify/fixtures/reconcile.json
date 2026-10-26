@@ -1,0 +1,9 @@
+{
+  "envs": [
+    {"key": "PASSWORD", "value": "fixture-only", "comment": "coast-managed",
+     "is_literal": true, "is_multiline": false, "is_shown_once": false},
+    {"key": "SERVICE_PASSWORD_DB", "value": "generated", "comment": null}
+  ],
+  "service": {"applications": [{"name": "web",
+    "fqdn": "https://SITE.example.com,https://other.example.com"}]}
+}

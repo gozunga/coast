@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Guest management routing, the agent, controller first boot and Docker
+    use ``cloud-init.target`` and wait for cloud-final and their volume and
+    network prerequisites.

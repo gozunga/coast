@@ -1,0 +1,10 @@
+{
+    "plans": [
+        {
+            "name": "standard-2",
+            "kind": "vm",
+            "roles": ["worker"],
+            "description": "Two vCPU worker"
+        }
+    ]
+}

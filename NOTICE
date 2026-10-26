@@ -1,0 +1,28 @@
+Coast - OpenStack-native application hosting service
+Copyright 2026 Gozunga and Coast contributors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Coast orchestrates third-party PaaS engines (e.g. Coolify,
+https://github.com/coollabsio/coolify) through their public APIs. Coast does
+not include or redistribute the Coolify application itself. "Coolify" is a
+trademark of its respective owner; Coast is not affiliated with or endorsed
+by it.
+
+Third-party material
+--------------------
+
+coast/drivers/coolify/templates/catalog-4.4.3.json
+coast/drivers/coolify/templates/compose-4.4.3.json
+coast/drivers/coolify/templates/volumes-4.4.3.json
+
+  These files are derived from the Coolify v4.4.3 one-click service
+  templates (templates/service-templates.json at tag v4.4.3 of
+  https://github.com/coollabsio/coolify; source URL and SHA-256 recorded in
+  tools/template-catalog-source.json).
+  Copyright (c) Coolify contributors (coollabsio).
+  Licensed under the Apache License, Version 2.0, the same license as Coast
+  (see LICENSE). tools/gen-template-catalog.py regenerates them from the
+  upstream file: it keeps the compose content, extracts service metadata,
+  volume definitions and display fields, and clears logo paths that name
+  the engine. Logo paths refer to upstream files that Coast does not ship.

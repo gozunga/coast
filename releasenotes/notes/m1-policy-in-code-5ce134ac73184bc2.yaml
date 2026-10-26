@@ -1,0 +1,7 @@
+features:
+  - |
+    Coast registers project-scoped policy defaults for the v1 API.
+    Operators can generate etc/coast/policy.yaml.sample with tox -e genpolicy
+    and override defaults through the oslo.policy configuration options.
+    Policy authorization rejects system-scoped tokens and hides foreign
+    resources from non-admin users.

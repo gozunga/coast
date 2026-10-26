@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The conductor sends engine requests through the controller agent's
+    ``/api/v1`` mTLS proxy.

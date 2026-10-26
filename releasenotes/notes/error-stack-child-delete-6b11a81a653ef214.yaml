@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Apps, environments and app groups can be deleted when their stack
+    is in ERROR or its engine is unreachable. Engine cleanup is skipped with
+    a warning, allowing normal stack deletion to remove the cloud resources.
+    Other engine failures on ACTIVE stacks still fail deletion. Environment
+    and app group delete conflicts explain which operation or child blocks
+    cleanup. No API microversion change is required.

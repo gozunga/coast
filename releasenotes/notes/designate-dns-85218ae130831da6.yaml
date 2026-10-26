@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    API 1.22 adds project Designate zone discovery, optional stack default
+    domains, and automatic custom-domain TXT and routing records. Default
+    hostnames still use sslip.io when a stack has no linked zone. Managed
+    records follow worker address changes and are removed during domain,
+    app and stack deletion. Coast refuses to overwrite customer records.
+  - |
+    Customer DNS uses a swappable credential provider. The default service
+    account uses Designate sudo in the customer project. Operators can use
+    Keystone trusts on zone links instead. Trust references are accepted
+    through the API; identity administrators manage their lifecycle.
+security:
+  - |
+    Service-account DNS requires operator-granted Designate sudo rights.
+    This increases the impact of a control-plane compromise. Trust-based
+    DNS limits credentials to the customer project but depends on the
+    linking user's identity. Zone ownership and exact recordset ownership
+    are checked with both providers. DNS payload logging is disabled.

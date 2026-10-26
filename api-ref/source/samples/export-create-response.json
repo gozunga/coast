@@ -1,0 +1,15 @@
+{
+    "export": {
+        "id": "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0",
+        "status": "PENDING",
+        "volume_ids": ["33333333-3333-3333-3333-333333333333"],
+        "artifacts": [],
+        "object_expires_at": null,
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/stacks/6f0f5d0e-2a1b-4c8f-9a51-0b9f1f2d7c11/exports/a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0"
+            }
+        ]
+    }
+}

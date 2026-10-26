@@ -1,0 +1,47 @@
+[
+  {
+    "command": "docker exec builder bash -c 'echo super-private-key'",
+    "output": "#5 [2/6] RUN npm ci\nexporting layers",
+    "type": "stdout",
+    "timestamp": "2026-10-10T01:00:00.000000Z",
+    "hidden": true,
+    "batch": 4,
+    "order": 1
+  },
+  {
+    "command": "docker exec builder bash -c 'echo super-private-key'",
+    "output": "password=build-secret engine-secret done",
+    "type": "stderr",
+    "timestamp": "2026-10-10T01:00:01.000000Z",
+    "hidden": true,
+    "batch": 4,
+    "order": 2
+  },
+  {
+    "command": "git clone https://oauth2:leak-token@git.example.com/app.git",
+    "output": "",
+    "type": "stdout",
+    "timestamp": "2026-10-10T01:00:02.000000Z",
+    "hidden": true,
+    "batch": 5,
+    "order": 3
+  },
+  {
+    "command": "git clone https://oauth2:leak-token@git.example.com/app.git",
+    "output": "   ",
+    "type": "stdout",
+    "timestamp": "2026-10-10T01:00:03.000000Z",
+    "hidden": true,
+    "batch": 5,
+    "order": 4
+  },
+  {
+    "command": null,
+    "output": "Deployment finished.",
+    "type": "stdout",
+    "timestamp": "2026-10-10T01:00:04.000000Z",
+    "hidden": false,
+    "batch": 6,
+    "order": 5
+  }
+]

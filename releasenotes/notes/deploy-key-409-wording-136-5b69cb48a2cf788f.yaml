@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Clarify deploy key update conflict (HTTP 409) messages. Apps that have
+    never been deployed now say "Deploy the app once before changing its
+    deploy key." Apps with an operation or deploy key update in progress
+    now say "Wait for the current operation on this app to finish, then
+    try again." Behavior and status codes are unchanged.

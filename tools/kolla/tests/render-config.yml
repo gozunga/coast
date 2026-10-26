@@ -1,0 +1,232 @@
+---
+# Execute real config tasks and handlers, without a container runtime.
+- name: Check config-only operation with health-manager disabled
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    kolla_action: config
+    docker_image_url: registry.example.com:5000/coast/
+    openstack_tag: test-tag
+    default_container_dimensions: {}
+    enable_container_healthchecks: true
+    default_container_healthcheck_interval: 30s
+    default_container_healthcheck_retries: 3
+    default_container_healthcheck_start_period: 5s
+    default_container_healthcheck_timeout: 10s
+    kolla_internal_fqdn: internal.example.com
+    kolla_external_fqdn: public.example.com
+    internal_protocol: http
+    public_protocol: http
+    api_interface_address: 127.0.0.1
+    kolla_enable_tls_backend: false
+    openstack_service_workers: 2
+    kolla_base_distro: ubuntu
+    use_preconfigured_databases: false
+    use_common_mariadb_user: false
+    database_address: database.example.com
+    database_port: 3306
+    coast_database_password: test-only-password
+    database_enable_tls_internal: false
+    om_enable_rabbitmq_tls: false
+    om_rpc_port: 5672
+    om_rpc_group: rabbitmq
+    om_rpc_vhost: /
+    coast_keystone_password: test-only-password
+    coast_agent_keystone_password: test-only-agent-password
+    keystone_internal_url: http://example.com/identity
+    keystone_public_url: http://example.com/identity
+    openstack_region_name: test-region
+    rpc_transport_url: rabbit://openstack:test@controller.example.com:5672//
+    notify_transport_url: rabbit://openstack:test@notify.example.com:5672//
+    enable_ceilometer: false
+    coast_enabled_notification_topics: []
+    om_enable_rabbitmq_stream_fanout: true
+    om_rabbitmq_qos_prefetch_count: 50
+    coast_openstack_ca_source: /test/cloud-ca.pem
+    coast_openstack_cafile: /etc/coast/cloud-ca.pem
+    memcache_security_strategy: ENCRYPT
+    memcache_secret_key: test-only-cache-key
+    memcached_port: 11211
+    coast_network_address_family: ipv4
+    coast_network_interface_address: 192.0.2.20
+  tasks:
+    - name: Create temporary config and certificate directory
+      ansible.builtin.tempfile:
+        state: directory
+        prefix: coast-config-only-
+      register: config_directory
+
+    - name: Exercise config-only action
+      block:
+        - name: Supply config paths and disabled health-manager settings
+          ansible.builtin.set_fact:
+            node_custom_config: "{{ config_directory.path }}/custom"
+            node_config_directory: "{{ config_directory.path }}/config"
+            coast_api_paste_source: "{{ config_directory.path }}/api-paste.ini"
+            coast_enable_health_manager: false
+            # A previous play sets this fact to 192.0.2.22. Facts outrank
+            # play vars, so set the address this play documents.
+            coast_network_interface_address: 192.0.2.20
+            enable_coast: true
+            kolla_enable_tls_backend: false
+            ansible_facts:
+              hostname: test-host
+              test_mgmt:
+                ipv4:
+                  address: 192.0.2.20
+
+        - name: Map every Coast service to this host
+          ansible.builtin.add_host:
+            name: localhost
+            groups: coast-api,coast-conductor,coast-health-manager,coast-console-proxy,memcached
+            api_interface: test-mgmt
+            api_address_family: ipv4
+
+        - name: Create certificate fixture directory
+          ansible.builtin.file:
+            path: "{{ node_custom_config }}/coast/certs"
+            state: directory
+            mode: "0700"
+
+        - name: Write dummy runtime files
+          ansible.builtin.copy:
+            dest: "{{ fixture_path }}"
+            content: "Config-only test fixture, not a credential.\n"
+            mode: "0600"
+          loop:
+            - "{{ coast_api_paste_source }}"
+            - "{{ node_custom_config }}/coast/certs/coast_server_ca.cert.pem"
+            - "{{ node_custom_config }}/coast/certs/coast_server_ca.key.pem"
+            - "{{ node_custom_config }}/coast/certs/coast_client_ca.cert.pem"
+            - "{{ node_custom_config }}/coast/certs/coast_client.cert-and-key.pem"
+          loop_control:
+            loop_var: fixture_path
+
+        - name: Run real role config tasks and register restart handlers
+          ansible.builtin.import_role:
+            name: coast
+            tasks_from: config
+
+        - name: Read uWSGI configuration
+          ansible.builtin.slurp:
+            src: "{{ coast_config_dir }}/coast-api/coast-api-uwsgi.ini"
+          register: uwsgi_config
+
+        - name: Check production WSGI entry point and restricted listener
+          ansible.builtin.assert:
+            that:
+              - "'wsgi-file = /var/lib/kolla/venv/bin/coast-wsgi-api' in uwsgi"
+              - "'http = 127.0.0.1:9600' in uwsgi"
+              - "'processes = 2' in uwsgi"
+              - "'https =' not in uwsgi"
+              - "'0.0.0.0' not in uwsgi"
+          vars:
+            uwsgi: "{{ uwsgi_config.content | b64decode }}"
+
+        - name: Verify both API backend TLS modes and independent frontend TLS
+          ansible.builtin.include_tasks: render-api.yml
+          loop: [true, false]
+          loop_control:
+            loop_var: tls_mode
+
+        - name: Check all image defaults resolve without an HM override
+          ansible.builtin.assert:
+            that:
+              - coast_services['coast-api'].image == 'registry.example.com:5000/coast/coast-api:test-tag'
+              - coast_services['coast-conductor'].image == 'registry.example.com:5000/coast/coast-conductor:test-tag'
+              - coast_services['coast-health-manager'].image == 'registry.example.com:5000/coast/coast-health-manager:test-tag'
+              - coast_services['coast-console-proxy'].image == 'registry.example.com:5000/coast/coast-console-proxy:test-tag'
+              - not coast_services['coast-health-manager'].enabled | bool
+              - coast_services['coast-console-proxy'].enabled | bool
+
+        - name: Read generated configuration file metadata
+          # The role renders as root (become: true).
+          become: true
+          ansible.builtin.stat:
+            path: "{{ coast_config_dir }}/{{ service_name }}/coast.conf"
+          loop: [coast-api, coast-conductor, coast-health-manager, coast-console-proxy]
+          loop_control:
+            loop_var: service_name
+          register: config_files
+
+        - name: Check enabled services wrote private config and HM was skipped
+          ansible.builtin.assert:
+            that:
+              - config_files.results[0].stat.mode == '0600'
+              - config_files.results[1].stat.mode == '0600'
+              - not config_files.results[2].stat.exists
+              - config_files.results[3].stat.mode == '0600'
+
+        - name: Read the shell listener configuration
+          become: true
+          ansible.builtin.slurp:
+            src: "{{ coast_config_dir }}/coast-console-proxy/{{ item }}"
+          loop:
+            - coast.conf
+            - config.json
+          register: console_proxy_files
+
+        - name: Check the shell listener config, certificates and command
+          vars:
+            conf: "{{ console_proxy_files.results[0].content | b64decode }}"
+            config: "{{ console_proxy_files.results[1].content | b64decode | from_json }}"
+            destinations: "{{ config.config_files | map(attribute='dest') | list }}"
+          ansible.builtin.assert:
+            that:
+              - "'[console]' in conf"
+              - "'bind_host = 127.0.0.1' in conf"
+              - "'bind_port = 9610' in conf"
+              - "'public_endpoint = 127.0.0.1:9610' in conf"
+              - "'tls = false' in conf"
+              - "'token_ttl = 60' in conf"
+              - "'bind_ip = 192.0.2.20' in conf"
+              - "config.command == 'coast-console-proxy --config-file /etc/coast/coast.conf'"
+              - "'/etc/coast/certs/coast_server_ca.cert.pem' in destinations"
+              - "'/etc/coast/certs/coast_client.cert-and-key.pem' in destinations"
+              - "'/etc/coast/certs/coast_server_ca.key.pem' not in destinations"
+
+        - name: Supply existing full references and a per-service tag override
+          ansible.builtin.set_fact:
+            coast_api_image: registry.example.com:5000/coast/api:custom-tag
+            coast_conductor_image: "registry.example.com/coast/conductor@sha256:{{ 'a' * 64 }}"
+            coast_health_manager_tag: custom-hm-tag
+
+        - name: Check full-reference compatibility and independent tag override
+          ansible.builtin.assert:
+            that:
+              - coast_services['coast-api'].image == coast_api_image
+              - coast_services['coast-conductor'].image == coast_conductor_image
+              - coast_services['coast-health-manager'].image == 'registry.example.com:5000/coast/coast-health-manager:custom-hm-tag'
+
+        - name: Supply an explicit full-image override
+          ansible.builtin.set_fact:
+            coast_api_image_full: registry.example.com/alternate/api:full-override
+
+        - name: Check explicit full-image override takes precedence
+          ansible.builtin.assert:
+            that:
+              - coast_services['coast-api'].image == 'registry.example.com/alternate/api:full-override'
+
+        - name: Enable HM to exercise every config-only restart guard
+          ansible.builtin.set_fact:
+            coast_enable_health_manager: true
+
+        - name: Queue every real restart handler
+          ansible.builtin.debug:
+            msg: Config-only mode must skip every queued container restart.
+          changed_when: true
+          notify:
+            - Restart coast-api container
+            - Restart coast-conductor container
+            - Restart coast-health-manager container
+            - Restart coast-console-proxy container
+
+        - name: Flush handlers without creating or starting containers
+          ansible.builtin.meta: flush_handlers
+      always:
+        - name: Remove temporary config and certificate directory
+          become: true
+          ansible.builtin.file:
+            path: "{{ config_directory.path }}"
+            state: absent

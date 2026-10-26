@@ -1,0 +1,8 @@
+features:
+  - |
+    Operators can set ``[controller_worker] admin_ssh_key_name`` to a Nova
+    keypair owned by the service project for controller, worker and
+    build-server VMs. The default is empty (disabled). Nova injects the key
+    without Coast automatically permitting SSH ingress. The Kolla role
+    provides the optional ``coast_admin_ssh_key_name`` variable. No portal
+    access or credential handout is provided.

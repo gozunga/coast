@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Server deletion keeps the database row and sets ``deleted_at``, the same
+    way environments, apps and deployments do. App and deployment history
+    can still reference that server. List and show omit the row. A
+    soft-deleted control server does not block a new control server in the
+    same stack. Stack offboarding on the noop driver completes when app or
+    deployment history references a server.

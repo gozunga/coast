@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Each app has its own webhook token that members can regenerate with
+    ``POST /v1/services/<id>/webhooks/regenerate``. ``GET
+    /v1/services/<id>/webhooks`` lists a Coast deploy URL
+    (``/v1/apps/<id>/deploy?token=``) and GitHub, GitLab, Bitbucket and
+    Gitea push webhook URLs. Only members can retrieve webhook tokens.

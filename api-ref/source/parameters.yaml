@@ -1,0 +1,2000 @@
+content_type:
+  description: |
+    The request content type. Send ``application/json`` when the request has a body. A body with another content type returns 400.
+  in: header
+  required: false
+  type: string
+openstack_api_version:
+  description: |
+    The API microversion. Use ``app-hosting 1.0`` through
+    ``app-hosting 1.31``, or ``app-hosting latest``. An absent header
+    selects 1.0. A malformed value returns 400. An unsupported version
+    returns 406. The response repeats the selected version and sets
+    ``Vary``.
+  in: header
+  required: false
+  type: string
+vary:
+  description: |
+    Includes OpenStack-API-Version because the response depends on the
+    selected microversion.
+  in: header
+  required: true
+  type: string
+x_auth_token:
+  description: |
+    A Keystone token. Resource routes require a project-scoped token. A missing or rejected token returns 401.
+  in: header
+  required: true
+  type: string
+x_auth_token_public:
+  description: |
+    A Keystone token. This call does not require a token.
+  in: header
+  required: false
+  type: string
+x_coast_redeploy_required:
+  description: |
+    The response sets this header to ``true``. The new environment values take effect at the next deployment.
+  in: header
+  required: true
+  type: string
+x_openstack_request_id:
+  description: |
+    The request ID. The service returns ``X-OpenStack-Request-Id`` on this response.
+  in: header
+  required: true
+  type: string
+app_id:
+  description: |
+    The UUID of the application. This route accepts a workload that has
+    no template id.
+  in: path
+  required: true
+  type: uuid
+appgroup_id_path:
+  description: |
+    The Coast app group UUID.
+  in: path
+  required: true
+  type: uuid
+dep_id:
+  description: |
+    The UUID of the deployment.
+  in: path
+  required: true
+  type: uuid
+domain_id:
+  description: |
+    The UUID of the domain.
+  in: path
+  required: true
+  type: uuid
+environment_id_path:
+  description: |
+    The Coast environment UUID.
+  in: path
+  required: true
+  type: uuid
+export_id:
+  description: |
+    The UUID of the export.
+  in: path
+  required: true
+  type: uuid
+project_id_path:
+  description: |
+    The Keystone project ID. The value has 1 to 36 characters. It does not have to be a UUID. A non-administrator cannot read another project. That path returns 404. The path segment ``defaults`` is the defaults operation, not a project ID.
+  in: path
+  required: true
+  type: string
+server_id_path:
+  description: |
+    The UUID of the server.
+  in: path
+  required: true
+  type: uuid
+service_id:
+  description: |
+    The UUID of the service.
+  in: path
+  required: true
+  type: uuid
+stack_id_path:
+  description: |
+    The UUID of the stack.
+  in: path
+  required: true
+  type: uuid
+storage_id_path:
+  description: |
+    The UUID of the storage.
+  in: path
+  required: true
+  type: uuid
+template_id_path:
+  description: |
+    The exact catalog template ID. An unknown or hidden ID returns 404.
+  in: path
+  required: true
+  type: string
+volume_id_path:
+  description: |
+    The UUID of the volume.
+  in: path
+  required: true
+  type: uuid
+all_projects:
+  description: |
+    Set ``true`` to list every project. From 1.18, also enables cross-project stack show and nested server, volume and stack event reads. The value must be ``true`` or ``false``. The default is ``false``. ``true`` requires an administrator and returns 403 for another caller.
+  in: query
+  required: false
+  type: string
+appgroup_id_query:
+  description: |
+    Filter by the app group id.
+  in: query
+  required: false
+  type: uuid
+environment_id_query:
+  description: |
+    Filter by the environment id.
+  in: query
+  required: false
+  type: uuid
+fields:
+  description: |
+    A comma-separated list of field names. The response also keeps ``links``. An unknown name returns 400. A detail field without the matching ``get_detail`` policy returns 400.
+  in: query
+  required: false
+  type: string
+limit:
+  description: |
+    The maximum number of items. The default and the maximum are ``[api] max_limit`` (1000). A larger value is reduced to that maximum. A value that is not an integer, or a value below 0, returns 400. ``0`` returns an empty list.
+  in: query
+  required: false
+  type: int
+marker:
+  description: |
+    The UUID of the last item from the previous page. An unknown marker returns 404. A marker from another parent also returns 404.
+  in: query
+  required: false
+  type: uuid
+project_id_query:
+  description: |
+    Filter by project ID. This parameter requires an administrator and returns 403 for another caller. The list then includes every project and applies this filter.
+  in: query
+  required: false
+  type: string
+resource_id_query:
+  description: |
+    Filter by the resource id.
+  in: query
+  required: false
+  type: uuid
+since:
+  description: |
+    Return log lines after this ISO 8601 UTC time. A value that is not a time returns 400.
+  in: query
+  required: false
+  type: string
+sort_dir:
+  description: |
+    The sort direction. Use ``asc`` or ``desc``. The default is ``asc``. Another value returns 400.
+  in: query
+  required: false
+  type: string
+sort_key:
+  description: |
+    The sort field. The default is ``created_at``. The value must be a public scalar field. A computed field, a detail-only field, or a JSON field returns 400. An export list can also sort by ``created_at``, which is not a public export field.
+  in: query
+  required: false
+  type: string
+stack_id_query:
+  description: |
+    Filter by the stack id.
+  in: query
+  required: false
+  type: uuid
+tail:
+  description: |
+    The maximum number of log lines. The value must be an integer of 0 or more. Another value returns 400.
+  in: query
+  required: false
+  type: int
+template_stack_id_query:
+  description: |
+    The required Coast stack UUID. Catalog selection uses its driver and
+    exact engine version.
+  in: query
+  required: true
+  type: string
+agent_cert_expires_at:
+  description: |
+    The detail agent certificate expiry time. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+agent_cert_serial:
+  description: |
+    The detail agent certificate serial. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+appgroup:
+  description: |
+    The Coast app group object.
+  in: body
+  required: true
+  type: object
+appgroup_id:
+  description: |
+    The Coast app group UUID.
+  in: body
+  required: true
+  type: uuid
+appgroup_request:
+  description: |
+    The ``appgroup`` create envelope. Requires ``name`` and accepts optional ``description``.
+  in: body
+  required: true
+  type: object
+appgroup_update:
+  description: |
+    The ``appgroup`` update envelope. Accepts ``name`` and ``description`` only.
+  in: body
+  required: true
+  type: object
+appgroups:
+  description: |
+    The Coast app group list.
+  in: body
+  required: true
+  type: array
+artifact_download_url:
+  description: |
+    A temporary download URL. The service adds it only for a caller who passes ``coast:export:renew_url``, and only while the export is ``ACTIVE`` and the object expiry is in the future. The URL expiry must also be in the future and not later than the object expiry. The noop driver returns no URLs. The Swift conductor signs URLs on request. The service does not store the URL.
+  in: body
+  required: false
+  type: string
+artifact_expires_at:
+  description: |
+    The UTC expiry of the download URL. The same rules as ``download_url`` apply.
+  in: body
+  required: false
+  type: string
+artifact_name:
+  description: |
+    The artifact object name.
+  in: body
+  required: true
+  type: string
+artifact_sha256:
+  description: |
+    The SHA-256 digest of the artifact.
+  in: body
+  required: true
+  type: string
+artifact_size_bytes:
+  description: |
+    The artifact size in bytes.
+  in: body
+  required: true
+  type: int
+artifact_volume_id:
+  description: |
+    The source volume UUID.
+  in: body
+  required: true
+  type: uuid
+artifacts:
+  description: |
+    The artifact metadata. M1 create returns an empty list. The service does not return stored download URLs.
+  in: body
+  required: true
+  type: array
+attach:
+  description: |
+    The attach body. Send ``service_id`` and ``container_path``.
+  in: body
+  required: true
+  type: object
+auto_deploy:
+  description: |
+    Automatic deploy. M1 stores false.
+  in: body
+  required: true
+  type: boolean
+auto_deploy_request:
+  description: |
+    Automatic deploy. The only accepted value is false.
+  in: body
+  required: false
+  type: boolean
+auto_dns:
+  description: |
+    True when Designate should create the records.
+  in: body
+  required: true
+  type: boolean
+auto_dns_request:
+  description: |
+    Create the records in Designate when the tenant zone is available. The default is false.
+  in: body
+  required: false
+  type: boolean
+build_server:
+  description: |
+    Create one VM build server with the stack. The default is false. A build server also consumes ``servers`` and ``build_servers`` quota.
+  in: body
+  required: false
+  type: boolean
+build_server_image:
+  description: |
+    Optional build VM image ID or name, available from microversion 1.1.
+    Requires ``build_server=true``. Build VMs use the existing worker image
+    catalog: configured owner, worker tag, active status, and
+    ``coast_role=worker``. The selection is independent of the worker image.
+    Omission uses the operator default. Request-only.
+  in: body
+  required: false
+  type: string
+build_server_plan:
+  description: |
+    Optional build VM plan, available from microversion 1.1. Requires
+    ``build_server=true`` and a VM plan with the build role. Omission uses
+    the unique build-compatible VM plan; zero or multiple matches return 400.
+    Request-only; not returned in stack responses.
+  in: body
+  required: false
+  type: string
+cinder_volume_id:
+  description: |
+    The Cinder volume ID. The service returns this field only when ``coast:volume:get_detail`` allows it. The value can be null.
+  in: body
+  required: false
+  type: string
+compute_id:
+  description: |
+    The detail Nova server ID. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+console_command:
+  description: |
+    Optional command array for one execution. Omit it, or send null, for
+    an interactive shell. Each entry is a non-empty string of at most 256
+    characters. The array holds 1 to 32 entries.
+  in: body
+  required: false
+  type: array
+console_expires_at:
+  description: |
+    UTC timestamp when the token expires.
+  in: body
+  required: true
+  type: string
+console_url:
+  description: |
+    Single-use websocket URL. The token is in the query string and expires
+    quickly. Connect the terminal to this URL.
+  in: body
+  required: true
+  type: string
+cpu_limit:
+  description: |
+    The CPU limit. The value is a positive number or null.
+  in: body
+  required: true
+  type: float
+cpu_limit_request:
+  description: |
+    The CPU limit. Use a positive finite number or null.
+  in: body
+  required: false
+  type: float
+created_at:
+  description: |
+    The UTC creation time in ISO 8601. An offset of ``+00:00`` is written as ``Z``.
+  in: body
+  required: true
+  type: string
+current_deployment_id:
+  description: |
+    The current deployment UUID. The value is null before a deployment becomes current.
+  in: body
+  required: true
+  type: uuid
+data_volume_gb:
+  description: |
+    The requested data capacity in GiB. The value is an integer of 1 or more. An absent value reserves ``[controller_worker] data_volume_size_gb``.
+  in: body
+  required: false
+  type: int
+database_appgroup_id:
+  in: body
+  required: true
+  type: string
+  description: >
+    App group UUID selecting the stack.
+database_body:
+  in: body
+  required: true
+  type: object
+  description: >
+    Database request envelope.
+database_cpu_limit:
+  in: body
+  required: false
+  type: number
+  description: >
+    CPU limit or null for unlimited.
+database_db_name:
+  in: body
+  required: false
+  type: string
+  description: >
+    Initial database name; defaults to app when supported.
+database_description:
+  in: body
+  required: false
+  type: string
+  description: >
+    Optional database description.
+database_engine:
+  in: body
+  required: true
+  type: string
+  description: >
+    Engine identifier from the database engine catalog.
+database_environment_id:
+  in: body
+  required: true
+  type: string
+  description: >
+    Environment UUID in the app group.
+database_memory_limit_mb:
+  in: body
+  required: false
+  type: integer
+  description: >
+    Memory limit in MiB or null for unlimited.
+database_name:
+  in: body
+  required: true
+  type: string
+  description: >
+    Name unique among live workloads in the stack.
+database_public:
+  in: body
+  required: false
+  type: object
+  description: >
+    Public settings: enabled defaults to false, port is null or 1024-65535, and source is an IPv4 CIDR defaulting to 0.0.0.0/0. A null port is allocated when enabled.
+database_server_id:
+  in: body
+  required: true
+  type: string
+  description: >
+    Worker UUID in the app group stack.
+database_username:
+  in: body
+  required: false
+  type: string
+  description: >
+    Initial username; defaults to app when supported.
+database_version:
+  in: body
+  required: false
+  type: string
+  description: >
+    Catalog version; defaults to the engine default.
+default_domain_enabled:
+  description: |
+    Whether the default address answers. Default true. PATCH false requires
+    a primary custom domain or returns 409. When false, default_url is null
+    and reconciliation removes the default route and its DNS records.
+    Available from API 1.23; older requests return 406 and responses omit it.
+  in: body
+  required: false
+  type: boolean
+default_url:
+  description: |
+    The stored default URL, or null when default_domain_enabled is false. The hostname is ``<name>-<id4>.<dashed-ip>.<suffix>`` when the worker has a floating IP, otherwise ``<name>-<id4>.<suffix>``. The suffix is ``[domains] default_suffix``. The value is null when the suffix is empty or a non-template service has no ports. Such a service has no default routing DNS records, even when a default hostname is stored.
+  in: body
+  required: true
+  type: string
+delete_body:
+  description: |
+    The delete options. The body is optional. It is not inside a ``stack`` envelope. Send JSON when you send a body.
+  in: body
+  required: false
+  type: object
+deploy:
+  description: |
+    Create the first deployment. The default is true. A true value adds ``deployment_id`` to the create response.
+  in: body
+  required: false
+  type: boolean
+deployment:
+  description: |
+    The deployment object.
+  in: body
+  required: true
+  type: object
+deployment_action:
+  description: |
+    One action object. Use ``rollback`` or ``cancel``. The value is an empty object. More than one key returns 400.
+  in: body
+  required: true
+  type: object
+deployment_id:
+  description: |
+    The UUID of the deployment created with the service. The field is present only when create runs with ``deploy`` true.
+  in: body
+  required: false
+  type: uuid
+deployment_request:
+  description: |
+    The ``deployment`` request envelope. The object can be empty.
+  in: body
+  required: true
+  type: object
+deployments:
+  description: |
+    The deployment list.
+  in: body
+  required: true
+  type: array
+description:
+  description: |
+    The description. The value can be null.
+  in: body
+  required: true
+  type: string
+dns_mode:
+  description: |
+    The DNS mode. ``auto_dns`` true stores ``designate``. Otherwise create stores ``manual``.
+  in: body
+  required: true
+  type: string
+dns_name:
+  description: |
+    The DNS record name.
+  in: body
+  required: true
+  type: string
+dns_purpose:
+  description: |
+    The record purpose: ``verification``, ``routing``, or ``routing-alternative``.
+  in: body
+  required: true
+  type: string
+dns_records:
+  description: |
+    The computed DNS records. The list can be empty. The service does not invent an address.
+  in: body
+  required: true
+  type: array
+dns_type:
+  description: |
+    The DNS record type: ``TXT``, ``A``, ``AAAA``, or ``CNAME``.
+  in: body
+  required: true
+  type: string
+dns_value:
+  description: |
+    The DNS record value.
+  in: body
+  required: true
+  type: string
+domain:
+  description: |
+    The domain object.
+  in: body
+  required: true
+  type: object
+domain_action:
+  description: |
+    The action body. The only key is ``verify``, and its value is an empty object.
+  in: body
+  required: true
+  type: object
+domain_request:
+  description: |
+    The ``domain`` request envelope.
+  in: body
+  required: true
+  type: object
+domains:
+  description: |
+    The domain list.
+  in: body
+  required: true
+  type: array
+driver:
+  description: |
+    The driver name, returned only under the admin stack detail policy.
+    Create copies ``[controller_worker] driver``.
+  in: body
+  required: false
+  type: string
+engine_ref:
+  description: |
+    The detail engine reference. The service returns this field only when the ``get_detail`` policy allows it. The value can be null.
+  in: body
+  required: false
+  type: string
+engine_version:
+  description: |
+    The engine version. Create copies the cloud's configured default
+    engine version.
+  in: body
+  required: true
+  type: string
+env:
+  description: |
+    A map of environment-variable names to entries. A name matches ``^[A-Za-z_][A-Za-z0-9_]*$`` and has at most 255 characters.
+  in: body
+  required: true
+  type: object
+env_body:
+  description: |
+    The ``env`` envelope. PUT replaces every key. PATCH merges keys. A null entry deletes that key. An omitted PATCH flag keeps its previous value. An omitted PUT flag uses its create default.
+  in: body
+  required: true
+  type: object
+env_build_time:
+  description: |
+    True when the value is available at build time. At API 1.6 it defaults true for applications; older versions and template services default false. Template services reject true with HTTP 400. GET, PUT and PATCH responses return the stored flag at all API versions.
+  in: body
+  required: false
+  type: boolean
+env_entry:
+  description: |
+    One variable. ``value`` is required. ``secret`` and ``build_time`` are booleans. ``secret`` defaults false. ``build_time`` defaults true for applications at API 1.6 and false otherwise.
+  in: body
+  required: true
+  type: object
+env_request:
+  description: |
+    The environment variables to store with the new service. See the environment-variable call for the entry shape.
+  in: body
+  required: false
+  type: object
+env_secret:
+  description: |
+    True when the value is secret. The response uses this name. The request can send it as ``secret``.
+  in: body
+  required: true
+  type: boolean
+env_value:
+  description: |
+    The variable value. A secret entry returns null. The service stores an opaque reference, not the value.
+  in: body
+  required: true
+  type: string
+env_version:
+  description: |
+    The variable version. Each replacement adds 1 to the version.
+  in: body
+  required: true
+  type: int
+environment:
+  description: |
+    The Coast environment object.
+  in: body
+  required: true
+  type: object
+environment_id:
+  description: |
+    The Coast environment UUID. It is not the infrastructure stack UUID.
+  in: body
+  required: true
+  type: uuid
+environment_request:
+  description: |
+    The ``environment`` create envelope. Requires ``name`` and accepts optional ``description``.
+  in: body
+  required: true
+  type: object
+environment_update:
+  description: |
+    The ``environment`` update envelope. Accepts ``name`` and ``description`` only.
+  in: body
+  required: true
+  type: object
+environments:
+  description: |
+    The Coast environment list.
+  in: body
+  required: true
+  type: array
+event_action:
+  description: |
+    The recorded action.
+  in: body
+  required: true
+  type: string
+event_environment_id:
+  description: |
+    The Coast environment UUID. Set for an event about one environment; otherwise null.
+  in: body
+  required: true
+  type: uuid
+event_message:
+  description: |
+    The recorded message. The value can be null.
+  in: body
+  required: true
+  type: string
+event_outcome:
+  description: |
+    The recorded outcome.
+  in: body
+  required: true
+  type: string
+event_request_id:
+  description: |
+    The request ID stored on the event. The value can be null.
+  in: body
+  required: true
+  type: string
+event_resource_id:
+  description: |
+    The resource UUID.
+  in: body
+  required: true
+  type: uuid
+event_resource_type:
+  description: |
+    The resource type.
+  in: body
+  required: true
+  type: string
+event_stack_id:
+  description: |
+    The infrastructure stack UUID. The value can be null.
+  in: body
+  required: true
+  type: uuid
+events:
+  description: |
+    The event list.
+  in: body
+  required: true
+  type: array
+export:
+  description: |
+    The export object.
+  in: body
+  required: true
+  type: object
+export_before_delete:
+  description: |
+    Request an export before delete. ``true`` runs that export to completion before teardown. The export remains after the stack is deleted. You can set this with ``snapshot_volumes``. A failure sets the stack to ERROR and deletes nothing.
+  in: body
+  required: false
+  type: boolean
+export_request:
+  description: |
+    The ``export`` request envelope.
+  in: body
+  required: true
+  type: object
+export_volume_ids_request:
+  description: |
+    The volume UUIDs to export. Null or an absent field selects every ``data`` and ``docker`` volume in the stack. An explicit list must be non-empty and unique. A missing or foreign volume returns 404. A volume in another stack, or a ``scratch`` or ``controller`` volume, returns 400.
+  in: body
+  required: false
+  type: array
+exports:
+  description: |
+    The export list.
+  in: body
+  required: true
+  type: array
+failover_action:
+  description: |
+    The action body. The only key is ``failover``, and its value is an empty object.
+  in: body
+  required: true
+  type: object
+fault:
+  description: |
+    The detail fault text. The service returns this field only when the ``get_detail`` policy allows it. Secret text is not stored here.
+  in: body
+  required: false
+  type: string
+finished_at:
+  description: |
+    The UTC finish time, or null. An offset of ``+00:00`` is written as ``Z``.
+  in: body
+  required: true
+  type: string
+flavor_id:
+  description: |
+    The detail Nova flavor ID. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+floating_ip:
+  description: |
+    The floating IP address. The value is null until the address exists.
+  in: body
+  required: true
+  type: string
+floating_ip_id:
+  description: |
+    The detail floating IP ID. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+fqdn:
+  description: |
+    The fully qualified domain name.
+  in: body
+  required: true
+  type: string
+fqdn_request:
+  description: |
+    The fully qualified domain name. Use lowercase labels. The value has at most 253 characters. The name is unique across projects. A conflict returns 409 and does not show the owner.
+  in: body
+  required: true
+  type: string
+health_check:
+  description: |
+    From API 1.4, optional HTTP readiness mode: ``none`` or ``http``.
+    New apps default to ``none``. At API 1.7, templates with ``http_port``
+    default to ``http`` when this field is omitted. Explicit values win.
+    Existing apps retain ``http`` after upgrade.
+    Every app requires a completed rollout and stable running container.
+  in: body
+  required: false
+  type: string
+health_check_path:
+  description: |
+    From API 1.4, HTTP check path. The default is ``/``. The path must start
+    with ``/`` and contain no spaces or line breaks. The limit is 255
+    characters. Do not send this field with ``healthcheck_path``.
+  in: body
+  required: false
+  type: string
+health_check_port:
+  description: |
+    From API 1.4, HTTP check port from 1 to 65535. The default is the first
+    app port. At API 1.7, template HTTP defaults use catalog ``http_port``.
+    The value can be null when the app has no ports.
+  in: body
+  required: false
+  type: integer
+healthcheck_path:
+  description: |
+    The health check path. The value can be null.
+  in: body
+  required: true
+  type: string
+healthcheck_request:
+  description: |
+    The health check path. The value is a string of at most 255 characters or null.
+  in: body
+  required: false
+  type: string
+href:
+  description: |
+    The link URL. The service uses ``[api] public_endpoint`` when that option is set.
+  in: body
+  required: true
+  type: string
+id:
+  description: |
+    The UUID of the resource.
+  in: body
+  required: true
+  type: uuid
+image_id:
+  description: |
+    The detail image ID. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+ironic_node_id:
+  description: |
+    The detail Ironic node ID. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+kind:
+  description: |
+    The server kind, ``vm`` or ``baremetal``.
+  in: body
+  required: true
+  type: string
+last_heartbeat_at:
+  description: |
+    The detail last heartbeat time. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+links:
+  description: |
+    Links for this resource. A list also uses this field for the next page. The next page link is present only when another page exists. Its ``rel`` is ``next``.
+  in: body
+  required: true
+  type: array
+log:
+  description: |
+    The deployment log object.
+  in: body
+  required: true
+  type: object
+log_complete:
+  description: |
+    False for PENDING, BUILDING, or DEPLOYING on live reads. Use deployment
+    status to determine success. Noop or missing engine references return false.
+  in: body
+  required: true
+  type: boolean
+log_deployment_id:
+  description: |
+    The deployment UUID.
+  in: body
+  required: true
+  type: uuid
+log_line:
+  description: |
+    The log line text.
+  in: body
+  required: true
+  type: string
+log_lines:
+  description: |
+    The live log line objects, with ts, stream, and line. Noop or missing
+    engine references return an empty list. Hidden build output is included;
+    an empty hidden entry reads ``Build step in progress.``.
+  in: body
+  required: true
+  type: array
+log_stream:
+  description: |
+    The log stream name.
+  in: body
+  required: true
+  type: string
+log_ts:
+  description: |
+    The UTC time of the log line.
+  in: body
+  required: true
+  type: string
+logs:
+  description: |
+    The service log object.
+  in: body
+  required: true
+  type: object
+max_version:
+  description: |
+    The maximum microversion. The value is ``1.2``.
+  in: body
+  required: true
+  type: string
+memory_limit_mb:
+  description: |
+    The memory limit in MiB. The value is a positive integer or null.
+  in: body
+  required: true
+  type: int
+memory_limit_request:
+  description: |
+    The memory limit in MiB. Use a positive integer or null.
+  in: body
+  required: false
+  type: int
+mgmt_ip:
+  description: |
+    The detail management IP. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+min_version:
+  description: |
+    The minimum microversion. The value is ``1.0``.
+  in: body
+  required: true
+  type: string
+mount_path:
+  description: |
+    The mount path.
+  in: body
+  required: true
+  type: string
+mount_path_request:
+  description: |
+    The mount path. The default is ``/data``. The value has 1 to 255 characters.
+  in: body
+  required: false
+  type: string
+name:
+  description: |
+    The resource name.
+  in: body
+  required: true
+  type: string
+network_id:
+  description: |
+    The detail network ID. The service returns this field only when ``coast:stack:get_detail`` allows it. The value can be null.
+  in: body
+  required: false
+  type: string
+number:
+  description: |
+    The deployment number. The service assigns the next integer for the service, including deleted history.
+  in: body
+  required: true
+  type: int
+object_expires_at:
+  description: |
+    The UTC object retention time, or null. An offset of ``+00:00`` is written as ``Z``.
+  in: body
+  required: true
+  type: string
+plan:
+  description: |
+    The plan name stored on the stack.
+  in: body
+  required: true
+  type: string
+plan_description:
+  description: |
+    The plan description. The value can be null.
+  in: body
+  required: true
+  type: string
+plan_kind:
+  description: |
+    The plan kind: ``vm`` or ``baremetal``.
+  in: body
+  required: true
+  type: string
+plan_name:
+  description: |
+    The plan name. The value has 1 to 64 characters.
+  in: body
+  required: true
+  type: string
+plan_roles:
+  description: |
+    The plan roles. Each role is ``control``, ``worker``, or ``build``. The list has no duplicate roles.
+  in: body
+  required: true
+  type: array
+plans:
+  description: |
+    The plan list, sorted by name. An empty operator catalog returns an empty list. The list has no pagination and no links.
+  in: body
+  required: true
+  type: array
+ports:
+  description: |
+    The exposed ports. Null or an empty string exposes none.
+  in: body
+  required: true
+  type: string
+ports_request:
+  description: |
+    The exposed ports. Null or blank exposes none. HTTP health checks and
+    custom domains require a port. The default is an empty string.
+    The value has at most 255 characters.
+  in: body
+  required: false
+  type: string
+primary:
+  description: |
+    Whether this is the service's main custom domain. Default false. Setting
+    true clears the other domains' primary flags on this service atomically.
+    Available from API 1.23; older requests return 406 and responses omit it.
+  in: body
+  required: false
+  type: boolean
+primary_url:
+  description: |
+    Main custom domain URL, with http for TLS none and https otherwise.
+    Falls back to default_url when no primary domain is selected. Nullable.
+    Returned from API 1.23.
+  in: body
+  required: true
+  type: string
+private_ip:
+  description: |
+    The detail private IP. Returned only for ``coast:server:get_detail``. The value can be null.
+  in: body
+  required: false
+  type: string
+project_id:
+  description: |
+    The Keystone project ID from the token. The service does not accept this value in a resource body.
+  in: body
+  required: true
+  type: string
+purpose:
+  description: |
+    The purpose: ``data``, ``docker``, ``scratch``, or ``controller``.
+  in: body
+  required: true
+  type: string
+purpose_request:
+  description: |
+    The purpose. The only value a user can send is ``data``. The default is ``data``. ``docker``, ``scratch``, and ``controller`` return 400.
+  in: body
+  required: false
+  type: string
+quota:
+  description: |
+    The quota object. It contains the seven limit fields.
+  in: body
+  required: true
+  type: object
+quota_apps:
+  description: |
+    The service limit. The key remains ``apps``.
+  in: body
+  required: true
+  type: int
+quota_baremetal_servers:
+  description: |
+    The bare-metal server limit. A bare-metal server also consumes ``servers``.
+  in: body
+  required: true
+  type: int
+quota_build_servers:
+  description: |
+    The build-server limit. A build server also consumes ``servers``.
+  in: body
+  required: true
+  type: int
+quota_domains:
+  description: |
+    The custom-domain limit. A computed default domain does not consume it.
+  in: body
+  required: true
+  type: int
+quota_environments:
+  description: |
+    The stack limit. The key remains ``environments``. ``-1`` is unlimited. ``0`` blocks new allocations. Null in an update clears the override. Show and defaults return the effective integer.
+  in: body
+  required: true
+  type: int
+quota_limit_request:
+  description: |
+    One limit. Use an integer of ``-1`` or more, or null. ``-1`` is unlimited. ``0`` blocks new allocations. Null clears the override. The same rule applies to each of the seven names.
+  in: body
+  required: false
+  type: int
+quota_project_id:
+  description: |
+    The project ID for this override row.
+  in: body
+  required: true
+  type: string
+quota_request:
+  description: |
+    The ``quota`` update envelope. Send any subset of the seven limits. An omitted field keeps its stored value. A boolean, a usage counter, ``project_id``, or another field returns 400.
+  in: body
+  required: true
+  type: object
+quota_servers:
+  description: |
+    The server limit. Control servers do not consume it. ``-1`` is unlimited and ``0`` blocks new allocations.
+  in: body
+  required: true
+  type: int
+quota_usage:
+  description: |
+    The usage object on project show. It contains ``in_use`` and ``reserved``. Each of those objects has the seven resource keys. The counts are the quota engine counters. Empty counters are zero. Defaults, update, and the admin list do not include this object.
+  in: body
+  required: true
+  type: object
+quota_usage_in_use:
+  description: |
+    The in-use count for each quota resource. The keys are ``environments``, ``servers``, ``baremetal_servers``, ``build_servers``, ``apps``, ``domains``, and ``volume_gb``.
+  in: body
+  required: true
+  type: object
+quota_usage_reserved:
+  description: |
+    The reserved count for each quota resource. The keys match ``in_use``. A reservation stays here until completion commits it into ``in_use`` or rolls it back.
+  in: body
+  required: true
+  type: object
+quota_volume_gb:
+  description: |
+    The volume capacity limit in GiB. Extend reserves only the increase.
+  in: body
+  required: true
+  type: int
+quotas:
+  description: |
+    The stored quota overrides, sorted by ``project_id``. A project with no override row is absent. A null limit means the config default.
+  in: body
+  required: true
+  type: array
+rel:
+  description: |
+    The link relation. A resource link uses ``self``. A page link uses ``next``.
+  in: body
+  required: true
+  type: string
+renew_action:
+  description: |
+    The action body. The only key is ``renew_url``, and its value is an empty object.
+  in: body
+  required: true
+  type: object
+replicas:
+  description: |
+    The replica count. M1 stores 1.
+  in: body
+  required: true
+  type: int
+replicas_request:
+  description: |
+    The replica count. The only accepted value is 1.
+  in: body
+  required: false
+  type: int
+resolved_ref:
+  description: |
+    The exact commit SHA or image digest (``sha256:...``) used. Read-only;
+    null until the driver reports it.
+  in: body
+  required: true
+  type: string
+role:
+  description: |
+    The server role: ``control``, ``worker``, or ``build``.
+  in: body
+  required: true
+  type: string
+rollback_of:
+  description: |
+    The source deployment UUID for a rollback. The value is null for another trigger.
+  in: body
+  required: true
+  type: uuid
+server:
+  description: |
+    The server object.
+  in: body
+  required: true
+  type: object
+server_flavor:
+  description: |
+    From microversion 1.27, project-visible VM size with id, name, vcpus,
+    ram (MiB) and disk (GiB). Null for bare metal or no saved flavor.
+    A removed flavor has the saved reference as id and a null name.
+  in: body
+  required: true
+  type: object
+  min_version: 1.27
+server_hostname:
+  description: |
+    Saved server DNS label. Read-only; preserved on rename and failover.
+  in: body
+  required: true
+  type: string
+server_id:
+  description: |
+    The server UUID. The value can be null when the resource has no server.
+  in: body
+  required: true
+  type: uuid
+server_kind_request:
+  description: |
+    The server kind. Use ``vm`` or ``baremetal``. ``byo`` returns 400. ``baremetal`` returns 400 when bare metal is disabled.
+  in: body
+  required: true
+  type: string
+server_name_request:
+  description: |
+    The server name. The value has 1 to 255 characters. If omitted, Coast
+    names the server ``<role>-N``, one more than the highest live
+    ``<role>-N`` in the stack (for example ``worker-3``).
+  in: body
+  required: false
+  type: string
+server_plan_request:
+  description: |
+    The plan name. The value has 1 to 64 characters. The service accepts the value and does not store it or return it.
+  in: body
+  required: true
+  type: string
+server_request:
+  description: |
+    The ``server`` request envelope.
+  in: body
+  required: true
+  type: object
+server_role_request:
+  description: |
+    The server role. Use ``worker`` or ``build``. ``control`` returns 400. Coast creates the control server.
+  in: body
+  required: true
+  type: string
+servers:
+  description: |
+    The server list.
+  in: body
+  required: true
+  type: array
+service:
+  description: |
+    The service object.
+  in: body
+  required: true
+  type: object
+service_action:
+  description: |
+    One action object. Use ``start``, ``stop``, or ``restart``. The value is an empty object. More than one key returns 400.
+  in: body
+  required: true
+  type: object
+service_appgroup_request:
+  description: |
+    The app group UUID. The supplied environment must belong to it.
+  in: body
+  required: true
+  type: uuid
+service_description_request:
+  description: |
+    The description. The value is a string of at most 255 characters or null.
+  in: body
+  required: false
+  type: string
+service_environment_request:
+  description: |
+    The Coast environment UUID. Required together with ``appgroup_id``. The environment must belong to that app group.
+  in: body
+  required: true
+  type: uuid
+service_id_body:
+  description: |
+    The UUID of the service.
+  in: body
+  required: true
+  type: uuid
+service_kind_request:
+  description: |
+    Workload kind, ``app`` or ``service``. From 1.31, pasted Dockerfile
+    requires ``app``; pasted Compose defaults to ``service`` and accepts
+    either kind. From 1.28 an explicit value
+    takes precedence; when omitted, image and Git sources (including
+    Dockerfile and compose-from-repository) default to ``app`` and
+    one-click templates default to ``service``. At 1.11–1.27 images default
+    to ``service`` and accept either value, Git requires ``app`` and
+    templates require ``service``. Before 1.11 explicit kind is rejected;
+    images and Git default to ``app`` and templates to ``service``.
+  in: body
+  required: false
+  type: string
+  min_version: 1.11
+service_log_lines:
+  description: |
+    The service log lines. The M1 handler returns an empty list.
+  in: body
+  required: true
+  type: array
+service_name_request:
+  description: |
+    The service name. Use a lowercase DNS label of at most 63 characters. The pattern is ``^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$``.
+  in: body
+  required: true
+  type: string
+service_request:
+  description: |
+    The ``service`` request envelope.
+  in: body
+  required: true
+  type: object
+service_server_request:
+  description: |
+    The worker server UUID. Required and not nullable (Q144): null returns 400. A server must be a worker in the same stack and project. Another role returns 400. A hidden server returns 404.
+  in: body
+  required: true
+  type: uuid
+service_template_id:
+  description: |
+    Read-only catalog template ID on the service. Null for Git services.
+  in: body
+  required: true
+  type: string
+service_update:
+  description: |
+    The ``service`` update envelope. You can send ``name``, ``description``, ``ports``, ``cpu_limit``, ``memory_limit_mb``, ``healthcheck_path``, and a partial ``source``. You cannot change placement, the app group, the environment, or environment variables.
+  in: body
+  required: true
+  type: object
+services:
+  description: |
+    The service list.
+  in: body
+  required: true
+  type: array
+size_gb:
+  description: |
+    The size in GiB.
+  in: body
+  required: true
+  type: int
+snapshot_action:
+  description: |
+    The action body. The only key is ``snapshot``, and its value is an empty object.
+  in: body
+  required: true
+  type: object
+snapshot_retention_days:
+  description: |
+    The snapshot retention in days. The value is an integer of 0 or more. A present value without ``snapshot_volumes`` set to true returns 400 before any write (Q102). An absent value uses ``[export] snapshot_retention_days``. A value above ``[export] max_snapshot_retention_days`` returns 400.
+  in: body
+  required: false
+  type: int
+snapshot_volumes:
+  description: |
+    Request one kept Cinder snapshot for each volume before delete. Real stack teardown supports this option. You can set this with ``export_before_delete``.
+  in: body
+  required: false
+  type: boolean
+source:
+  description: |
+    The source description. Pasted Dockerfile and Compose sources (1.31)
+    contain only ``type``, without content.
+  in: body
+  required: true
+  type: object
+source_base_directory:
+  description: |
+    The build base directory. The value can be null.
+  in: body
+  required: true
+  type: string
+source_base_request:
+  description: |
+    The build base directory. The value has 1 to 255 characters.
+  in: body
+  required: false
+  type: string
+source_branch:
+  description: |
+    The Git branch. The value has 1 to 255 characters. An absent value uses ``main``.
+  in: body
+  required: true
+  type: string
+source_branch_request:
+  description: |
+    The Git branch. The value has 1 to 255 characters. An absent value uses ``main``.
+  in: body
+  required: false
+  type: string
+source_build_pack:
+  description: |
+    The build pack: ``nixpacks``, ``dockerfile``, ``static``, or ``compose``. The value can be null.
+  in: body
+  required: true
+  type: string
+source_build_pack_request:
+  description: |
+    The build pack: ``nixpacks``, ``dockerfile``, ``static``, or ``compose``. Defaults to ``nixpacks`` for a Git source on create.
+  in: body
+  required: false
+  type: string
+source_compose_path:
+  description: |
+    The Compose file path. The value can be null.
+  in: body
+  required: true
+  type: string
+source_compose_request:
+  description: |
+    The Compose file path. The value has 1 to 255 characters.
+  in: body
+  required: false
+  type: string
+source_dockerfile_path:
+  description: |
+    The Dockerfile path. The value can be null.
+  in: body
+  required: true
+  type: string
+source_dockerfile_request:
+  description: |
+    The Dockerfile path. The value has 1 to 255 characters.
+  in: body
+  required: false
+  type: string
+source_ref:
+  description: |
+    The requested source reference. The value can be null.
+  in: body
+  required: true
+  type: string
+source_ref_request:
+  description: |
+    The source reference to deploy. The default is the source branch. The value has 1 to 255 characters.
+  in: body
+  required: false
+  type: string
+source_repo_url:
+  description: |
+    The HTTPS Git URL, or from API 1.30 an SSH Git URL with a deploy key. The value has at most 1024 characters. It cannot contain a query, a fragment, or embedded HTTPS credentials.
+  in: body
+  required: true
+  type: string
+source_request:
+  description: |
+    The source object. Git requires ``type`` and ``repo_url``. Image sources
+    require ``type``, ``image`` and ``tag``. Templates require ``template_id``.
+    From 1.31, ``type=dockerfile`` requires ``dockerfile`` text and
+    ``type=compose`` requires ``compose`` text.
+  in: body
+  required: true
+  type: object
+source_type:
+  description: |
+    The source type: ``git``, ``image`` or ``template``; from 1.31, also
+    ``dockerfile`` or ``compose``.
+  in: body
+  required: true
+  type: string
+source_update:
+  description: |
+    A partial source. You can send ``branch``, ``build_pack``, ``dockerfile_path``, ``compose_path``, and ``base_directory``. You cannot change ``type`` or ``repo_url``.
+  in: body
+  required: false
+  type: object
+stack:
+  description: |
+    The stack object.
+  in: body
+  required: true
+  type: object
+stack_description_request:
+  description: |
+    The description. The value is a string of at most 255 characters or null.
+  in: body
+  required: false
+  type: string
+stack_id:
+  description: |
+    The UUID of the stack.
+  in: body
+  required: true
+  type: uuid
+stack_image_request:
+  description: |
+    Optional controller image ID or name, available from microversion 1.1.
+    Exactly one active image must match the configured owner, controller tag,
+    and ``coast_role=controller``. Omission uses the operator default.
+    Request-only; not returned in stack responses.
+  in: body
+  required: false
+  type: string
+stack_name_request:
+  description: |
+    The stack name. The value has 1 to 255 characters.
+  in: body
+  required: true
+  type: string
+stack_plan_request:
+  description: |
+    The plan name. The value has 1 to 64 characters. Version 1.0 does not check the plan against the operator catalog. Version 1.1 requires a VM plan with the control role.
+  in: body
+  required: true
+  type: string
+stack_request:
+  description: |
+    The ``stack`` request envelope.
+  in: body
+  required: true
+  type: object
+stack_router_id:
+  description: |
+    The stack router UUID.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: string
+  min_version: 1.18
+stack_server_count:
+  description: |
+    The number of live servers of all roles in the stack.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: integer
+  min_version: 1.18
+stack_service_project_id:
+  description: |
+    The service credential project UUID. Omitted when equal to the owner.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: string
+  min_version: 1.18
+stack_sg_ingress_id:
+  description: |
+    The ingress security group UUID.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: string
+  min_version: 1.18
+stack_sg_mgmt_id:
+  description: |
+    The management security group UUID.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: string
+  min_version: 1.18
+stack_subnet_id:
+  description: |
+    The stack subnet UUID.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: string
+  min_version: 1.18
+stack_update:
+  description: |
+    The ``stack`` update envelope. The object can contain ``name``, ``description``, or both. Another field returns 400.
+  in: body
+  required: true
+  type: object
+stack_workload_count:
+  description: |
+    The number of live Service rows of both workload kinds in the stack.
+    Requires coast:stack:get_detail (admin by default), from API 1.18.
+  in: body
+  required: false
+  type: integer
+  min_version: 1.18
+stacks:
+  description: |
+    The stack list.
+  in: body
+  required: true
+  type: array
+started_at:
+  description: |
+    The UTC start time, or null. An offset of ``+00:00`` is written as ``Z``.
+  in: body
+  required: true
+  type: string
+status:
+  description: |
+    The resource status.
+  in: body
+  required: true
+  type: string
+storage:
+  description: |
+    The storage object.
+  in: body
+  required: true
+  type: object
+storage_container_path:
+  description: |
+    The absolute container path. Null while the storage is detached.
+  in: body
+  required: true
+  type: string
+storage_container_path_request:
+  description: |
+    One absolute container path. ``.`` and ``..`` segments return 400.
+  in: body
+  required: true
+  type: string
+storage_host_path:
+  description: |
+    The normalized absolute worker source path for a bind. Required for
+    bind create, invalid for volume create, null for volume responses.
+    Available from 1.19.
+  in: body
+  required: false
+  type: string
+storage_mount_type:
+  description: |
+    The mount type: ``bind`` for a worker host folder or ``volume`` for
+    a named Docker volume. Available from 1.19.
+  in: body
+  required: true
+  type: string
+storage_origin:
+  description: |
+    ``user`` for customer mounts from 1.19 (``api`` before 1.19).
+    ``template`` for immutable template or Compose mounts.
+  in: body
+  required: true
+  type: string
+storage_read_only:
+  description: |
+    Whether the container mounts the source read-only. Defaults to false
+    on create. Available from 1.19.
+  in: body
+  required: false
+  type: boolean
+storage_request:
+  description: |
+    The storage request. From 1.19, send type, service_id, container_path,
+    optional read_only, and host_path (bind) or name/size_gb (volume).
+    Before 1.19, create accepts name and size_gb only.
+  in: body
+  required: true
+  type: object
+storage_service_id:
+  description: |
+    The service UUID. Null before the first attach. Detach keeps this value.
+  in: body
+  required: true
+  type: uuid
+storage_source:
+  description: |
+    Named-volume ownership: ``coast`` for API-created storage, ``template``
+    for template or Compose volumes in 1.16 through 1.18. From 1.19,
+    the source is the host path or volume source, null for anonymous volumes.
+  in: body
+  required: true
+  type: string
+storages:
+  description: |
+    The storage list.
+  in: body
+  required: true
+  type: array
+task_owner:
+  description: |
+    Read-only operation holding the service task, or null when idle.
+    Available from microversion 1.24.
+  in: body
+  required: false
+  type: string
+  min_version: 1.24
+task_started_at:
+  description: |
+    Read-only UTC ISO 8601 time when the service task was acquired,
+    or null when idle. Available from microversion 1.24.
+  in: body
+  required: false
+  type: string
+  min_version: 1.24
+task_state:
+  description: |
+    The detail task lock. The service returns this field only when the ``get_detail`` policy allows it.
+  in: body
+  required: false
+  type: string
+template:
+  description: |
+    The catalog template object.
+  in: body
+  required: true
+  type: object
+template_category:
+  description: |
+    The catalog category.
+  in: body
+  required: true
+  type: string
+template_http_port:
+  description: |
+    Read-only default HTTP port, or null for templates without an HTTP URL.
+    Available from API 1.7. Derived from compose URL magic variables.
+  in: body
+  required: true
+  min_version: 1.7
+  type: integer
+template_id:
+  description: |
+    The exact catalog template ID.
+  in: body
+  required: true
+  type: string
+template_logo:
+  description: |
+    The catalog logo path.
+  in: body
+  required: true
+  type: string
+template_ports:
+  description: |
+    The catalog integer ports.
+  in: body
+  required: true
+  type: array
+template_required_env:
+  description: |
+    Required variable names, never values. The app engine generates
+    SERVICE_* values.
+  in: body
+  required: true
+  type: array
+template_tags:
+  description: |
+    The catalog tags. These are not Coast resource tags.
+  in: body
+  required: true
+  type: array
+templates:
+  description: |
+    The visible catalog templates. No pagination or links.
+  in: body
+  required: true
+  type: array
+tls:
+  description: |
+    The certificate mode. ``letsencrypt`` is the default and uses HTTPS. ``none`` uses HTTP. Create and update accept ``tls`` from microversion 1.2. A lower version returns 406 after authorization.
+  in: body
+  required: true
+  type: string
+tls_request:
+  description: |
+    Optional certificate mode, from microversion 1.2. Use ``letsencrypt`` or ``none``. The default is ``letsencrypt``. A lower microversion returns 406. An unauthorized caller receives 403 first.
+  in: body
+  required: false
+  type: string
+trigger:
+  description: |
+    The trigger. An API deploy uses ``api``. A rollback uses ``rollback``.
+  in: body
+  required: true
+  type: string
+updated_at:
+  description: |
+    The UTC update time in ISO 8601, or null before the first update. An offset of ``+00:00`` is written as ``Z``.
+  in: body
+  required: true
+  type: string
+upgrade_action:
+  description: |
+    The action body. The only key is ``upgrade``. Its object requires
+    ``image_id``, the UUID of a newer published app engine server image.
+  in: body
+  required: true
+  type: object
+upgrade_image_id:
+  description: |
+    The UUID of a published App engine server controller image, inside the
+    upgrade object. It must have a newer engine version or a later Glance
+    creation time for the same engine version.
+  in: body
+  required: true
+  type: uuid
+upgrade_rollback_action:
+  description: |
+    The action body. The only key is ``upgrade_rollback`` with an empty object.
+    Restore the stack's recorded engine rollback point.
+  in: body
+  required: true
+  type: object
+verified_at:
+  description: |
+    The UTC verification time, or null.
+  in: body
+  required: true
+  type: string
+version:
+  description: |
+    The v1 version object.
+  in: body
+  required: true
+  type: object
+version_id:
+  description: |
+    The version ID. The value is ``v1``.
+  in: body
+  required: true
+  type: string
+version_status:
+  description: |
+    The version status. The value is ``CURRENT``.
+  in: body
+  required: true
+  type: string
+versions:
+  description: |
+    The list of API versions.
+  in: body
+  required: true
+  type: array
+volume:
+  description: |
+    The volume object.
+  in: body
+  required: true
+  type: object
+volume_extend:
+  description: |
+    The ``volume`` extend envelope. The only field is ``size_gb``.
+  in: body
+  required: true
+  type: object
+volume_extend_size:
+  description: |
+    The new size in GiB. The value must be an integer greater than the stored size. An equal or smaller size returns 400. Extend does not change the volume status.
+  in: body
+  required: true
+  type: int
+volume_ids:
+  description: |
+    The selected volume UUIDs.
+  in: body
+  required: true
+  type: array
+volume_name_request:
+  description: |
+    The volume name. The value has 1 to 255 characters.
+  in: body
+  required: true
+  type: string
+volume_request:
+  description: |
+    The ``volume`` request envelope.
+  in: body
+  required: true
+  type: object
+volume_server_request:
+  description: |
+    The server that will use this volume. The value can be null. The server must belong to this stack. A hidden server returns 404. A server in another stack returns 400.
+  in: body
+  required: false
+  type: uuid
+volume_size_request:
+  description: |
+    The size in GiB. The value is an integer of 1 or more.
+  in: body
+  required: true
+  type: int
+volume_type:
+  description: |
+    The Cinder volume type. The value can be null.
+  in: body
+  required: true
+  type: string
+volume_type_request:
+  description: |
+    The Cinder volume type. The value can be null. The string has 1 to 64 characters when it is set.
+  in: body
+  required: false
+  type: string
+volumes:
+  description: |
+    The volume list.
+  in: body
+  required: true
+  type: array
+worker_image_request:
+  description: |
+    Optional worker image ID or name, available from microversion 1.1.
+    Exactly one active image must match the configured owner, worker tag,
+    and ``coast_role=worker``. Omission uses the operator default.
+  in: body
+  required: false
+  type: string
+worker_kind:
+  description: |
+    The worker kind. Use ``vm`` or ``baremetal``. ``baremetal`` returns 400 when ``[controller_worker] enable_baremetal`` is false. Version 1.1 stack create permits only ``vm``.
+  in: body
+  required: true
+  type: string
+worker_plan:
+  description: |
+    The worker plan name. The value has 1 to 64 characters.
+  in: body
+  required: true
+  type: string
+workers:
+  description: |
+    The workers to create with the stack. Each item requires ``kind`` and ``plan``. In version 1.1 this field is required, has exactly one VM entry, and accepts optional ``image``. Version 1.0 retains its worker-count rules.
+  in: body
+  required: false
+  type: array

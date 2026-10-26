@@ -1,0 +1,55 @@
+200:
+  default: |
+    The request succeeded.
+201:
+  default: |
+    The request succeeded and the service created a resource.
+202:
+  default: |
+    The service accepted the request. Processing continues after
+    this response. Poll the resource to read the later status.
+204:
+  default: |
+    The request succeeded. The response has no body.
+304:
+  default: |
+    The visible representation matches If-None-Match. No body is returned.
+400:
+  default: |
+    The request is not valid. The service rejects an unknown field,
+    a bad value, a bad query parameter, or a body that is not JSON.
+401:
+  default: |
+    The request has no valid authentication.
+403:
+  default: |
+    The policy does not allow this operation.
+  over_quota: |
+    The project does not have enough quota for this request.
+    ``faultstring`` names the resources. Existing resources stay
+    in place when an administrator lowers a limit.
+404:
+  default: |
+    The service cannot find the resource in this project. A resource
+    that belongs to another project also returns this code.
+405:
+  default: |
+    This method is not valid for this resource.
+406:
+  default: |
+    The ``OpenStack-API-Version`` header selects a version that
+    this service does not provide.
+409:
+  default: |
+    The resource state conflicts with this operation. A repeated
+    action or a busy parent also returns this code.
+500:
+  default: |
+    The service failed. The response does not include the internal
+    error text.
+503:
+  default: |
+    A synchronous engine read cannot reach the engine, or the engine
+    rejected the Coast credential. ``faultstring`` is
+    ``Service Unavailable``. The body does not include the engine
+    error.

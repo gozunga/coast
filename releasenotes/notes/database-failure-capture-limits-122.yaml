@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Database failure handling now captures masked runtime logs even when no
+    deployment exists. Database start and restart actions retain pending
+    resource limits when the app engine defers configuration, so the response
+    continues to report that a restart is required.

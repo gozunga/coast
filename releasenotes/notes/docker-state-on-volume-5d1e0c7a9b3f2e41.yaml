@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Guest images keep Docker image and container state on the Docker Cinder
+    volume (overlay2, containerd image store disabled).

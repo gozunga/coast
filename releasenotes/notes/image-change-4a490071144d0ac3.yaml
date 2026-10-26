@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    API microversion 1.14 permits image-based services and apps to change
+    ``source.image`` as well as ``source.tag`` through
+    ``PATCH /v1/services/{service_id}``. Omitted fields keep their saved
+    values. Names and tags use the create validation rules. Git, compose
+    and template sources reject image/tag changes with HTTP 400.
+    Use the existing deployment action to apply the saved source. The
+    engine application is updated in place, retaining the Coast ID,
+    environment variables, storage, file mounts, domains and history.
+    The existing member/admin update policy applies.

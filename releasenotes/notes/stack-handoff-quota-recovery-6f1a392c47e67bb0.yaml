@@ -1,0 +1,7 @@
+features:
+  - |
+    Deleting an unclaimed PENDING stack without an acceptance receipt
+    recovers its outstanding quota reservation when no other stack/server
+    create or volume operation in the project can own that capacity.
+    Concurrent operations retain their reservations and cause a retryable
+    HTTP 409. Unrelated quota resources and other projects are preserved.

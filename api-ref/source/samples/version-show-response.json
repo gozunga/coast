@@ -1,0 +1,14 @@
+{
+    "version": {
+        "id": "v1",
+        "status": "CURRENT",
+        "min_version": "1.0",
+        "max_version": "1.31",
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/"
+            }
+        ]
+    }
+}

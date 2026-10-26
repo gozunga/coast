@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Application placement uses the server's recorded engine reference.
+    Without a reference, placement resolves the recorded server hostname.
+    A recorded reference whose engine resource is missing or invalid fails
+    without falling back to the hostname.
+    Dedicated build servers cannot host applications.

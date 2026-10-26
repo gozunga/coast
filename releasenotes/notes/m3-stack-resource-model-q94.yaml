@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    A stack contains the controller, servers, networks, volumes, floating
+    IPs and infrastructure secrets. App groups contain environments, and
+    environments contain workloads. Deployments and domains belong to the
+    workload.

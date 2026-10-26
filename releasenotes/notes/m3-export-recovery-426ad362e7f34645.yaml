@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Coast recovers interrupted guest-upload Swift/RGW and S3 exports after a
+    same-host conductor restart. The recovery timer resumes guest leases,
+    removes owned clone volumes and snapshots, and deletes partial archive
+    objects. Cleanup is bounded to 100 export attempts per run and retries
+    failures. After cleanup, the export becomes ERROR with a restart reason.
+    No upload is repeated. Conductor-relay uploads are unsupported.

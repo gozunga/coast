@@ -1,0 +1,5 @@
+fixes:
+  - |
+    Install git and jq in the shared base element for controller and worker
+    images, including build servers. Coolify server validation requires
+    these packages even when installation is disabled.

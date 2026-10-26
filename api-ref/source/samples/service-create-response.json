@@ -1,0 +1,41 @@
+{
+    "service": {
+        "id": "a9c3a9c3-a9c3-a9c3-a9c3-a9c3a9c3a9c3",
+        "project_id": "11111111-1111-1111-1111-111111111111",
+        "environment_id": "55555555-5555-5555-5555-555555555555",
+        "name": "web",
+        "description": null,
+        "server_id": null,
+        "ports": "3000",
+        "replicas": 1,
+        "cpu_limit": null,
+        "memory_limit_mb": 1024,
+        "healthcheck_path": "/healthz",
+        "auto_deploy": false,
+        "status": "PENDING",
+        "current_deployment_id": null,
+        "created_at": "2026-10-09T14:08:00Z",
+        "updated_at": null,
+        "source": {
+            "type": "git",
+            "repo_url": "https://github.com/example/web.git",
+            "branch": "main",
+            "build_pack": "nixpacks",
+            "dockerfile_path": null,
+            "compose_path": null,
+            "base_directory": null
+        },
+        "default_url": "https://web-a9c3.203-0-113-10.sslip.io",
+        "dns_records": [],
+        "deployment_id": "d001d001-d001-d001-d001-d001d001d001",
+        "links": [
+            {
+                "rel": "self",
+                "href": "https://cloud.example.com:9600/v1/services/a9c3a9c3-a9c3-a9c3-a9c3-a9c3a9c3a9c3"
+            }
+        ],
+        "appgroup_id": "44444444-4444-4444-4444-444444444444",
+        "template_id": null,
+        "stack_id": "66666666-6666-6666-6666-666666666666"
+    }
+}

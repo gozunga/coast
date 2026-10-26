@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The guest egress check reads NIC MAC addresses without an IP family
+    filter to identify the environment DHCP NIC. Route queries and lease
+    selection use IPv4.

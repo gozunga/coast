@@ -1,0 +1,6 @@
+features:
+  - |
+    The conductor removes expired stack-delete Cinder snapshots and
+    their receipts. Retention starts at successful stack deletion and is
+    preserved across retries. Failed teardown and snapshots without
+    expiry remain for operator review.

@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    API 1.15 supports app and service container file mounts. Content is
+    write-only UTF-8, limited by both the 64 KiB file-mount ceiling and
+    ``[secrets] max_secret_bytes``, and stored in Barbican. File creation,
+    updates and deletion take effect on the next deploy. Template services
+    can select a container with ``resource_name``.
+security:
+  - |
+    File mounts use generated engine-owned paths. File and named volume
+    paths cannot overlap. Retained file content versions are masked from
+    logs until workload deletion. Dedicated workers support file mounts at
+    system paths.

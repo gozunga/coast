@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Barbican secret references must match the selected SDK endpoint's
+    scheme, host, port and versioned secret path, including HTTP endpoints.
+    Only UUIDs reach the SDK. Coast attempts to delete invalid newly
+    created references by SDK object ID. Deleting missing or empty
+    references is a no-op during partial stack cleanup.

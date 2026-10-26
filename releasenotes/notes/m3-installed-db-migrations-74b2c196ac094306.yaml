@@ -1,0 +1,6 @@
+features:
+  - |
+    coast-db-manage locates migration scripts from the installed Python
+    package without requiring alembic.ini or a source checkout. Kolla
+    database bootstrap remains synchronous and fails on a non-zero command
+    exit status.

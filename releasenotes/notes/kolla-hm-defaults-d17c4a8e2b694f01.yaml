@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The Kolla role defaults ``coast_health_manager_key_lookup`` to
+    ``coast.health_manager.keys.StackKeyLookup``. Operators can override
+    that class. The health-manager container check reads ``/proc/net/udp``
+    for ``coast_health_manager_port`` (default 5565).

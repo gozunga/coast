@@ -1,0 +1,6 @@
+features:
+  - |
+    Worker floating IPs are allocated from the configured external network
+    and adopted by Coast ownership tags. Optional Designate A recordsets use ownership
+    descriptions and a configurable record TTL. Manual mode returns exact
+    required records without contacting Designate.

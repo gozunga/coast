@@ -1,0 +1,11 @@
+{
+  "worker": {
+    "uuid": "server-uuid",
+    "settings": {"server_role": "both"}
+  },
+  "git": {
+    "uuid": "app-uuid",
+    "docker_registry_image_name": null,
+    "settings": {"is_build_server_enabled": false}
+  }
+}

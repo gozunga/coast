@@ -1,0 +1,10 @@
+features:
+  - |
+    Set ``[controller_worker] external_network_id``, ``env_cidr_pool`` and
+    ``mgmt_sg_id`` before creating stacks. The control-side management
+    security group must be operator-owned and default-deny. Neutron must
+    support tag updates and tag filters.
+  - |
+    Stack creation runs a resumable network step using the Coast
+    service-project Neutron client. It creates tagged networks, subnets,
+    routers and role security groups with the specified IPv4 allow lists.

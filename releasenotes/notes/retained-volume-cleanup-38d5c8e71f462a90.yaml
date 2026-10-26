@@ -1,0 +1,14 @@
+features:
+  - |
+    Volume DELETE returns 409 for attached volumes, active creation,
+    snapshots, mounts, unsettled extensions and competing stack operations.
+    Set ``[controller_worker] volume_delete_timeout`` and
+    ``volume_delete_poll_interval`` to control bounded waits. Interrupted
+    work requires operator inspection; automatic takeover is disabled.
+    Export of detached retained volumes is unavailable.
+  - |
+    Project managers and admins can delete detached retained data volumes
+    through the existing volume DELETE route. Coast verifies ownership,
+    attachments and dependencies, uses ordinary Cinder deletion, and releases
+    quota only after confirmed absence. Durable activity receipts protect
+    accounting and notification replay after the volume row is removed.

@@ -1,0 +1,22 @@
+{
+  "dockerfile": "FROM busybox\nEXPOSE 8080\n",
+  "compose": "services: {web: {image: nginx, privileged: true}}\n",
+  "created_app": {
+    "uuid": "app-uuid"
+  },
+  "created_service": {
+    "uuid": "svc-uuid"
+  },
+  "service": {
+    "uuid": "svc-uuid",
+    "docker_compose_raw": "services: {web: {image: nginx}}",
+    "status": "running:healthy",
+    "applications": [
+      {
+        "name": "web",
+        "uuid": "web-child",
+        "fqdn": null
+      }
+    ]
+  }
+}

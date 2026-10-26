@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Service deletion soft-deletes its deployments and clears its current
+    deployment reference before completing cleanup. Deployment history
+    retains its final status for audit and is hidden from the API after
+    service deletion.

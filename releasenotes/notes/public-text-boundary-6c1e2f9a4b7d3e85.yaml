@@ -1,0 +1,17 @@
+---
+fixes:
+  - |
+    The API scrubs app engine and proxy names from Coast text fields
+    (``fault``, ``message``, ``status_reason``, ``reconcile_fault``,
+    ``reason``, ``note``, ``unavailable``, ``error``, ``errors``,
+    ``warning``, ``warnings`` and keys ending in ``_fault``, ``_error(s)``,
+    ``_message``, ``_note``, ``_reason`` or ``_warning(s)``) in buffered
+    JSON responses for non-admin callers. This covers the backup and restore
+    ``error`` field. It also scrubs ``faultstring`` in error responses for
+    every caller. Admin reads and operator logs keep the full detail.
+    Customer data and raw log lines are not changed.
+  - |
+    Template display fields replace app engine and proxy names and em
+    dashes. Templates with an engine-named ``logo`` return an empty
+    ``logo``. Template ids and ``required_env`` names stay as the upstream
+    catalog has them.

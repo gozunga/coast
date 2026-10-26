@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Coast provides project-scoped database repositories for Coast resources,
+    with pagination, soft deletion, task-state compare-and-swap operations,
+    and checked status transitions. Database writes enforce live-name
+    uniqueness, one control server per stack, and deployment number
+    allocation.

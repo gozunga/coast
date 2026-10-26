@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Template apps use the compose document from the template catalog pinned
+    to the stack's engine version. Template creation is independent of the
+    engine's downloaded template list.

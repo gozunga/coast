@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The shared policy enforcer becomes available after all default rules
+    are registered, serializing concurrent initial API requests.

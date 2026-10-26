@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Export Cinder snapshots and temporary snapshot clones use
+    ``[DEFAULT] resource_name_prefix``. The default ``coast`` prefix keeps
+    their names unchanged. Set the prefix before export creation and keep
+    it unchanged for snapshot adoption. The operator-configured
+    ``[export] container`` and ID-based Swift object paths are unchanged.

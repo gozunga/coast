@@ -1,0 +1,11 @@
+fixes:
+  - |
+    The conductor records its host when it claims a stack task. Before RPC
+    starts, it marks interrupted tasks owned by that host ERROR and clears
+    the lock so that a later DELETE is accepted. Cloud operations are not
+    replayed, and other hosts are not taken over.
+    RECONCILING tasks keep their lock and host for existing deployment recovery.
+features:
+  - |
+    Keep ``[DEFAULT] host`` stable across restarts and distinct between
+    conductor hosts so interrupted task recovery identifies its owner.

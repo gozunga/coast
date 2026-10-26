@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    ``PATCH /v1/services/{id}`` and app environment changes work during
+    deployments without claiming the service task. They update the database
+    and apply on the next deployment. Service ``pending_changes`` is true
+    when settings differ from the current deployment. HTTP 409 responses
+    identify the operation holding a task and explain how to proceed.

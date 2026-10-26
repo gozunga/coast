@@ -1,0 +1,64 @@
+---
+- name: Stop management socket users before host plumbing
+  become: true
+  kolla_container:
+    action: stop_container
+    common_options: "{{ docker_common_options }}"
+    name: "{{ item.value.container_name }}"
+  loop: "{{ coast_services | dict2items }}"
+  when:
+    - item.key != 'coast-api'
+    - item.value.enabled | bool
+    - inventory_hostname in groups[item.value.group]
+  notify:
+    - Restart coast-conductor container
+    - Restart coast-health-manager container
+
+- name: Prepare owned management resources with the existing Coast helper
+  become: true
+  ansible.builtin.command:
+    argv:
+      - "{{ coast_hm0_python }}"
+      - "{{ coast_hm0_script }}"
+      - prepare
+      - --config-file
+      - "{{ coast_config_dir }}/{{ 'coast-conductor' if inventory_hostname in groups['coast-conductor'] else 'coast-health-manager' }}/coast.conf"
+      - --cidr
+      - "{{ coast_hm0_cidr }}"
+      - --address
+      - "{{ coast_hm0_address }}"
+      - --host
+      - "{{ coast_hm0_binding_host }}"
+  register: coast_hm0_prepare
+  changed_when: false
+  no_log: true
+
+- name: Record management port details
+  ansible.builtin.set_fact:
+    coast_hm0_port: "{{ coast_hm0_prepare.stdout | from_json }}"
+
+- name: Install persistent management setup script
+  become: true
+  ansible.builtin.template:
+    src: coast-hm0-setup.sh.j2
+    dest: /usr/local/sbin/coast-hm0-setup
+    mode: "0750"
+
+- name: Install management systemd unit
+  become: true
+  ansible.builtin.template:
+    src: coast-hm0.service.j2
+    dest: /etc/systemd/system/coast-hm0.service
+    mode: "0644"
+  register: coast_hm0_unit
+
+- name: Restore management interface before Coast restarts
+  become: true
+  ansible.builtin.systemd_service:
+    name: coast-hm0
+    daemon_reload: "{{ coast_hm0_unit.changed }}"
+    enabled: true
+    state: restarted
+  notify:
+    - Restart coast-conductor container
+    - Restart coast-health-manager container

@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Coast creates Neutron resources, then sets ownership tags with the tag
+    API. If tagging fails, Coast deletes the new resource. Neutron must
+    accept tag updates and tag filters on networks, subnets, routers,
+    security groups, ports and floating IPs. Security group rules use their
+    parent group and a description prefixed with ``resource_name_prefix``.
+issues:
+  - |
+    An untagged resource left by a crash between create and tag requires
+    operator cleanup before retrying the step.

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Compose mount target collection skips bare short-syntax volume
+    names (for example ``data`` without a colon). Only explicit
+    ``source:target`` paths are treated as container targets, which
+    prevents false overlap conflicts with Coast-managed file mounts.

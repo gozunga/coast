@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Service create accepts a template source and stores ``template_id``. A
+    valid request returns 202. The Coolify driver sends the pinned template
+    Compose content as ``docker_compose_raw`` to ``POST /services``. The
+    noop driver accepts the same source.

@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Controller and worker image selection checks the Glance
+    ``coast_role`` property. A shared image tag can select different roles
+    without ambiguity. Build servers use ``coast_role=worker``. Images
+    without the required role property are rejected. Optional
+    ``[controller_worker] controller_image_id`` and ``worker_image_id``
+    narrow selection, but still require the configured owner, tag and
+    active status. Multiple matches fail closed.
+  - |
+    The management setup tool uses ``[DEFAULT] resource_name_prefix``
+    for its Neutron network, subnet, security group and host port names.
+    Ownership and configuration checks apply.

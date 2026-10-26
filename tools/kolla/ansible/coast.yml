@@ -1,0 +1,38 @@
+---
+# Copy next to Kolla's site.yml and gather-facts.yml.
+- name: Gather Kolla host facts
+  ansible.builtin.import_playbook: gather-facts.yml
+
+- name: Configure Coast loadbalancers
+  hosts: loadbalancer
+  gather_facts: false
+  tags: coast
+  roles:
+    - role: loadbalancer
+      when:
+        - enable_coast | bool
+        - kolla_action in ['deploy', 'reconfigure', 'upgrade', 'config']
+  tasks:
+    - name: Register Coast listeners and database routing
+      ansible.builtin.include_role:
+        name: coast
+        tasks_from: loadbalancer
+      when:
+        - enable_coast | bool
+        - kolla_action in ['deploy', 'reconfigure', 'upgrade', 'config']
+    # Kolla checks after all services.d files have been written.
+    - name: Apply loadbalancer configuration changes
+      ansible.builtin.include_role:
+        name: loadbalancer
+        tasks_from: check-containers
+      when:
+        - enable_coast | bool
+        - kolla_action in ['deploy', 'reconfigure', 'upgrade']
+
+- name: Run Coast services
+  hosts: coast-api:coast-conductor:coast-health-manager:coast-console-proxy
+  gather_facts: false
+  tags: coast
+  roles:
+    - role: coast
+      when: enable_coast | bool

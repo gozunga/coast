@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    ``GET /v1/services/{service_id}/deployments/{deployment_id}/log``
+    and ``GET /v1/services/{service_id}/logs`` return HTTP 503 when the
+    engine is unreachable or the engine rejects the Coast credential.
+    ``faultstring`` is ``Service Unavailable``. The response does not
+    include the engine error text. Another engine fault still returns
+    HTTP 500. The same API mapping applies to a synchronous export URL
+    read when that fault reaches the API.

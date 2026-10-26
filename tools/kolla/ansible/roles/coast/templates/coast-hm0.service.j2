@@ -1,0 +1,13 @@
+[Unit]
+Description=Coast host management port
+After={{ kolla_container_engine }}.service
+Requires={{ kolla_container_engine }}.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/coast-hm0-setup
+RemainAfterExit=yes
+TimeoutStartSec=180
+
+[Install]
+WantedBy=multi-user.target

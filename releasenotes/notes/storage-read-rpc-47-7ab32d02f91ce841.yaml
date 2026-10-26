@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Failed conductor storage reads return HTTP 503 with a sanitized error.

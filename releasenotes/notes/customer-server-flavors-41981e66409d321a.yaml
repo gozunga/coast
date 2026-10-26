@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    API microversion 1.27 adds a project-visible ``flavor`` object to server
+    GET list/show responses, with Nova ID, name, vCPUs, RAM (MiB) and disk
+    (GiB). Bare metal and servers without a saved flavor return null;
+    deleted Nova flavors retain the saved reference with a null name.
+    Older microversions and write responses are unchanged. Admin detail
+    retains its existing policy.
+  - |
+    Project readers can use ``GET /v1/flavors`` at 1.27 to list allowed VM
+    sizes with ``id``, ``name``, ``vcpus``, ``ram``, ``disk``, ``plan`` and
+    compatible ``roles``. Only operator-mapped, unambiguous choices are
+    included. Use ``plan`` for add-server and resize selection. Nova
+    failures return a sanitized 503; list lookups are cached per request.

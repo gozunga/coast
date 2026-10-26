@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    A stale Coolify controller VM is rebuilt on its recorded image after
+    the failover grace period. The admin server failover action uses the
+    same flow without waiting. The data, Docker and registry volumes, the
+    ports and the floating IP stay. ``engine_version`` is not changed.
+    A missing recorded image does not rebuild the VM. Worker, build and
+    controller failovers share ``[health_manager] failover_max_concurrent``.

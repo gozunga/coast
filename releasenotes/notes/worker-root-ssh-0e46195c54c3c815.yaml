@@ -1,0 +1,7 @@
+---
+security:
+  - |
+    Worker and build-server config drives prevent cloud-init from copying
+    the optional Nova admin SSH key to root. Admins use the default user
+    with sudo. Root holds only the stack engine key when the engine SSH
+    user is root; otherwise its authorized-keys file is empty.

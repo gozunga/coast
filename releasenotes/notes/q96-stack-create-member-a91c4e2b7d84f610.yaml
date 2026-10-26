@@ -1,0 +1,6 @@
+---
+security:
+  - |
+    Project members can create stacks.
+    The default for ``coast:stack:create`` is the project member role.
+    Manager and admin stay required for elevated operations.

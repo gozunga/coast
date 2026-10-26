@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Permit ``DELETE /api/v1/projects/{project}/environments/{environment}``
+    through the controller agent proxy. Stack teardown can delete empty
+    Coolify environments before it deletes their project. Other methods on
+    environment items, collection DELETE and wider paths remain denied.

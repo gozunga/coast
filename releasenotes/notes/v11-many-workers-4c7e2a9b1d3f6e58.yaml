@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Microversion 1.1 stack create accepts one or more VM workers. A build
+    server and its flavor can be chosen with any worker count. Each
+    worker's plan and image are validated.
+  - |
+    ``GET /v1/plans`` at microversion 1.1 also returns each plan's
+    ``flavor`` so the dashboard can preselect usable Nova flavors.
+    Microversion 1.0 responses are unchanged.

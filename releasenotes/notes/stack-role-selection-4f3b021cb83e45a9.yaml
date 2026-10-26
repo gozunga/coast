@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    API microversion 1.1 adds optional controller and worker image
+    selection, plus independent build-server plan and image selection on
+    stack create. Images must belong to the existing operator-published role
+    catalog. Stack create requires one or more VM workers in version 1.1.
+    The optional build_server flag is a boolean.

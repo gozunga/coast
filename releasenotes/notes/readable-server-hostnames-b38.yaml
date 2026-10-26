@@ -1,0 +1,5 @@
+features:
+  - |
+    Servers have short stack-based hostnames for Nova, guests and App
+    engine server entries. Hostnames stay stable across stack renames and
+    failover. Server API responses include the read-only ``hostname`` field.

@@ -1,0 +1,23 @@
+---
+fixes:
+  - |
+    Secret-store outages defer automatic failover admission while the
+    original VM is still running. Worker and controller failover prefetch
+    required secrets before admission and retry with capped exponential
+    backoff. Engine upgrade and rollback admission treat secret-store errors
+    as transient and permit a later retry. A transient admission abort
+    restores the stack's prior status and preserves controller status and
+    faults, including rollback from ERROR. Explicit worker and controller
+    failover also restore their pre-admission server status and preserve
+    faults when secret storage defers the attempt. Single-server and rolling
+    resize preserve the same status and fault on pre-fence secret-store
+    errors, leaving the original VM and flavor intact so resize can be
+    retried after recovery.
+  - |
+    Heartbeat authentication reuses the last good key on secret-store errors
+    for up to ``[health_manager] key_cache_max_stale`` seconds after normal
+    cache expiry (default 3600). When no usable key exists, health checks
+    defer stale transitions and failover dispatch until secret lookup
+    recovers. Secret refreshes have a bounded receiver wait and concurrency
+    limit. Heartbeats reuse stale keys between refresh retries instead of
+    waiting for a secret-store timeout on every packet during an outage.

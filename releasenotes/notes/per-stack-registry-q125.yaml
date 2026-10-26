@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Each stack can run a private registry on its Coolify VM. The registry
+    listens on the stack environment address only. Credentials stay in
+    Barbican. Registry data uses a controller Cinder volume. Build servers
+    push and workers pull. The conductor sets the image name per stack.
+    ``[coolify] build_registry_image_template`` is the fallback.
+    Deleted service images are removed, and unreferenced blobs are
+    collected on a timer.
+  - |
+    Registry password hashes use bcrypt, which is listed in
+    ``requirements.txt``.

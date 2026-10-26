@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    DNS zone discovery at API 1.22 returns HTTP 404 with
+    "DNS zones are not available on this cloud." when the service catalog
+    has no DNS endpoint. Clients can hide zone and host fields in this case.
+    Designate failures return HTTP 409 with a sanitized reason.

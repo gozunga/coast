@@ -1,0 +1,15 @@
+{
+    "stack": {
+        "name": "acme-prod",
+        "description": "Acme marketing sites",
+        "plan": "standard-2",
+        "workers": [
+            {
+                "kind": "vm",
+                "plan": "worker-4-8"
+            }
+        ],
+        "build_server": false,
+        "data_volume_gb": 100
+    }
+}

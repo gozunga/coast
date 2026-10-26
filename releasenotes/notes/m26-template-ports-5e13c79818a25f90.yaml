@@ -1,0 +1,7 @@
+features:
+  - |
+    When a create request omits ports, a template service uses the
+    template's ``http_port`` (API 1.7 and later) or else its first catalog
+    port. App engine template domains include that internal routing
+    port; public hostname comparisons ignore it. HTTP health checks are
+    validated after the default and on every service update.

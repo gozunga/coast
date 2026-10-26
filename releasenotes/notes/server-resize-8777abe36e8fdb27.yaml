@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    API microversion 1.26 adds project-member server resize for workers,
+    build servers and the App engine server, and rolling worker resize.
+    Only strictly larger operator flavors are accepted. Replacement keeps
+    disks and network identity, persists flavor and controller plan only
+    after health checks, and attempts restoration of the old VM on failure.
+    Rolling resize stops at its first failure and retains completed workers.

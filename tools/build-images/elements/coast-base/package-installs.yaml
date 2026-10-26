@@ -1,0 +1,14 @@
+docker.io:
+docker-compose-v2:
+chrony:
+cloud-init:
+# growpart grows the root disk on first boot.
+cloud-guest-utils:
+openssh-server:
+unattended-upgrades:
+iproute2:
+ca-certificates:
+curl:
+git:
+jq:
+python3:

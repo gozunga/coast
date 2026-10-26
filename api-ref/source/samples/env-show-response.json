@@ -1,0 +1,16 @@
+{
+    "env": {
+        "NODE_ENV": {
+            "value": "production",
+            "secret": false,
+            "version": 1,
+            "build_time": false
+        },
+        "API_TOKEN": {
+            "value": null,
+            "secret": true,
+            "version": 1,
+            "build_time": false
+        }
+    }
+}

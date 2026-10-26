@@ -1,0 +1,6 @@
+fixes:
+  - |
+    Fix intermittent database public-access updates and network repairs failing
+    when concurrent applies create the same security group rule. Coast now
+    confirms a conflicting rule is present before accepting a duplicate-rule
+    conflict, and tolerates stale rules already removed by another apply.

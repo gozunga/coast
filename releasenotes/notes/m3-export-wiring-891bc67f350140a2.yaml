@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    Set Swift account metadata ``Coast-Temp-URL-Key-Ref`` to the Barbican
+    reference for the account temporary URL key. Install the same key on
+    the Swift or RGW account. The conductor periodically deletes expired
+    objects; native Swift expiration is also scheduled after a valid
+    upload.
+  - |
+    Provisioned VM stacks can export data and Docker persistent volumes
+    through snapshot clones and the existing mTLS archive agent. The Swift
+    conductor publishes validated archive receipts and signs temporary
+    download URLs only for project managers and administrators. Ceph RGW
+    signatures include the full catalog prefix and use an account-level key.
+    URLs are not stored in the database.
+issues:
+  - |
+    ``[export] upload_via = conductor`` is not implemented and fails closed.
+    Interrupted creates do not repeat uncertain uploads. The operator must
+    inspect export-tagged temporary resources and unfinished stack tasks
+    before recovery.

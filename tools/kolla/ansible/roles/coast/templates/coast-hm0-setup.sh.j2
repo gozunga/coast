@@ -1,0 +1,29 @@
+#!/bin/sh
+# Restore the operator-approved host-namespace management attachment.
+set -eu
+ovs() {
+    {{ kolla_container_engine | quote }} exec openvswitch_vswitchd ovs-vsctl "$@"
+}
+until ovs br-exists {{ coast_hm0_bridge | quote }}; do
+    sleep 2
+done
+# Do not adopt an interface attached to another Neutron port or bridge.
+# A namespace-based veth attachment must be removed explicitly first.
+if ip link show coast-bhm0 >/dev/null 2>&1; then
+    echo 'Remove the old namespace attachment before host setup' >&2
+    exit 1
+fi
+if ip link show coast-hm0 >/dev/null 2>&1; then
+    test "$(ovs get Interface coast-hm0 external_ids:iface-id | tr -d '\"')" = {{ coast_hm0_port.port_id | quote }}
+    test "$(ovs get Interface coast-hm0 type | tr -d '\"')" = internal
+    test "$(ovs port-to-br coast-hm0)" = {{ coast_hm0_bridge | quote }}
+fi
+ovs --may-exist add-port {{ coast_hm0_bridge | quote }} coast-hm0 \
+    -- set Interface coast-hm0 type=internal \
+    external_ids:iface-id={{ coast_hm0_port.port_id | quote }} \
+    external_ids:attached-mac={{ coast_hm0_port.mac_address | quote }} \
+    external_ids:iface-status=active external_ids:skip_cleanup=true
+ip link set coast-hm0 address {{ coast_hm0_port.mac_address | quote }} mtu {{ coast_hm0_mtu | int }}
+sysctl -qw net.ipv4.conf.coast-hm0.forwarding=0 net.ipv6.conf.coast-hm0.disable_ipv6=1
+ip address replace {{ coast_hm0_port.address | quote }} dev coast-hm0
+ip link set coast-hm0 up

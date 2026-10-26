@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The ``[conductor] settle_poll_interval`` option defaults to 15 seconds.
+    DEPLOYING and STARTING services are checked on this interval. Export and
+    snapshot housekeeping stay on ``deploy_reconcile_interval``. Overlapping
+    checks are skipped.

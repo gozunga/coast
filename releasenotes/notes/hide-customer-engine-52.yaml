@@ -1,0 +1,5 @@
+fixes:
+  - |
+    Stack responses expose the driver only through the admin detail policy.
+    Plan descriptions returned to non-admin callers use neutral app engine
+    wording for engine product names.
